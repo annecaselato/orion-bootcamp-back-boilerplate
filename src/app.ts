@@ -2,15 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { MongoDataSource } from './config/database';
+import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 
-MongoDataSource.initialize()
+MysqlDataSource.initialize()
   .then(() => {
     console.log('Database initialized!');
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('Database Error: ', err);
   });
 
