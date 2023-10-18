@@ -11,7 +11,7 @@ services:
       - .:/app
       - /app/node_modules
     ports:
-      - 8080:4444
+      - 4444:4444
     command: npm run start:dev
     environment:
       NODE_ENV: development
