@@ -2,11 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
-import { MongoDataSource } from './config/database';
+import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
+import 'dotenv/config';
 
-MongoDataSource.initialize()
+const PORT = process.env.SERVER_PORT;
+
+MysqlDataSource.initialize()
   .then(() => {
     console.log('Database initialized!');
   })
@@ -27,6 +30,6 @@ app.get('/swagger.json', (_req, res) => res.send(swaggerSpec));
 
 console.log(`Add swagger on /swagger`);
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server listening on port ${process.env.SERVER_PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
