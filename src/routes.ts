@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { HomeController } from './controller/HomeController';
-import loginRoutes from './api/v1/loginRoutes';
+import loginRoute from './api/v1/loginRoute';
 
 const router = Router();
 
-router.use('/v1', loginRoutes);
+router.use('/v1', loginRoute);
 
 router.get('/', new HomeController().hello);
 
