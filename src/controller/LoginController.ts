@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
+// import { validationResult } from 'express-validator';
+import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
 
 export class LoginController {
   /**
@@ -44,9 +45,7 @@ export class LoginController {
    *           content:
    *             application/json:
    *               schema:
-   *                 type: object
-   *                 items:
-   *                   $ref: #/components/schemas/User
+   *                 $ref: '#/components/schemas/User'
    *       '400':
    *           description: 'Erro de validação'
    *           content:
@@ -88,12 +87,19 @@ export class LoginController {
    * @returns {number} status 400 - Bad request status for validations.
    */
   public static login(req: Request, res: Response) {
-    const errors = validationResult(req);
+    const { email, password } = req.body;
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ error: errors.array() });
-    } else {
+    if (validateEmailAndPassword(email, password)) {
       return res.status(200).json({ message: 'Login efetuado com sucesso' });
+    } else {
+      return res.status(400).json({ message: 'Email e/ou senha inválida' });
     }
+    // const errors = validationResult(req);
+
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ error: errors.array() });
+    // } else {
+    //   return res.status(200).json({ message: 'Login efetuado com sucesso' });
+    // }
   }
 }
