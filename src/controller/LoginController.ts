@@ -47,6 +47,17 @@ export class LoginController {
    *                 type: object
    *                 items:
    *                   $ref: #/components/schemas/User
+   *       '400':
+   *           description: 'Erro de validação'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   error:
+   *                     type: array
+   *                     items:
+   *                       type: string
    */
   /**
    * POST route for user login (authentication).
