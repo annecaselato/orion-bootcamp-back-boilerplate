@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-// import { validationResult } from 'express-validator';
 import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
 
 export class LoginController {
@@ -31,10 +30,12 @@ export class LoginController {
 
   /**
    * @swagger
-   * /login:
+   * /v1/login:
    *   post:
-   *     summary: User login
-   *     tags: [Home]
+   *     summary: Route used for users to attempt authentication in the app. The function
+   *       is set as static to allow calling it directly from the class, without the need to
+   *       instantiate the class. This was used in the file /api/v1/loginRoute.ts
+   *     tags: [Auth]
    *     consumes:
    *       - application/json
    *     produces:
@@ -58,35 +59,7 @@ export class LoginController {
    *                     items:
    *                       type: string
    */
-  /**
-   * POST route for user login (authentication).
-   *
-   * @route POST /login
-   * @group Authentication
-
-   * @param {Request} req - HTTP request object.
-   * @param {Response} res - HTTP response object.
-   *
-   * @throws {ValidationError} Errors array from validationResult(req) object
-   *
-   * @example - request data:
-   * POST /login
-   * {
-   *   "email": "user@example.com",
-   *   "password": "SafePassword123!" // Min 8 char.,  1 uppercase, 1 lowercase, 1 number.
-   * }
-   *
-   * Success return:
-   *
-   * @returns {object} JSON object with successful authentication message.
-   * @returns {number} status 200 - Success status.
-   *
-   * Failure return:
-   *
-   * @returns {object} JSON object with validation errors for failed authentication.
-   * @returns {number} status 400 - Bad request status for validations.
-   */
-  public static login(req: Request, res: Response) {
+  public static login(req: Request, res: Response): object {
     const { email, password } = req.body;
 
     if (validateEmailAndPassword(email, password)) {
@@ -94,12 +67,5 @@ export class LoginController {
     } else {
       return res.status(400).json({ message: 'Email e/ou senha inválida' });
     }
-    // const errors = validationResult(req);
-
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ error: errors.array() });
-    // } else {
-    //   return res.status(200).json({ message: 'Login efetuado com sucesso' });
-    // }
   }
 }
