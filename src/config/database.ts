@@ -6,7 +6,8 @@ export const MysqlDataSource = new DataSource({
   type: 'mysql',
   database: process.env.DB_DATABASE,
   url: process.env.DB_CONNECTION_STRING,
-  entities: ['src/entity/*.ts', 'entity/*.js'],
+  entities: ['src/database/entity/*.ts', 'database/entity/*.js'],
+  migrations: ['src/database/migrations/*.ts', 'database/migrations/*.js'],
   logging: true,
   synchronize: true
 });

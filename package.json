@@ -8,6 +8,7 @@
     "start:dev": "npx nodemon -L",
     "build": "npm run lint && npx tsc",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "typeorm": "typeorm-ts-node-commonjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
