@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "compilerOptions": {
       "module": "commonjs",
       "esModuleInterop": true,
@@ -22,27 +21,3 @@
       "resolveJsonModule": true
     }
   }
-=======
-  "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": "./src",
-    "incremental": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  },
-  "include": ["src/**/*.ts"]
-}
->>>>>>> develop
