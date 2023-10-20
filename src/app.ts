@@ -5,9 +5,6 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
-import 'dotenv/config';
-
-const PORT = process.env.SERVER_PORT;
 
 MysqlDataSource.initialize()
   .then(() => {
@@ -30,6 +27,6 @@ app.get('/swagger.json', (_req, res) => res.send(swaggerSpec));
 
 console.log(`Add swagger on /swagger`);
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Server listening on port ${process.env.SERVER_PORT}`);
 });
