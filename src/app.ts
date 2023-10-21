@@ -30,5 +30,3 @@ console.log(`Add swagger on /swagger`);
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server listening on port ${process.env.SERVER_PORT}`);
 });
-
-console.log('teste');
