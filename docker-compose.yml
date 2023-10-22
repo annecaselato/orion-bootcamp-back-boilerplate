@@ -14,6 +14,7 @@ services:
       - 8080:4444
     command: npm run start:dev
     environment:
+      JWT_SECRET_KEY: 3RWS8GmVfz6Ax7l0q5nQ2RUySvPsdh0aK3GSY4mTRhlICvi8Il
       NODE_ENV: development
       SERVER_PORT: 4444
       DB_DATABASE: orion
