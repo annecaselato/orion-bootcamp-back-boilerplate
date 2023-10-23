@@ -17,6 +17,9 @@ export class Users {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  acessToken: string;
+
   @CreateDateColumn()
   created_at: Date;
 
