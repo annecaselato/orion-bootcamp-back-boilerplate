@@ -17,8 +17,11 @@ export class Users {
   @Column()
   password: string;
 
-  @Column()
-  passwordRecoveryToken: string
+  @Column({ nullable: true })
+  passwordRecoveryToken: string;
+
+  @Column({ nullable: true })
+  accessToken: string;
 
   @CreateDateColumn()
   created_at: Date;

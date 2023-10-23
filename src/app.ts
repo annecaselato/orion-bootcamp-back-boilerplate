@@ -5,9 +5,11 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
+import { DataSource } from 'typeorm';
 
 MysqlDataSource.initialize()
-  .then(() => {
+  .then((connection: DataSource) => {
+    connection.runMigrations();
     console.log('Database initialized!');
   })
   .catch((err) => {
