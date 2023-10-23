@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
+import bcrypt from 'bcrypt';
 
 const USERS = [
   {
@@ -12,12 +13,6 @@ const USERS = [
 ];
 
 export class UserDataPopulation1697645895089 implements MigrationInterface {
-  /**
-   * Executa as operações de inserção de dados na tabela "Users" durante a migração.
-   *
-   * @param queryRunner - O QueryRunner utilizado para executar as consultas no banco de dados.
-   * @returns Uma Promise que é resolvida quando a operação é concluída.
-   */
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const user of USERS) {
       await queryRunner.manager.save('Users', {
@@ -27,12 +22,6 @@ export class UserDataPopulation1697645895089 implements MigrationInterface {
     }
   }
 
-  /**
-   * Executa as operações de exclusão de dados na tabela "Users" durante a reversão da migração.
-   *
-   * @param queryRunner - O QueryRunner utilizado para executar as consultas no banco de dados.
-   * @returns Uma Promise que é resolvida quando a operação é concluída.
-   */
   public async down(queryRunner: QueryRunner): Promise<void> {
     for (const user of USERS) {
       await queryRunner.manager.delete('Users', { email: user.email });
