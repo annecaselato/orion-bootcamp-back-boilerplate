@@ -3,6 +3,7 @@ interface db {
   email: string;
   password: string;
 }
+
 const DB: db[] = [
   {
     name: 'nome1',
@@ -15,12 +16,6 @@ const DB: db[] = [
     password: 'senha2'
   }
 ];
-
-export class UserService {
-  getAllUsers = () => {
-    return DB;
-  };
-}
 
 export const autenticacaoUser = (
   useremail: string,
