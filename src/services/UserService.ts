@@ -19,9 +19,9 @@ const DB: db[] = [
 
 export const autenticacaoUser = (
   useremail: string,
-  password: string
+  userpassword: string
 ): db | undefined => {
   return DB.find(
-    (user) => user.email === useremail && user.password === password
+    (user) => user.email === useremail && user.password === userpassword
   );
 };
