@@ -81,7 +81,7 @@ export class LoginController {
 
     const user = await userRepository.findOneBy({ email });
 
-    const encryptedPassword = await BcryptUtils.hashPassword(password)
+    const encryptedPassword = await BcryptUtils.hashPassword(password);
 
     if (!user) {
       return res.status(400).send('E-mail e/ou senha inválidos');
@@ -95,7 +95,10 @@ export class LoginController {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    user.accessToken = await BcryptUtils.generateJWTToken({ id: user.id }, '5h');
+    user.accessToken = await BcryptUtils.generateJWTToken(
+      { id: user.id },
+      '5h'
+    );
     await userRepository.save(user);
 
     const { password: _, ...userLogin } = user;
