@@ -91,10 +91,6 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    /**
-     *@password é a senha inserida pelo usuário
-     *@userpassword é a senha salva encriptada no banco (ver migration)
-     */
     const passwordsMatch = BcryptUtils.comparePassword(password, user.password);
     if (!passwordsMatch) {
       return res.status(400).send('E-mail e/ou senha inválidos');
