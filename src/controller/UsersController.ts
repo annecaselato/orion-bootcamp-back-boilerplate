@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { autenticacaoUser } from '../services/UserService';
+import { UserAutenticator } from '../services/UserService';
 
 export class UsersController {
   /**
@@ -40,13 +40,22 @@ export class UsersController {
    *       '401':
    *           description: 'Credenciais incorretas, login não realizado'
    */
-  login = (req: Request, res: Response) => {
-    const { useremail, userpassword } = req.body;
-    const user = autenticacaoUser(useremail, userpassword);
 
-    if (user) {
-      res.json({ message: 'Login realizado com sucesso' });
+  userAutenticator = new UserAutenticator();
+
+  login = async (req: Request, res: Response) => {
+    const { email, userpassword } = req.body;
+
+    try {
+      const user = await this.userAutenticator.userLogin(email, userpassword);
+
+      if (user) {
+        res.json({ message: 'Login realizado com sucesso' });
+      } else {
+        res.status(401).json({ message: 'Usuário ou senha incorreto' });
+      }
+    } catch (error) {
+      res.status(500).json({ mensagem: 'Erro durante a autenticação' });
     }
-    res.status(401).json({ message: 'Usuário ou senha incorreto' });
   };
 }

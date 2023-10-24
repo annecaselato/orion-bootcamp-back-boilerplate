@@ -1,27 +1,15 @@
-interface db {
-  name: string;
-  email: string;
-  password: string;
-}
+import { User } from '../database/entity/User';
+import { MysqlDataSource } from '../config/database';
 
-const DB: db[] = [
-  {
-    name: 'nome1',
-    email: 'email1@teste.com',
-    password: 'senha1'
-  },
-  {
-    name: 'nome2',
-    email: 'email2@teste.com',
-    password: 'senha2'
+export class UserAutenticator {
+  private userRepository = MysqlDataSource.getRepository(User);
+
+  async userLogin(email: string, userpassword: string): Promise<User | null> {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (user && user.password === userpassword) {
+      return user;
+    }
+    return null;
   }
-];
-
-export const autenticacaoUser = (
-  useremail: string,
-  userpassword: string
-): db | undefined => {
-  return DB.find(
-    (user) => user.email === useremail && user.password === userpassword
-  );
-};
+}
