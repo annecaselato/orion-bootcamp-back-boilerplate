@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
+import { BcryptUtils } from '../library/bcryptUtils';
 
 const USERS = [
   {
@@ -20,9 +21,11 @@ export class UserDataPopulation1697645895089 implements MigrationInterface {
    */
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const user of USERS) {
+      const hashedPassword: string = BcryptUtils.hashPassword(user.password);
+
       await queryRunner.manager.save('Users', {
         email: user.email,
-        password: user.password
+        password: hashedPassword
       });
     }
   }

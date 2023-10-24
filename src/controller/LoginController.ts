@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
 import { userRepository } from '../repositories/userRepository';
-import BcryptUtils from '../library/bcryptUtils';
+import { BcryptUtils } from '../library/bcryptUtils';
+import { JwtUtils } from '../library/jwtUtils';
+
 export class LoginController {
   /**
    * @swagger
@@ -81,8 +83,6 @@ export class LoginController {
 
     const user = await userRepository.findOneBy({ email });
 
-    const encryptedPassword = await BcryptUtils.hashPassword(password);
-
     if (!user) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
@@ -91,14 +91,16 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    if (!BcryptUtils.comparePassword(password, encryptedPassword)) {
+    /**
+     *@password é a senha inserida pelo usuário
+     *@userpassword é a senha salva encriptada no banco (ver migration)
+     */
+    const passwordsMatch = BcryptUtils.comparePassword(password, user.password);
+    if (!passwordsMatch) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    user.accessToken = await BcryptUtils.generateJWTToken(
-      { id: user.id },
-      '5h'
-    );
+    user.accessToken = await JwtUtils.generateJWTToken({ id: user.id }, '5h');
     await userRepository.save(user);
 
     const { password: _, ...userLogin } = user;

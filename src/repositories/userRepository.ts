@@ -1,4 +1,4 @@
 import { MysqlDataSource } from '../config/database';
-import { Users } from '../entity/Users';
+import { User } from '../entity/Users';
 
-export const userRepository = MysqlDataSource.getRepository(Users);
+export const userRepository = MysqlDataSource.getRepository(User);
