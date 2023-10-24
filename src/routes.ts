@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import { HomeController } from './controller/HomeController';
-import { EmailSender } from './library/mail';
 
 const router = Router();
 
