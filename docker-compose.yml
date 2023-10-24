@@ -20,15 +20,9 @@ services:
       SERVER_PORT: 4444
       DB_DATABASE: orion
       DB_CONNECTION_STRING: mysql://orion_root:j5m966qp7jiypfda@orion-mysql:3306
-      
-      
-      
-      
     networks:
       - orion-connect
-  
-  
-  
+
   orion-mysql:
     container_name: orion-mysql
     image: mysql
