@@ -34,7 +34,7 @@ export class AuthController {
    *     produces:
    *       - application/json
    *     responses:
-   *       '200':
+   *       '201':
    *           description: 'Autenticação bem sucedida.'
    *           content:
    *             application/json:
@@ -50,6 +50,20 @@ export class AuthController {
    *                     description: 'objeto json de retorno'
    *       '401':
    *           description: 'Autenticação falhou.'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   date:
+   *                     type: object
+   *                   status:
+   *                     type: boolean
+   *                   data:
+   *                     type: string
+   *                     description: 'objeto json de retorno'
+   *       '500':
+   *           description: 'Erro interno.'
    *           content:
    *             application/json:
    *               schema:
@@ -80,14 +94,16 @@ export class AuthController {
       if (!user) {
         return res
           .status(401)
-          .send({ date: new Date(), status: true, data: 'E-mail inválido.' });
+          .send({ date: new Date(), status: false, data: 'E-mail inválido.' });
       }
 
       //conferir flag de ativação
       if (!user.isActivated) {
-        return res
-          .status(401)
-          .send('Necessária a confirmação do cadastro pelo e-mail.');
+        return res.status(401).send({
+          date: new Date(),
+          status: false,
+          data: 'Necessária a confirmação do cadastro pelo e-mail.'
+        });
       }
 
       //conferir senha
@@ -99,7 +115,7 @@ export class AuthController {
       if (!passwordIsValid) {
         return res
           .status(401)
-          .send({ date: new Date(), status: true, data: 'Senha inválida.' });
+          .send({ date: new Date(), status: false, data: 'Senha inválida.' });
       }
 
       //atribuir token jwt
@@ -113,10 +129,15 @@ export class AuthController {
       );
 
       return res
-        .status(200)
+        .status(201)
         .send({ date: new Date(), status: true, data: token });
     } catch (error) {
       console.log(error);
+      return res.status(500).send({
+        date: new Date(),
+        status: false,
+        data: 'Um erro interno ocorreu.'
+      });
     }
   }
 }
