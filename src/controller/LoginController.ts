@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
 import { userRepository } from '../repositories/userRepository';
+import BcryptUtils from '../library/bcryptUtils';
 export class LoginController {
   /**
    * @swagger
@@ -80,6 +81,8 @@ export class LoginController {
 
     const user = await userRepository.findOneBy({ email });
 
+    const encryptedPassword = await BcryptUtils.hashPassword(password)
+
     if (!user) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
@@ -88,20 +91,18 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    if (password == user.password) {
+    if (!BcryptUtils.comparePassword(password, encryptedPassword)) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET ?? '', {
-      expiresIn: '5h'
-    });
-    user.accessToken = token;
+
+    user.accessToken = await BcryptUtils.generateJWTToken({ id: user.id }, '5h');
     await userRepository.save(user);
 
     const { password: _, ...userLogin } = user;
 
     return res.json({
       user: userLogin,
-      token: token
+      token: user.accessToken
     });
   }
 }
