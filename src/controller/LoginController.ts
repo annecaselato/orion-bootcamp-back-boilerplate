@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
 import { userRepository } from '../repositories/userRepository';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 export class LoginController {
   /**
    * @swagger
@@ -96,7 +94,7 @@ export class LoginController {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET ?? '', {
       expiresIn: '5h'
     });
-    user.acessToken = token;
+    user.accessToken = token;
     await userRepository.save(user);
 
     const { password: _, ...userLogin } = user;
