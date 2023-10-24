@@ -18,7 +18,6 @@ services:
       NODE_ENV: development
       SERVER_PORT: 4444
       DB_DATABASE: orion
-      # DB_CONNECTION_STRING: mongodb://orion_root:j5m966qp7jiypfda@orion-mongo:27017
       DB_CONNECTION_STRING: mysql://orion_root:j5m966qp7jiypfda@orion-mysql:3306
     networks:
       - orion-connect
