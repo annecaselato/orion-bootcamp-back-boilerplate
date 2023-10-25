@@ -3,11 +3,15 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate
 } from 'typeorm';
 
-@Entity()
-export class Users {
+import { BcryptUtils } from '../library/bcryptUtils';
+
+@Entity({ name: 'users' })
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,11 +22,22 @@ export class Users {
   password: string;
 
   @Column({ nullable: true })
-  acessToken: string;
+  passwordRecoveryToken: string;
+
+  @Column({ nullable: true })
+  accessToken: string;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      this.password = await BcryptUtils.hashPassword(this.password);
+    }
+  }
 }

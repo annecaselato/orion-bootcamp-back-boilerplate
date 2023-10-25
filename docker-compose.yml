@@ -22,7 +22,7 @@ services:
       DB_CONNECTION_STRING: mysql://orion_root:j5m966qp7jiypfda@orion-mysql:3306
     networks:
       - orion-connect
-  
+
   # orion-mongo:
   #   container_name: orion-mongo
   #   image: mongo
@@ -38,7 +38,7 @@ services:
   #     - orion-connect
   #   logging:
   #     driver: none
-  
+
   orion-mysql:
     container_name: orion-mysql
     image: mysql
