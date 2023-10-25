@@ -7,7 +7,7 @@ export class BcryptUtils {
    * @returns {Promise<string>} String representing the encrypted version of the password, returned from
    * asynchronous call to bcrypt api.
    */
-  public static hashPassword(password: string): string {
+  public static hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     return bcrypt.hash(password, saltRounds);
   }

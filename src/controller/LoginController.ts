@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
-import { userRepository } from '../repositories/userRepository';
+import { UserRepository } from '../repositories/userRepository';
 import { BcryptUtils } from '../library/bcryptUtils';
 import { JwtUtils } from '../library/jwtUtils';
 
@@ -81,7 +81,7 @@ export class LoginController {
   public static async login(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
 
-    const user = await userRepository.findOneBy({ email });
+    const user = await UserRepository.findUserByEmail(email);
 
     if (!user) {
       return res.status(400).send('E-mail e/ou senha inválidos');
@@ -96,8 +96,12 @@ export class LoginController {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    user.accessToken = await JwtUtils.generateJWTToken({ id: user.id }, '5h');
-    await userRepository.save(user);
+    const accessToken: string = await JwtUtils.generateJWTToken(
+      { id: user.id },
+      '5h'
+    );
+
+    await UserRepository.saveAccessTokenInUser(user.id, accessToken);
 
     const { password: _, ...userLogin } = user;
 

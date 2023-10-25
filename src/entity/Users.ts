@@ -3,8 +3,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  BeforeInsert,
+  BeforeUpdate
 } from 'typeorm';
+
+import { BcryptUtils } from '../library/bcryptUtils';
 
 @Entity({ name: 'users' })
 export class User {
@@ -28,4 +32,12 @@ export class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword() {
+    if (this.password) {
+      this.password = await BcryptUtils.hashPassword(this.password);
+    }
+  }
 }
