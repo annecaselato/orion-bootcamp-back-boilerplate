@@ -15,6 +15,8 @@ services:
     command: npm run start:dev
     environment:
       JWT_SECRET_KEY: 3RWS8GmVfz6Ax7l0q5nQ2RUySvPsdh0aK3GSY4mTRhlICvi8Il
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       NODE_ENV: development
       SERVER_PORT: 4444
       DB_DATABASE: orion
