@@ -20,7 +20,6 @@ export class NodemailerService {
   /**
    * Sends a password recovery email to the specified email address.
    * @param email - The email address to send the password recovery email to.
-   * @returns A Promise that resolves when the email has been sent.
    */
   static async sendPasswordRecoveryEmail(email: string): Promise<void> {
     const mailOptions = {
