@@ -91,7 +91,10 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    const passwordsMatch = BcryptUtils.comparePassword(password, user.password);
+    const passwordsMatch = await BcryptUtils.comparePassword(
+      password,
+      user.password
+    );
     if (!passwordsMatch) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }

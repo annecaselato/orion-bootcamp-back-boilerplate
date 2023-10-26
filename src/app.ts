@@ -6,6 +6,7 @@ import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import { DataSource } from 'typeorm';
+import { NodemailerService } from './library/nodemailerUtils';
 
 MysqlDataSource.initialize()
   .then((connection: DataSource) => {
@@ -17,6 +18,8 @@ MysqlDataSource.initialize()
   });
 
 const app = express();
+
+NodemailerService.init();
 
 app.use(express.json());
 app.use(cors({ origin: true }));
