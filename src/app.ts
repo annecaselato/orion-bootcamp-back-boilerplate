@@ -13,12 +13,15 @@ MysqlDataSource.initialize()
 
     //mock database
     const user = new User();
+    user.name = 'joao';
+    user.gender = 'masculino';
+    user.birth_date = new Date();
     user.email = 'teste@teste.com';
     user.password =
       '$2a$12$EbBRVDoDCgptIRmd21X5re06nZbvUd9VurqndqxuIQEiL4OjhCYwG';
     user.isActivated = true;
 
-    MysqlDataSource.manager.save(user);
+    // MysqlDataSource.manager.save(user);
   })
   .catch((err) => {
     console.error('Database Error: ', err);
