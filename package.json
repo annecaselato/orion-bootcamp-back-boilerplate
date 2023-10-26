@@ -36,6 +36,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.0",
     "mysql2": "^3.6.2",
+    "nodemailer": "^6.9.7",
     "reflect-metadata": "^0.1.13",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",

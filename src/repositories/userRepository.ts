@@ -28,7 +28,7 @@ export class UserRepository {
    */
   public static async findUserByEmail(
     email: string
-  ): Promise<User | undefinded> {
+  ): Promise<User | undefined> {
     return MysqlDataSource.getRepository(User).findOneBy({ email });
   }
 
