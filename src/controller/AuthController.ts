@@ -120,7 +120,7 @@ export class AuthController {
 
       //atribuir token jwt
       const token: string = jwt.sign(
-        { email: user.email },
+        { name: user.name, email: user.email },
         process.env.JWT_SECRET_KEY,
         {
           algorithm: 'HS256',
