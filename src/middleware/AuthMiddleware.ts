@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import JwtHandler from '../jwtUtils/JwtHandler';
 
 export function authenticateToken(req, res, next) {
   try {
@@ -14,7 +14,7 @@ export function authenticateToken(req, res, next) {
       });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY as string, (err, user) => {
+    JwtHandler.verifyToken(token, (err, decodedUser) => {
       console.log(err);
 
       //forbidden
@@ -26,7 +26,7 @@ export function authenticateToken(req, res, next) {
         });
       }
 
-      req.body.user = JSON.stringify(user);
+      req.body.user = JSON.stringify(decodedUser);
 
       next();
     });
