@@ -1,10 +1,6 @@
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';
-
-const htmlMessage: string =
-  '<p>Para redefinir a sua senha, clique no link abaixo. Caso você não tenha feito essa requisição, por favor ignorar este e-mail.</p>';
-const textMessage: string =
-  'Para redefinir a sua senha, clique no link abaixo. Caso você não tenha feito essa requisição, por favor ignorar este e-mail.';
+import messageEmail from './messageEmail';
 
 class NodemailerProvider {
   private readonly transporter: Mail;
@@ -31,19 +27,18 @@ class NodemailerProvider {
     userName: string = 'Jô Soares'
   ): Promise<void> {
     await this.transporter.sendMail({
-      from: 'marteapi@outlook.com',
+      from: `Marte 101 <${process.env.MARTE_EMAIL}>`,
       to: userEmail,
       subject: 'Redefinição de Senha',
-      html: `<h1>Olá, ${userEmail}.</h1>${htmlMessage}`,
-      text: `Olá, ${userName}. ${textMessage}`
+      html: new messageEmail().htmlText(userName)
     });
   }
 }
 
 export const outlookTransporter = new NodemailerProvider(
-  process.env.HOST_OUTLOOK,
+  process.env.HOST_SMTP,
   587,
   false,
-  process.env.USER_OUTLOOK,
-  process.env.EMAIL_PASS
+  process.env.MARTE_EMAIL,
+  process.env.MARTE_PASS
 );
