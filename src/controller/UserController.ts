@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../service/UserService';
+import { OK, INTERNAL_SERVER_ERROR } from '../utils/httpCodes';
 
 export class UserController {
   constructor(private service: UserService) {}
@@ -30,10 +31,10 @@ export class UserController {
   async recoverPassword(req: Request, res: Response) {
     try {
       const { email } = req.body;
-      const user = await this.service.recoverPassword(email);
-      return res.status(200).json(user);
+      await this.service.recoverPassword(email);
+      return res.status(OK).json();
     } catch (error) {
-      return res.status(404).json({ error: error.message });
+      return res.status(INTERNAL_SERVER_ERROR).json({ error });
     }
   }
 }
