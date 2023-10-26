@@ -20,10 +20,12 @@ export class UserDataPopulation1697645895089 implements MigrationInterface {
    */
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const user of USERS) {
-      await queryRunner.manager.save('Users', {
+      const newUser = await queryRunner.manager.create('User', {
         email: user.email,
         password: user.password
       });
+
+      await queryRunner.manager.save('User', newUser);
     }
   }
 
