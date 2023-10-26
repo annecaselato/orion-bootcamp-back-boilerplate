@@ -8,8 +8,8 @@ import routes from './routes';
 import { DataSource } from 'typeorm';
 
 MysqlDataSource.initialize()
-  .then((connection: DataSource) => {
-    connection.runMigrations();
+  .then(async (connection: DataSource) => {
+    await connection.runMigrations();
     console.log('Database initialized!');
   })
   .catch((err) => {
