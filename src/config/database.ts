@@ -9,5 +9,5 @@ export const MysqlDataSource = new DataSource({
   migrations: ['src/migration/*.ts', 'migration/*.js'],
   logging: true,
   synchronize: true,
-  migrationsRun: true
+  migrationsRun: false
 });
