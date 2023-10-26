@@ -1,9 +1,7 @@
 import { MysqlDataSource } from '../config/database';
 import { User } from '../entity/user';
 import { Request, Response } from 'express';
-
 import bcrypt from 'bcrypt';
-
 import jwt from 'jsonwebtoken';
 
 export class AuthController {
@@ -80,6 +78,7 @@ export class AuthController {
    *
    *
    */
+
   async login(req: Request, res: Response) {
     const userRepository = MysqlDataSource.getRepository(User);
 
@@ -139,5 +138,65 @@ export class AuthController {
         data: 'Um erro interno ocorreu.'
       });
     }
+  }
+
+  /**
+   * @swagger
+   * /v1/check:
+   *   get:
+   *     summary: Verificar cadastro
+   *     tags: [Auth]
+   *     parameters:
+   *       - in: query
+   *         name: token
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: Token de confirmação de cadastro
+   *     responses:
+   *       '200':
+   *         description: Cadastro confirmado com sucesso
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   *                   description: Mensagem de confirmação
+   *       '401':
+   *         description: Token inválido ou expirado
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 erro:
+   *                   type: string
+   *                   description: Mensagem de erro
+   */
+  async confirmRegistration(req: Request, res: Response): Promise<void> {
+    const token = req.query.token as string;
+
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string,
+      async (err, decoded) => {
+        if (err) {
+          return res.status(401).json({ erro: 'Token inválido ou expirado.' });
+        } else {
+          const userEmail = decoded.email;
+          const userRepository = MysqlDataSource.getRepository(User);
+          const user = await userRepository.findOneBy({
+            email: userEmail
+          });
+          user.isActivated = true;
+          userRepository.save(user);
+          return res
+            .status(200)
+            .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
+        }
+      }
+    );
   }
 }

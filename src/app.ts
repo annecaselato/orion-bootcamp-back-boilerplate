@@ -6,19 +6,22 @@ import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import { User } from './entity/user';
+import { EmailSender } from './library/mail';
 
 MysqlDataSource.initialize()
-  .then(() => {
+  .then(async () => {
     console.log('Database initialized!');
 
     //mock database
     const user = new User();
-    user.email = 'teste@teste.com';
+    user.email = 'nickolasluan15@gmail.com';
     user.password =
       '$2a$12$EbBRVDoDCgptIRmd21X5re06nZbvUd9VurqndqxuIQEiL4OjhCYwG';
-    user.isActivated = true;
+    user.isActivated = false;
 
-    MysqlDataSource.manager.save(user);
+    await MysqlDataSource.manager.save(user);
+    const emailSender = new EmailSender();
+    await emailSender.sendConfirmationEmail(user);
   })
   .catch((err) => {
     console.error('Database Error: ', err);
