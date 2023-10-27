@@ -23,6 +23,7 @@ class NodemailerProvider {
   }
 
   async sendEmail(
+    token: string,
     userEmail: string,
     userName: string = 'Jô Soares'
   ): Promise<void> {
@@ -30,7 +31,7 @@ class NodemailerProvider {
       from: `Marte 101 <${process.env.MARTE_EMAIL}>`,
       to: userEmail,
       subject: 'Redefinição de Senha',
-      html: new messageEmail().htmlText(userName)
+      html: new messageEmail().htmlText(token, userName)
     });
   }
 }

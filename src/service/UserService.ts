@@ -1,7 +1,7 @@
-import { outlookTransporter } from '../utils/nodeMailer';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
-
+import { outlookTransporter } from '../utils/nodeMailer';
+import { jwtRecoverPassword } from '../utils/jwtToken';
 export class UserService {
   constructor(private dataSource: typeof MysqlDataSource) {}
   async recoverPassword(email: string): Promise<void> {
@@ -11,7 +11,10 @@ export class UserService {
       .where('user.email = :email', { email })
       .getOne();
     if (user) {
-      await outlookTransporter.sendEmail(user.email);
+      const token = await jwtRecoverPassword.createToken(
+        'jgabriellyra@hotmail.com'
+      );
+      await outlookTransporter.sendEmail(token, 'jgabriellyra@hotmail.com');
     }
   }
 }
