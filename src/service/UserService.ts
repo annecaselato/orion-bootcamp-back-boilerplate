@@ -11,7 +11,7 @@ export class UserService {
       .where('user.email = :email', { email })
       .getOne();
     if (user) {
-      const token = await jwtRecoverPassword.createToken(user.email);
+      const token = await jwtRecoverPassword.createToken(user.id);
       await outlookTransporter.sendEmail(token, user.email);
     }
   }

@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { UserService } from '../service/UserService';
-import { OK, INTERNAL_SERVER_ERROR } from '../utils/httpCodes';
+import { OK, BAD_REQUEST } from '../utils/httpCodes';
 
 export class UserController {
   constructor(private service: UserService) {}
   /**
    * @swagger
-   * /new-password:
+   * /recover-password:
    *   post:
    *     summary: Rota para redefinir senha do usuário.
    *     tags: [Password]
@@ -43,7 +43,7 @@ export class UserController {
       await this.service.recoverPassword(email);
       return res.status(OK).json();
     } catch (error) {
-      return res.status(INTERNAL_SERVER_ERROR).json({ error });
+      return res.status(BAD_REQUEST).json({ error });
     }
   }
 }
