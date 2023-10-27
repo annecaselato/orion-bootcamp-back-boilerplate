@@ -9,7 +9,7 @@ const router = Router();
 const userController = new UserController(new UserService(MysqlDataSource));
 
 router.get('/', new HomeController().hello);
-router.post('/', emailValidation, (req, res) =>
+router.post('/new-password', emailValidation, (req, res) =>
   userController.recoverPassword(req, res)
 );
 

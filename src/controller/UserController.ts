@@ -6,27 +6,36 @@ export class UserController {
   constructor(private service: UserService) {}
   /**
    * @swagger
-   * /:
+   * /new-password:
    *   post:
-   *     summary: Hello
+   *     summary: Rota para redefinir senha do usuário.
    *     tags: [Password]
    *     consumes:
    *       - application/json
    *     produces:
    *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 email:
+   *                   type: string
    *     responses:
    *       '200':
-   *           description: 'requisição executada com sucesso'
+   *           description: 'Requisição executada com sucesso'
    *           content:
    *             application/json:
    *               schema:
    *                 type: object
    *                 properties:
-   *                   status:
-   *                     type: boolean
-   *                   data:
-   *                     type: object
-   *                     description: 'objeto json de retorno'
+   *                   email:
+   *                     type: string
+   *                     example: gustavogonçalves@gmail.com
+   *       '500':
+   *           description: 'Problema interno do servidor'
    */
   async recoverPassword(req: Request, res: Response) {
     try {
