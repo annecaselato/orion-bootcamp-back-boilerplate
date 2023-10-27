@@ -17,12 +17,8 @@ export class UserService {
       return null;
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
-    console.log(hashPassword);
-
     const validPassword = await bcrypt.compare(password, user.password);
-    console.log(validPassword);
-    if (!(user.password === password)) {
+    if (!validPassword) {
       return null;
     }
 

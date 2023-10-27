@@ -56,7 +56,6 @@ export class UsersController {
         return res.status(401).json({ mensagem: 'Usuario ou senha incorreto' });
       }
     } catch (error) {
-      console.log(error);
       return res.status(400).json(error);
     }
   }
