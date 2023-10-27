@@ -9,10 +9,7 @@ export class JwtUtils {
    * @param expiresIn Time taken until token expires.
    * @returns {Promise<string>} JWT token (string), returned from asynchronously from jwt api.
    */
-  public static generateJWTToken(
-    data: object,
-    expiresIn: string
-  ): Promise<string> {
+  public static generateJWTToken(data: object, expiresIn: string): Promise<string> {
     return jwt.sign(data, secretKey, { expiresIn });
   }
 }

@@ -11,10 +11,7 @@ export class UserRepository {
    * @returns {Promise<string>} Updates the user's token only, without interferring
    * with the other attributes of the user.
    */
-  public static async addPasswordRecoveryToken(
-    user: User,
-    userId: number
-  ): Promise<void> {
+  public static async addPasswordRecoveryToken(user: User, userId: number): Promise<void> {
     const token = await JwtUtils.generateJWTToken({ userId: userId }, '24h');
 
     user.passwordRecoveryToken = token;
@@ -26,9 +23,7 @@ export class UserRepository {
    * @param email used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not
    */
-  public static async findUserByEmail(
-    email: string
-  ): Promise<User | undefined> {
+  public static async findUserByEmail(email: string): Promise<User | undefined> {
     return MysqlDataSource.getRepository(User).findOneBy({ email });
   }
 
@@ -37,10 +32,7 @@ export class UserRepository {
    * @param email used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not, in case email is not found.
    */
-  public static async saveAccessTokenInUser(
-    userId: number,
-    token: string
-  ): Promise<UpdateResult> {
+  public static async saveAccessTokenInUser(userId: number, token: string): Promise<UpdateResult> {
     return MysqlDataSource.getRepository(User).update(userId, {
       accessToken: token
     });

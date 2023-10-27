@@ -18,10 +18,7 @@ export class BcryptUtils {
    * @param hashedPassword representing ecrypted password.
    * @returns {Promise<boolean>} True or false regarding correspondence between the 2 passwords.
    */
-  public static async comparePassword(
-    plainTextPassword: string,
-    hashedPassword: string
-  ): Promise<boolean> {
+  public static async comparePassword(plainTextPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(plainTextPassword, hashedPassword);
   }
 }

@@ -37,7 +37,7 @@ export class LoginController {
    *   post:
    *     summary: Route used for users to attempt authentication in the app. The function
    *       is set as static to allow calling it directly from the class, without the need to
-   *       instantiate the class. This was used in the file /api/v1/loginRoute.ts
+   *       instantiate the class, not needing to instantiate.
    *     requestBody:
    *       required: true
    *       content:
@@ -91,18 +91,12 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    const passwordsMatch = await BcryptUtils.comparePassword(
-      password,
-      user.password
-    );
+    const passwordsMatch = await BcryptUtils.comparePassword(password, user.password);
     if (!passwordsMatch) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    const accessToken: string = await JwtUtils.generateJWTToken(
-      { id: user.id },
-      '5h'
-    );
+    const accessToken: string = await JwtUtils.generateJWTToken({ id: user.id }, '5h');
 
     await UserRepository.saveAccessTokenInUser(user.id, accessToken);
 
