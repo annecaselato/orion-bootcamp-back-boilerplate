@@ -1,13 +1,4 @@
-// eslint-disable-next-line prettier/prettier
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  BeforeInsert,
-  BeforeUpdate
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 
 import { BcryptUtils } from '../library/bcryptUtils';
 
