@@ -5,12 +5,16 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "docker-prettier": "npx prettier --write .",
     "start:dev": "npx nodemon -L",
     "build": "npm run lint && npx tsc",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migration:generate": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:generate ./src/migrations/default",
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:run"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.1",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.19",
     "@types/node": "^20.8.6",
@@ -26,9 +30,10 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
-    "mongodb": "^5.9.0",
+    "express-validator": "^7.0.1",
     "mysql2": "^3.6.2",
     "reflect-metadata": "^0.1.13",
     "swagger-jsdoc": "^6.2.8",

@@ -1,8 +1,15 @@
 import { Router } from 'express';
-import { HomeController } from './controller/HomeController';
+import { UserValidator } from './validator/UserValidator';
+import { UserController } from './controller/UserController';
 
 const router = Router();
 
-router.get('/', new HomeController().hello);
+router.get('/', new UserController().hello);
+
+router.post(
+  '/signup',
+  new UserValidator().validateUserData,
+  new UserController().createUser
+);
 
 export default router;
