@@ -14,11 +14,13 @@ export class UserRepository {
   public static async addPasswordRecoveryToken(
     user: User,
     userId: number
-  ): Promise<void> {
+  ): Promise<string> {
     const token = await JwtUtils.generateJWTToken({ userId: userId }, '24h');
 
     user.passwordRecoveryToken = token;
     await MysqlDataSource.getRepository(User).update(user.id, user);
+
+    return token;
   }
 
   /**
