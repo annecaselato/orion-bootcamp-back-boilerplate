@@ -37,7 +37,7 @@ export class LoginController {
    *   post:
    *     summary: Route used for users to attempt authentication in the app. The function
    *       is set as static to allow calling it directly from the class, without the need to
-   *       instantiate the class. This was used in the file /api/v1/loginRoute.ts
+   *       instantiate the class, not needing to instantiate.
    *     requestBody:
    *       required: true
    *       content:
