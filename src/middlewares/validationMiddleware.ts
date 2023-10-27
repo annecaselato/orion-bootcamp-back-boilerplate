@@ -4,10 +4,7 @@
  * @param password inserted by user when trying to authenticate.
  * @returns {boolean} If password or email format is invalid it returns false
  */
-export function validateEmailAndPassword(
-  email: string,
-  password: string
-): boolean {
+export function validateEmailAndPassword(email: string, password: string): boolean {
   return !validateEmail(email) || !validatePassword(password);
 }
 

@@ -1,3 +1,4 @@
+// eslint-disable-next-line prettier/prettier
 import {
   Column,
   CreateDateColumn,
@@ -35,7 +36,7 @@ export class User {
 
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword() {
+  async hashPassword(): Promise<void> {
     if (this.password) {
       this.password = await BcryptUtils.hashPassword(this.password);
     }

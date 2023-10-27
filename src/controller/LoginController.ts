@@ -91,18 +91,12 @@ export class LoginController {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
-    const passwordsMatch = await BcryptUtils.comparePassword(
-      password,
-      user.password
-    );
+    const passwordsMatch = await BcryptUtils.comparePassword(password, user.password);
     if (!passwordsMatch) {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    const accessToken: string = await JwtUtils.generateJWTToken(
-      { id: user.id },
-      '5h'
-    );
+    const accessToken: string = await JwtUtils.generateJWTToken({ id: user.id }, '5h');
 
     await UserRepository.saveAccessTokenInUser(user.id, accessToken);
 
