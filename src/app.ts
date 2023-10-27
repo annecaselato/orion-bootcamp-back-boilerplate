@@ -11,17 +11,6 @@ import { EmailSender } from './library/mail';
 MysqlDataSource.initialize()
   .then(async () => {
     console.log('Database initialized!');
-
-    //mock database
-    const user = new User();
-    user.email = 'nickolasluan15@gmail.com';
-    user.password =
-      '$2a$12$EbBRVDoDCgptIRmd21X5re06nZbvUd9VurqndqxuIQEiL4OjhCYwG';
-    user.isActivated = false;
-
-    await MysqlDataSource.manager.save(user);
-    const emailSender = new EmailSender();
-    await emailSender.sendConfirmationEmail(user);
   })
   .catch((err) => {
     console.error('Database Error: ', err);
