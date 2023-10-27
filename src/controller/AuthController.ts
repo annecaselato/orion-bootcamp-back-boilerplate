@@ -1,6 +1,7 @@
 import { MysqlDataSource } from '../config/database';
 import { User } from '../entity/user';
 import { Request, Response } from 'express';
+import JwtHandler from '../jwtUtils/JwtHandler';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -118,9 +119,8 @@ export class AuthController {
       }
 
       //atribuir token jwt
-      const token: string = jwt.sign(
-        { email: user.email },
-        process.env.JWT_SECRET_KEY,
+      const token = await JwtHandler.signToken(
+        { name: user.name, email: user.email },
         {
           algorithm: 'HS256',
           expiresIn: 7200 //2 horas
@@ -178,25 +178,21 @@ export class AuthController {
   async confirmRegistration(req: Request, res: Response): Promise<void> {
     const token = req.query.token as string;
 
-    jwt.verify(
-      token,
-      process.env.JWT_SECRET_KEY as string,
-      async (err, decoded) => {
-        if (err) {
-          return res.status(401).json({ erro: 'Token inválido ou expirado.' });
-        } else {
-          const userEmail = decoded.email;
-          const userRepository = MysqlDataSource.getRepository(User);
-          const user = await userRepository.findOneBy({
-            email: userEmail
-          });
-          user.isActivated = true;
-          userRepository.save(user);
-          return res
-            .status(200)
-            .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
-        }
+    JwtHandler.verifyToken(token, async (err, decodedUser) => {
+      if (err) {
+        return res.status(401).json({ erro: 'Token inválido ou expirado.' });
+      } else {
+        const userEmail = decodedUser.email;
+        const userRepository = MysqlDataSource.getRepository(User);
+        const user = await userRepository.findOneBy({
+          email: userEmail
+        });
+        user.isActivated = true;
+        userRepository.save(user);
+        return res
+          .status(200)
+          .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
       }
-    );
-  }
+  })
+}
 }
