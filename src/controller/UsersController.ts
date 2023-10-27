@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserAutenticator } from '../services/UserService';
+import { UserService } from '../services/UserService';
 
 export class UsersController {
   /**
@@ -19,13 +19,13 @@ export class UsersController {
    *             schema:
    *               type: object
    *               properties:
-   *                 useremail:
+   *                 email:
    *                   type: string
-   *                 userpassword:
+   *                 password:
    *                   type: string
    *     responses:
    *       '200':
-   *           description: 'Credenciais confirmadas, login realizado com sucesso'
+   *           description: 'Requisição executada com sucesso'
    *           content:
    *             application/json:
    *               schema:
@@ -34,28 +34,31 @@ export class UsersController {
    *                   email:
    *                     type: string
    *                     example: gustavogonçalves@gmail.com
-   *                   senha:
+   *                   password:
    *                     type: string
    *                     example: Gu@12345
    *       '401':
-   *           description: 'Credenciais incorretas, login não realizado'
+   *           description: 'Requisição não autorizada'
+   *       '500':
+   *           description: 'Problema interno do servidor'
    */
 
-  userAutenticator = new UserAutenticator();
-
-  login = async (req: Request, res: Response) => {
-    const { email, userpassword } = req.body;
-
+  async login(req: Request, res: Response) {
+    const { email, password } = req.body;
     try {
-      const user = await this.userAutenticator.userLogin(email, userpassword);
-
-      if (user) {
-        res.json({ message: 'Login realizado com sucesso' });
+      const result = await new UserService().authenticate(email, password);
+      if (result) {
+        return res.json({
+          message: 'Login realizado com sucesso',
+          email: email,
+          result: result
+        });
       } else {
-        res.status(401).json({ message: 'Usuário ou senha incorreto' });
+        return res.status(401).json({ mensagem: 'Usuario ou senha incorreto' });
       }
     } catch (error) {
-      res.status(500).json({ mensagem: 'Erro durante a autenticação' });
+      console.log(error);
+      return res.status(400).json(error);
     }
-  };
+  }
 }

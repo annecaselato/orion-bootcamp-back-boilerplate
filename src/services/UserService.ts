@@ -1,15 +1,39 @@
-import { User } from '../database/entity/User';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
+import { User } from '../database/entity/User';
 
-export class UserAutenticator {
-  private userRepository = MysqlDataSource.getRepository(User);
+export class UserService {
+  private userService: Repository<User>;
 
-  async userLogin(email: string, userpassword: string): Promise<User | null> {
-    const user = await this.userRepository.findOne({ where: { email } });
+  constructor() {
+    this.userService = MysqlDataSource.getRepository(User);
+  }
 
-    if (user && user.password === userpassword) {
-      return user;
+  async authenticate(email: string, password: string) {
+    const user = await this.userService.findOne({ where: { email: email } });
+    if (!user) {
+      return null;
     }
-    return null;
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    console.log(hashPassword);
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    console.log(validPassword);
+    if (!(user.password === password)) {
+      return null;
+    }
+
+    const secretKey: string | undefined = 'secretkey';
+    if (!secretKey) {
+      throw new Error('There is no token key');
+    }
+    const token = jwt.sign({ id: user.id }, secretKey, {
+      expiresIn: '1h'
+    });
+
+    return { token };
   }
 }
