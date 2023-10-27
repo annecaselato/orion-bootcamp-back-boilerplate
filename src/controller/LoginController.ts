@@ -110,7 +110,7 @@ export class LoginController {
 
     return res.json({
       user: userLogin,
-      token: user.accessToken
+      token: accessToken
     });
   }
 }
