@@ -19,8 +19,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-unused-vars': 'warn',
-    'max-len': ['error', { 'code': 140 }],
-    'linebreak-style': ['error', (process.platform === 'win32' ? 'windows' : 'unix')]
+    '@typescript-eslint/no-unused-vars': 'warn'
   }
 };
