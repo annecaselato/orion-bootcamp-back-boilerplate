@@ -19,7 +19,7 @@ export default function authMiddleware(
 
   const token = authorization.replace('Bearer', '').trim();
 
-  const secretKey: string | undefined = 'secretkey';
+  const secretKey: string | undefined = process.env.JWT_PASS;
   if (!secretKey) {
     throw new Error('There is no token key');
   }
@@ -30,6 +30,6 @@ export default function authMiddleware(
     req.userId = id;
     return next();
   } catch {
-    return res.sendStatus(401).json({ message: 'Token expirado' });
+    return res.status(401).json({ message: 'Token expirado' });
   }
 }

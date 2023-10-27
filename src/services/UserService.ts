@@ -26,7 +26,7 @@ export class UserService {
       return null;
     }
 
-    const secretKey: string | undefined = 'secretkey';
+    const secretKey: string | undefined = process.env.JWT_PASS;
     if (!secretKey) {
       throw new Error('There is no token key');
     }

@@ -27,6 +27,8 @@ export class HomeController {
    * /loading:
    *   get:
    *     summary: loading
+   *     security:
+   *       - BearerAuth: []
    *     tags: [Home]
    *     consumes:
    *       - application/json

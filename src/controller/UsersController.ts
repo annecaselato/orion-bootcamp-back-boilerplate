@@ -49,7 +49,6 @@ export class UsersController {
       const result = await new UserService().authenticate(email, password);
       if (result) {
         return res.json({
-          message: 'Login realizado com sucesso',
           email: email,
           result: result
         });
