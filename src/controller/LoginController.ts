@@ -106,11 +106,11 @@ export class LoginController {
 
     await UserRepository.saveAccessTokenInUser(user.id, accessToken);
 
-    const { password: _, ...userLogin } = user;
+    const newUser = { ...user, password: undefined, accessToken };
 
     return res.json({
-      user: userLogin,
-      token: user.accessToken
+      user: newUser,
+      token: accessToken
     });
   }
 }
