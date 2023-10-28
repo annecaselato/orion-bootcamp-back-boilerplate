@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
-import { Repository } from '../repository/userRepository';
+import { Request, Response, NextFunction } from 'express';
+import { Repository } from '../repository/UserRepository';
+import { User } from '../entity/User';
 
 export class UserController {
   /**
@@ -36,70 +37,100 @@ export class UserController {
    *   post:
    *     summary: Adiciona novo usuário ao banco de dados
    *     tags: [signUp]
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
+   *     requestBody:
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               name:
+   *                 type: string
+   *                 description: Nome do usuário
+   *               gender:
+   *                 type: string
+   *                 description: Gênero do usuário
+   *               birthDate:
+   *                 type: string
+   *                 description: Data de nascimento do usuário
+   *                 format: date
+   *               email:
+   *                 type: string
+   *                 description: Endereço de e-mail do usuário
+   *               password:
+   *                 type: string
+   *                 description: Senha do usuário
    *     responses:
    *       '201':
-   *         description: 'Requisição executada com sucesso'
+   *         description: Requisição executada com sucesso
    *         content:
    *           application/json:
    *             schema:
    *               type: object
    *               properties:
-   *                 date:
-   *                   type: Date
-   *                 status:
-   *                   type: boolean
    *                 data:
    *                   type: object
-   *                   description: 'Objeto JSON de retorno'
    *                   properties:
-   *                     id: 6
-   *                     name: "tester"
-   *                     gender: "female"
-   *                     birth_date: "2001-01-10T00:00:00.000Z"
-   *                     email: "teste_3@email.com"
-   *                     created_at: "2023-10-26T23:23:07.000Z"
-   *                     last_update: "2023-10-26T23:23:07.000Z"
-   *                     isActivated: false
+   *                     id:
+   *                       type: integer
+   *                       description: ID do usuário
+   *                     name:
+   *                       type: string
+   *                       description: Nome do usuário
+   *                     gender:
+   *                       type: string
+   *                       description: Gênero do usuário
+   *                     birthDate:
+   *                       type: string
+   *                       description: Data de nascimento do usuário
+   *                     email:
+   *                       type: string
+   *                       description: Endereço de e-mail do usuário
+   *                     createdAt:
+   *                       type: string
+   *                       description: Data de criação do usuário
+   *                     lastUpdate:
+   *                       type: string
+   *                       description: Data de atualização do usuário
+   *                     isActivated:
+   *                       type: boolean
+   *                       description: Status de ativação do usuário
    *       '400':
-   *         description: 'Falha em um ou mais dados fornecidos na requisição'
+   *         description: Um ou mais dados fornecidos na requisição não atendem aos pré-requisitos
    *         content:
    *           application/json:
    *             schema:
    *               type: object
    *               properties:
-   *                 date:
-   *                   type: Date
-   *                 status:
-   *                   type: boolean
    *                 data:
-   *                   type: object
-   *                   description: 'Objeto JSON de retorno'
-   *                   properties:
+   *                   type: array
+   *                   items:
+   *                     type: object
+   *                     properties:
+   *                       message:
+   *                         type: string
+   *                         description: Mensagem de erro
    *       '500':
-   *         description: 'Erro interno do servidor. Não foi possível processar os dados no banco'
+   *         description: Erro interno do servidor. Não foi possível processar os dados no banco
    *         content:
    *           application/json:
    *             schema:
    *               type: object
    *               properties:
-   *                 date:
-   *                   type: Date
-   *                 status:
-   *                   type: boolean
    *                 data:
    *                   type: object
-   *                   description: 'Objeto JSON de retorno'
    *                   properties:
+   *                     message:
+   *                       type: string
+   *                       description: Mensagem de erro
    */
-  createUser = async (req: Request, res: Response) => {
+
+  create = async (req: Request, res: Response) => {
     try {
-      const repository = new Repository();
-      const user = repository.createAndSave(req);
-      const savedUser = await repository.findOneByEmail((await user).email);
+      const repository: Repository = new Repository();
+      const user: Promise<User> = repository.createAndSave(req);
+      const savedUser: User = await repository.findOneByEmail(
+        (await user).email
+      );
       res.status(201).json({ date: new Date(), status: true, data: savedUser });
     } catch (error) {
       res

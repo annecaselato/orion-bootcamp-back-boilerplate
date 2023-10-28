@@ -32,7 +32,7 @@ services:
       MYSQL_PASSWORD: j5m966qp7jiypfda
       MYSQL_ROOT_PASSWORD: m45ug42qkr5pdzbb
       MYSQL_DATABASE: orion
-      KEY_HASH_PASSWORD: X5:.z^9.E;y:ln3*oTiW,^rl][dbA{Ye
+      KEY_HASH_PASSWORD: j5m96iZ:qi7jiypf5da^k
     ports:
       - 3306:3306
     volumes:

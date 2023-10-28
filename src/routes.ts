@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
-import { UserValidator } from './validator/UserValidator';
+import { Router } from 'express';
+import { validationField, Validator } from './validator/UserValidator';
 import { UserController } from './controller/UserController';
-import { AuthController } from './controller/AuthController';
 
 const router = Router();
 
-router.get('/', new HomeController().hello);
+router.post('/signup', validationField, Validator, new UserController().create);
+router.get('/', new UserController().hello);
 
 export default router;

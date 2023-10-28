@@ -5,7 +5,6 @@ import {
   BeforeInsert,
   BeforeUpdate
 } from 'typeorm';
-import { Gender } from '../lib/genderTypes';
 
 @Entity('users')
 export class User {
@@ -15,32 +14,32 @@ export class User {
   @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @Column({ type: 'enum', enum: Gender }) // Atribuir enum direto ??
-  gender: Gender;
+  @Column({ type: 'varchar', length: 30 })
+  gender: string;
 
   @Column()
-  birth_date: Date;
+  birthDate: Date;
 
   @Column({ type: 'varchar', length: 250, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 100, select: false }) // VERIFICAR SE RETORNA QUANDO PRECISAR VALIDAR O SELECT
+  @Column({ type: 'varchar', length: 100, select: false })
   password: string;
 
   @Column({ update: false })
-  created_at: Date;
+  createdAt: Date;
 
   @BeforeInsert()
   createdAtDate() {
-    this.created_at = new Date();
+    this.createdAt = new Date();
   }
 
   @Column()
-  last_update: Date;
+  lastUpdate: Date;
 
   @BeforeUpdate()
   updateDates() {
-    this.last_update = new Date();
+    this.lastUpdate = new Date();
   }
 
   @Column({ default: false })
