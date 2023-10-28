@@ -46,6 +46,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: true
+   *                 data: "<TOKEN_JWT>"
    *       '401':
    *           description: 'Autenticação falhou.'
    *           content:
@@ -60,6 +64,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Senha inválida."
    *       '500':
    *           description: 'Erro interno.'
    *           content:
@@ -74,8 +82,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
-   *
-   *
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Um erro interno ocorreu."
    *
    */
 
