@@ -5,35 +5,7 @@ import { User } from '../entity/User';
 export class UserController {
   /**
    * @swagger
-   * /:
-   *   get:
-   *     summary: Hello
-   *     tags: [Home]
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     responses:
-   *       '200':
-   *           description: 'requisição executada com sucesso'
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   status:
-   *                     type: boolean
-   *                   data:
-   *                     type: object
-   *                     description: 'objeto json de retorno'
-   */
-  hello(_req: Request, res: Response) {
-    return res.status(200).send('Hello');
-  }
-
-  /**
-   * @swagger
-   * /signup:
+   * /v1/signup:
    *   post:
    *     summary: Adiciona novo usuário ao banco de dados
    *     tags: [signUp]
@@ -59,6 +31,12 @@ export class UserController {
    *               password:
    *                 type: string
    *                 description: Senha do usuário
+   *             example:
+   *               name: User test
+   *               gender: Prefiro não dizer
+   *               birthDate: 1990-12-06
+   *               email: email@email.com
+   *               password: aAd@12345
    *     responses:
    *       '201':
    *         description: Requisição executada com sucesso
@@ -67,6 +45,12 @@ export class UserController {
    *             schema:
    *               type: object
    *               properties:
+   *                 date:
+   *                   type: date
+   *                   description: Date de envio da resposta à requisição
+   *                 status:
+   *                   type: boolean
+   *                   description: Status da criação do usuário
    *                 data:
    *                   type: object
    *                   properties:
@@ -93,7 +77,18 @@ export class UserController {
    *                       description: Data de atualização do usuário
    *                     isActivated:
    *                       type: boolean
-   *                       description: Status de ativação do usuário
+   *                       description: Status de ativação do usuário. Valor default falso
+   *               example:
+   *                 date: 2023-10-28T19:32:46.116Z
+   *                 status: true
+   *                 id: 10
+   *                 name: User test
+   *                 gender: Prefiro não dizer
+   *                 birthDate: 2020-02-13
+   *                 email: email@email.com
+   *                 createdAt: 2023-10-28T19:32:46.000Z
+   *                 lastUpdate: 2023-10-28T19:32:46.000Z
+   *                 isActivated: false
    *       '400':
    *         description: Um ou mais dados fornecidos na requisição não atendem aos pré-requisitos
    *         content:
@@ -101,14 +96,39 @@ export class UserController {
    *             schema:
    *               type: object
    *               properties:
+   *                 date:
+   *                   type: date
+   *                   description: Data de envio da resposta à requisição
+   *                 status:
+   *                   type: boolean
+   *                   description: Status da criação do usuário
    *                 data:
-   *                   type: array
-   *                   items:
-   *                     type: object
-   *                     properties:
-   *                       message:
-   *                         type: string
-   *                         description: Mensagem de erro
+   *                   type: object
+   *                   properties:
+   *                     type:
+   *                       type: string
+   *                       description: tipo de do erro
+   *                     value:
+   *                       type: string
+   *                       description: informação passada que não atende aos pré-requisitos
+   *                     msg:
+   *                       type: string
+   *                       description: Mensagem indicativa para tratativa do erro
+   *                     path:
+   *                       type: string
+   *                       description: Indicação específica do local de ocorrência do erro, dado seu tipo.
+   *                     location:
+   *                       type: string
+   *                       description: Indicação do local de ocorrência do erro na requisição
+   *               example:
+   *                 date: 2023-10-28T16:48:16.792Z
+   *                 status: false
+   *                 data:
+   *                 type: field
+   *                 value: Mulhe
+   *                 msg: Selecione um gênero válido
+   *                 path: gender
+   *                 location: body
    *       '500':
    *         description: Erro interno do servidor. Não foi possível processar os dados no banco
    *         content:
@@ -116,14 +136,20 @@ export class UserController {
    *             schema:
    *               type: object
    *               properties:
+   *                 date:
+   *                   type: date
+   *                   description: Data de envio da resposta à requisição
+   *                 status:
+   *                   type: boolean
+   *                   description: Status da criação do usuário
    *                 data:
-   *                   type: object
-   *                   properties:
-   *                     message:
-   *                       type: string
-   *                       description: Mensagem de erro
+   *                   type: string
+   *                   description: Mensagem de erro
+   *               example:
+   *                 date: 2023-10-28T19:59:19.751Z
+   *                 status: false
+   *                 data: Duplicate entry 'email@email.com' for key 'users.IDX_97672ac88f789774dd47f7c8be
    */
-
   create = async (req: Request, res: Response) => {
     try {
       const repository: Repository = new Repository();

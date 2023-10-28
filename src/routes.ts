@@ -16,9 +16,13 @@ router.get('/login', function (req, res) {
 
 router.post('/login', new AuthController().login);
 
-router.post('/signup', validationField, Validator, new UserController().create);
+router.post(
+  '/v1/signUp',
+  validationField,
+  Validator,
+  new UserController().create
+);
 
 router.get('/v1/check', new AuthController().confirmRegistration);
-
 
 export default router;
