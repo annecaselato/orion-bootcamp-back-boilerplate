@@ -15,7 +15,11 @@ export class UserRepository {
     const token = await JwtUtils.generateJWTToken({ userId: userId }, '24h');
 
     user.passwordRecoveryToken = token;
-    await MysqlDataSource.getRepository(User).update(user.id, user);
+    await MysqlDataSource.getRepository(User).update(user.id, {
+      passwordRecoveryToken: token
+    });
+
+    return token;
   }
 
   /**

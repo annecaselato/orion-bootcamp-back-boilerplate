@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { HomeController } from './controller/HomeController';
 import loginRoute from './api/v1/loginRoute';
+import recoveryRoute from './api/v1/recoveryRoute';
 
 const router = Router();
 
@@ -12,6 +13,7 @@ const router = Router();
  * @group Authentication
  */
 router.use('/v1', loginRoute);
+router.use('/v1', recoveryRoute);
 
 router.get('/', new HomeController().hello);
 
