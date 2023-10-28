@@ -9,7 +9,7 @@ class jwt {
     this.secretKey = secretKey;
   }
 
-  async createToken(userEmail) {
+  async createToken(userEmail: string) {
     return sign({ userEmail }, (this.secretKey as Secret) || null, {
       expiresIn: '1d',
       algorithm: 'HS256'

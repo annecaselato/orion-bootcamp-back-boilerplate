@@ -25,7 +25,7 @@ class NodemailerProvider {
   async sendEmail(
     token: string,
     userEmail: string,
-    userName: string = 'Jô Soares'
+    userName: string
   ): Promise<void> {
     await this.transporter.sendMail({
       from: `Marte 101 <${process.env.MARTE_EMAIL}>`,

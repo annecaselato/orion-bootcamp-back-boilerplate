@@ -12,7 +12,7 @@ export class UserService {
       .getOne();
     if (user) {
       const token = await jwtRecoverPassword.createToken(user.id);
-      await outlookTransporter.sendEmail(token, user.email);
+      await outlookTransporter.sendEmail(token, user.email, user.name);
     }
   }
 }
