@@ -1,5 +1,7 @@
 # Folders
 /dist
 /node_modules
-.env
+
+#Files
 package-lock.json
+.env
