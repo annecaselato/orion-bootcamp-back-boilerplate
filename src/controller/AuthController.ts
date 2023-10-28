@@ -46,6 +46,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: true
+   *                 data: "<TOKEN_JWT>"
    *       '401':
    *           description: 'Autenticação falhou.'
    *           content:
@@ -60,6 +64,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Senha inválida."
    *       '500':
    *           description: 'Erro interno.'
    *           content:
@@ -74,8 +82,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
-   *
-   *
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Um erro interno ocorreu."
    *
    */
 
@@ -84,12 +94,6 @@ export class AuthController {
 
     try {
       //encontra usuario no banco de dados pelo email
-      // const user: User = await userRepository.findOne({
-      //   where: {
-      //     email: req.body.email
-      //   }
-      // });
-
       const user = await userRepository
         .createQueryBuilder('user')
         .addSelect(['user.password'])
@@ -105,13 +109,13 @@ export class AuthController {
       }
 
       //conferir flag de ativação
-      // if (!user.isActivated) {
-      //   return res.status(401).send({
-      //     date: new Date(),
-      //     status: false,
-      //     data: 'Necessária a confirmação do cadastro pelo e-mail.'
-      //   });
-      // }
+      if (!user.isActivated) {
+        return res.status(401).send({
+          date: new Date(),
+          status: false,
+          data: 'Necessária a confirmação do cadastro pelo e-mail.'
+        });
+      }
 
       console.log(user.password);
       //conferir senha
