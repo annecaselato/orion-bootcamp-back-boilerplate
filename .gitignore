@@ -3,5 +3,5 @@
 /node_modules
 
 #Files
-package-lock.json
-.env
+/package-lock.json
+/.env

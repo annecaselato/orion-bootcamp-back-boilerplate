@@ -3,7 +3,6 @@ import { User } from '../entity/user';
 import { Request, Response } from 'express';
 import JwtHandler from '../jwtUtils/JwtHandler';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 export class AuthController {
   /**
@@ -47,6 +46,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: true
+   *                 data: "<TOKEN_JWT>"
    *       '401':
    *           description: 'Autenticação falhou.'
    *           content:
@@ -61,6 +64,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Senha inválida."
    *       '500':
    *           description: 'Erro interno.'
    *           content:
@@ -75,8 +82,10 @@ export class AuthController {
    *                   data:
    *                     type: string
    *                     description: 'objeto json de retorno'
-   *
-   *
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Um erro interno ocorreu."
    *
    */
 
@@ -85,11 +94,13 @@ export class AuthController {
 
     try {
       //encontra usuario no banco de dados pelo email
-      const user: User = await userRepository.findOne({
-        where: {
+      const user = await userRepository
+        .createQueryBuilder('user')
+        .addSelect(['user.password'])
+        .where({
           email: req.body.email
-        }
-      });
+        })
+        .getOne();
 
       if (!user) {
         return res
