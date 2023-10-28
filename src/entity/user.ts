@@ -6,41 +6,41 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 250, unique: true })
-  email: string;
-
-  @Column({ type: 'varchar', length: 72 })
-  password: string;
-
   @Column({ type: 'varchar', length: 150 })
   name: string;
 
-  @Column({ type: 'varchar', length: 30 }) // deveria ser number ?
+  @Column({ type: 'varchar', length: 30 })
   gender: string;
 
   @Column()
-  birth_date: Date;
+  birthDate: Date;
+
+  @Column({ type: 'varchar', length: 250, unique: true })
+  email: string;
+
+  @Column({ type: 'varchar', length: 100, select: false })
+  password: string;
 
   @Column({ update: false })
-  created_at: Date;
+  createdAt: Date;
 
   @BeforeInsert()
   createdAtDate() {
-    this.created_at = new Date();
-    this.last_update = new Date();
+    this.createdAt = new Date();
+    this.lastUpdate = new Date();
   }
 
   @Column()
-  last_update: Date;
+  lastUpdate: Date;
 
   @BeforeUpdate()
   updateDates() {
-    this.last_update = new Date();
+    this.lastUpdate = new Date();
   }
 
   @Column({ default: false })

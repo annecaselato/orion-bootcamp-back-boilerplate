@@ -3,7 +3,6 @@ import { User } from '../entity/user';
 import { Request, Response } from 'express';
 import JwtHandler from '../jwtUtils/JwtHandler';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 export class AuthController {
   /**
@@ -85,11 +84,13 @@ export class AuthController {
 
     try {
       //encontra usuario no banco de dados pelo email
-      const user: User = await userRepository.findOne({
-        where: {
+      const user = await userRepository
+        .createQueryBuilder('user')
+        .addSelect(['user.password'])
+        .where({
           email: req.body.email
-        }
-      });
+        })
+        .getOne();
 
       if (!user) {
         return res
@@ -193,6 +194,6 @@ export class AuthController {
           .status(200)
           .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
       }
-  })
-}
+    });
+  }
 }
