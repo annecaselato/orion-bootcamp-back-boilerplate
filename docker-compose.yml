@@ -34,7 +34,7 @@ services:
       MYSQL_DATABASE: orion
       KEY_HASH_PASSWORD: j5m96iZ:qi7jiypf5da^k
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ~/docker/volumes/OrionApi_MySQL2:/var/lib/mysql
     networks:

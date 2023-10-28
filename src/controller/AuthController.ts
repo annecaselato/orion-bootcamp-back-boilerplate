@@ -193,6 +193,6 @@ export class AuthController {
           .status(200)
           .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
       }
-  })
-}
+    });
+  }
 }
