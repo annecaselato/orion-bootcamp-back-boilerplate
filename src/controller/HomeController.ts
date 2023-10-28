@@ -25,7 +25,7 @@ export class HomeController {
    *                     type: object
    *                     description: 'objeto json de retorno'
    */
-  hello(_req: Request, res: Response) {
-    return res.status(200).send('Hello');
+  hello(_req: Request, res: Response): void {
+    res.status(200).send('Hello');
   }
 }
