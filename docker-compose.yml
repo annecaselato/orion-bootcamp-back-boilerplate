@@ -17,7 +17,7 @@ services:
       HOST_SMTP: ${HOST_SMTP}
       MARTE_EMAIL: ${MARTE_EMAIL}
       MARTE_PASS: ${MARTE_PASS}
-      JWT_PASS: 2ryYJGzjiBQfwFzPe4wNkk9bV$3ctLDVf5c#Cog6ULt9PQprJyuYoCjgZeUbw@^t
+      JWT_PASS: ${JWT_PASS}
       NODE_ENV: development
       SERVER_PORT: 4444
       DB_DATABASE: orion
