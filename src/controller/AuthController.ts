@@ -84,12 +84,6 @@ export class AuthController {
 
     try {
       //encontra usuario no banco de dados pelo email
-      // const user: User = await userRepository.findOne({
-      //   where: {
-      //     email: req.body.email
-      //   }
-      // });
-
       const user = await userRepository
         .createQueryBuilder('user')
         .addSelect(['user.password'])
@@ -105,13 +99,13 @@ export class AuthController {
       }
 
       //conferir flag de ativação
-      // if (!user.isActivated) {
-      //   return res.status(401).send({
-      //     date: new Date(),
-      //     status: false,
-      //     data: 'Necessária a confirmação do cadastro pelo e-mail.'
-      //   });
-      // }
+      if (!user.isActivated) {
+        return res.status(401).send({
+          date: new Date(),
+          status: false,
+          data: 'Necessária a confirmação do cadastro pelo e-mail.'
+        });
+      }
 
       console.log(user.password);
       //conferir senha
