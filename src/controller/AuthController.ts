@@ -3,7 +3,6 @@ import { User } from '../entity/user';
 import { Request, Response } from 'express';
 import JwtHandler from '../jwtUtils/JwtHandler';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 export class AuthController {
   /**
@@ -85,11 +84,19 @@ export class AuthController {
 
     try {
       //encontra usuario no banco de dados pelo email
-      const user: User = await userRepository.findOne({
-        where: {
+      // const user: User = await userRepository.findOne({
+      //   where: {
+      //     email: req.body.email
+      //   }
+      // });
+
+      const user = await userRepository
+        .createQueryBuilder('user')
+        .addSelect(['user.password'])
+        .where({
           email: req.body.email
-        }
-      });
+        })
+        .getOne();
 
       if (!user) {
         return res
@@ -98,14 +105,15 @@ export class AuthController {
       }
 
       //conferir flag de ativação
-      if (!user.isActivated) {
-        return res.status(401).send({
-          date: new Date(),
-          status: false,
-          data: 'Necessária a confirmação do cadastro pelo e-mail.'
-        });
-      }
+      // if (!user.isActivated) {
+      //   return res.status(401).send({
+      //     date: new Date(),
+      //     status: false,
+      //     data: 'Necessária a confirmação do cadastro pelo e-mail.'
+      //   });
+      // }
 
+      console.log(user.password);
       //conferir senha
       const passwordIsValid: boolean = bcrypt.compareSync(
         req.body.password,
@@ -193,6 +201,6 @@ export class AuthController {
           .status(200)
           .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
       }
-  })
-}
+    });
+  }
 }
