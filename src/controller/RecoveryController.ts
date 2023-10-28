@@ -32,9 +32,7 @@ export class RecoveryController {
       return res.status(400).end();
     }
 
-    const token = await UserRepository.addPasswordRecoveryToken(user, user.id);
-
-    console.log(token);
+    await UserRepository.addPasswordRecoveryToken(user, user.id);
 
     NodemailerService.sendPasswordRecoveryEmail(
       'lucasdejesus.rocha@hotmail.com'
