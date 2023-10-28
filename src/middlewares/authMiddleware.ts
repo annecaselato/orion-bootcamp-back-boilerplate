@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { UserService } from '../services/UserService';
 
 interface TokenPayload {
-  id: string;
+  id: number;
   iat: number;
   exp: number;
 }
 
-export default function authMiddleware(
+export default async function authMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
@@ -27,9 +28,15 @@ export default function authMiddleware(
   try {
     const data = jwt.verify(token, secretKey);
     const { id } = data as TokenPayload;
-    req.userId = id;
+
+    const confirmId = await new UserService().findById(id);
+    if (!confirmId) {
+      throw new Error('Invalid credentials');
+    }
+    req.body = id;
+
     return next();
   } catch {
-    return res.status(401).json({ message: 'Token expirado' });
+    return res.status(401).json({ message: 'Expired Token' });
   }
 }

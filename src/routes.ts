@@ -7,6 +7,6 @@ const router = Router();
 
 router.get('/', new HomeController().hello);
 router.post('/login', new UsersController().login);
-router.get('/loading', authMiddleware, new HomeController().index);
+router.get('/loading', authMiddleware, new UsersController().loggedUser);
 
 export default router;
