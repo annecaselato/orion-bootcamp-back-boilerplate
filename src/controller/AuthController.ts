@@ -107,7 +107,6 @@ export class AuthController {
         });
       }
 
-      console.log(user.password);
       //conferir senha
       const passwordIsValid: boolean = bcrypt.compareSync(
         req.body.password,
