@@ -102,7 +102,6 @@ export class LoginController {
 
     const newUser = { ...user, password: undefined, accessToken };
 
-
-    return res.json({ user: userLogin });
+    return res.json({ user: newUser });
   }
 }
