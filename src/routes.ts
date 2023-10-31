@@ -10,11 +10,11 @@ router.get('/', function (req, res) {
   res.send('esta é a pagina principal');
 });
 
-router.get('/login', function (req, res) {
+router.get('/v1/login', function (req, res) {
   res.send('esta é a pagina de login');
 });
 
-router.post('/login', new AuthController().login);
+router.post('/v1/login', new AuthController().login);
 
 router.post(
   '/v1/signUp',
