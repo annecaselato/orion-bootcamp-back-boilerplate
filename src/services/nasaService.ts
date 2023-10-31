@@ -23,7 +23,7 @@ interface SolMars {
 }
 
 export class NasaService {
-  private URL: string = 'https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json';
+  private URL: string;
 
   constructor(URL: string) {
     this.URL = URL;
@@ -50,7 +50,7 @@ export class NasaService {
     return fourteenSolesData;
   }
 
-  public async getFirstFourteenSoles(): Promise<SolMinMaxTemps[]> {
+  public async getFirstFourteenSoles(): Promise<Sol[]> {
     const soles = await this.fetchDataFromNasaApi();
 
     if (typeof soles === 'string') {
