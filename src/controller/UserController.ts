@@ -1,10 +1,13 @@
 import { Request, Response } from 'express';
 import { UserService } from '../service/UserService';
-import { OK, BAD_REQUEST } from '../utils/httpCodes';
+import httpCodes from '../utils/httpCodes';
 import { Result, ValidationError, validationResult } from 'express-validator';
 
 export class UserController {
-  constructor(private service: UserService) {}
+  constructor(
+    private service: UserService,
+    private httpcodes: httpCodes
+  ) {}
   /**
    * @swagger
    * /recover-password:
@@ -34,14 +37,16 @@ export class UserController {
     try {
       const errors: Result<ValidationError> = validationResult(req);
       if (!errors.isEmpty()) {
-        return res.status(BAD_REQUEST).json({ errors: errors.array() });
+        return res
+          .status(this.httpcodes.BAD_REQUEST)
+          .json({ errors: errors.array() });
       }
 
       const { email } = req.body;
       await this.service.recoverPassword(email);
-      return res.status(OK).json('OK');
+      return res.status(this.httpcodes.OK).json('OK');
     } catch (error) {
-      return res.status(BAD_REQUEST).json({ error });
+      return res.status(this.httpcodes.BAD_REQUEST).json({ error });
     }
   }
 }

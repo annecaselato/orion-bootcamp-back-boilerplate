@@ -4,9 +4,13 @@ import { UserController } from './controller/UserController';
 import { UserService } from './service/UserService';
 import { MysqlDataSource } from './config/database';
 import { body } from 'express-validator';
+import httpCodes from './utils/httpCodes';
 
 const router = Router();
-const userController = new UserController(new UserService(MysqlDataSource));
+const userController = new UserController(
+  new UserService(MysqlDataSource),
+  new httpCodes()
+);
 
 router.get('/', new HomeController().hello);
 router.post(
