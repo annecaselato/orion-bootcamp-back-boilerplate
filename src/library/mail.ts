@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import { User } from '../entity/User';
+import { User } from '../entity/user';
 
 export class EmailSender {
   private transporter: nodemailer.Transporter;
@@ -30,8 +30,16 @@ export class EmailSender {
       await this.transporter.sendMail({
         from: 'MarvelPedia <marvelpediaorion@hotmail.com>',
         to: user.email,
-        subject: 'MarvelPedia - Confirmação de cadastro',
-        html: `<h1>Olá!</h1><p>Para confirmar seu cadastro, clique no link abaixo: <a href="http://localhost:4444/v1/check?token=${token}">Confirmar cadastro</a></p>`,
+        subject: '[MarvelPedia] Confirme seu cadastro!',
+        html: `<h2>Olá ${user.name}</h2>
+        <p>Agradecemos por se juntar à comunidade Marvel! Para confirmar seu cadastro, clique no link abaixo:</p><br>
+        <h3><p><a href="http://localhost:4444/v1/check?token=${token}">Confirmar cadastro</a></p></h3><br>
+        <p>Se você não solicitou este e-mail, por favor, ignore-o. Caso contrário, esperamos que aproveite a exploração do vasto universo da Marvel em nosso site.</p>
+        <p>Em caso de dúvidas ou problemas, nossa equipe de suporte está à disposição para ajudar.</p>
+        <p>Divirta-se!</p><br>
+        <p>Atenciosamente,</p>
+        <p>A Equipe MarvelPedia</p>
+        `,
         text: 'Olá, Para confirmar seu cadastro, clique no link abaixo:'
       });
       console.log('Email Enviado com sucesso.');
