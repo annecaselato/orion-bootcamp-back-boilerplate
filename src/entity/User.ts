@@ -1,9 +1,9 @@
 import {
   Entity,
   Column,
+  PrimaryGeneratedColumn,
   BeforeInsert,
-  BeforeUpdate,
-  PrimaryGeneratedColumn
+  BeforeUpdate
 } from 'typeorm';
 
 @Entity('users')
@@ -32,7 +32,6 @@ export class User {
   @BeforeInsert()
   createdAtDate() {
     this.createdAt = new Date();
-    this.lastUpdate = new Date();
   }
 
   @Column()

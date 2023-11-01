@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 export default class JwtHandler {
-
   //retorna token jwt
   static async signToken(payload, options = {}) {
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
