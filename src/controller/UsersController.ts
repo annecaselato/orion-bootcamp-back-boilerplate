@@ -4,7 +4,7 @@ import { UserService } from '../services/UserService';
 export class UsersController {
   /**
    * @swagger
-   * /users:
+   * /users/login:
    *   post:
    *     summary: Rota para login do usuário
    *     tags: [Login]
@@ -98,6 +98,6 @@ export class UsersController {
    *           description: 'Acesso a rota negado'
    */
   loggedUser(req: Request, res: Response) {
-    return res.status(200).send({ User: req.body.authUser });
+    return res.status(200).send({ user: req.body.authUser });
   }
 }

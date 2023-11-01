@@ -34,12 +34,11 @@ export default async function authMiddleware(
       throw new Error('Invalid credentials');
     }
 
-    const { password: _, ...user } = userById;
+    const user = { ...userById, password: undefined };
     req.body.authUser = user;
 
     return next();
   } catch (error) {
-    console.log(error);
     return res.status(401).json(error.message);
   }
 }
