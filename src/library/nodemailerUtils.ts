@@ -8,11 +8,10 @@ export class NodemailerService {
    */
   static init(): void {
     NodemailerService.transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      service: 'gmail',
       auth: {
-        user: 'b18597c503675e',
-        pass: 'c0cce67a977c5d'
+        user: process.env.GMAIL_APP_USER,
+        pass: process.env.GMAIL_APP_PASSWORD
       }
     });
   }
@@ -23,7 +22,7 @@ export class NodemailerService {
    */
   static async sendPasswordRecoveryEmail(email: string): Promise<void> {
     const mailOptions = {
-      from: 'admin <245b14fdd3-31d9d3@inbox.mailtrap.io>',
+      from: 'admin',
       to: email,
       subject: 'Recuperação de Senha',
       html: `
