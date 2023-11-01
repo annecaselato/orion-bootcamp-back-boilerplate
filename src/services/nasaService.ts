@@ -25,6 +25,11 @@ interface SolMars {
 export class NasaService {
   private URL: string = 'https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json';
 
+  /**
+   *Fetches soles array from the NASA API.
+   * @returns {Promise<SolMars[] | string>} In case of success, returns an array with the data.
+   *   Otherwise, it returns a string with the error message.
+   */
   private async fetchDataFromNasaApi(): Promise<SolMars[] | string> {
     try {
       const response = await axios.get(this.URL);
@@ -34,6 +39,13 @@ export class NasaService {
     }
   }
 
+  /**
+   *From all data fetched from the NASA API, it instantiates 14 of those "sols",
+   *  which are mars days.
+   * @param fourteenSoles Array if 14 soles from API.
+   * @returns {Promise<Sol[]>} Array of soles that will later be used to update
+   *  the soles table in the database. See solRepository.
+   */
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
     const fourteenSolesData: Sol[] = [];
     fourteenSoles.forEach((sol) => {
@@ -45,11 +57,15 @@ export class NasaService {
       fourteenSolesData.push(temporarySol);
     });
 
-    const topFourteenSoles = fourteenSolesData.slice(0, 14);
-
-    return topFourteenSoles;
+    return fourteenSolesData;
   }
 
+  /**
+   *This functions is called in the SolController and it server by calling other
+     2 methods in this class.
+   * @returns {Promise<Sol[]>} Array of soles that will later be used to update
+   *  the soles table in the database. See solRepository.
+   */
   public async getFirstFourteenSoles(): Promise<Sol[]> {
     const soles = await this.fetchDataFromNasaApi();
 

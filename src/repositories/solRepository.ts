@@ -2,24 +2,19 @@ import { MysqlDataSource } from '../config/database';
 import { Sol } from '../entity/Sol';
 
 export class SolRepository {
+  /**
+   *Saves each newSol in the soles array is saved to the database, in case it's not already there
+   * @param soles Array of "soles" from: SolController and NasaService
+   * @returns {Promise<void>} It just saves data to the soles table
+   */
   public static async Save14MarsDays(soles: Sol[]): Promise<void> {
     const solRepository = MysqlDataSource.getRepository(Sol);
     const allSols: Sol[] = await solRepository.find();
 
-    for (const existingSol of allSols) {
-      const repeatedSol = soles.find((sol) => sol.solNumberMarsDay === existingSol.solNumberMarsDay);
-
-      if (repeatedSol) {
-        await solRepository.remove(existingSol);
-      }
-    }
-
     for (const newSol of soles) {
-      const existingSol = allSols.find((sol) => sol.solNumberMarsDay === newSol.solNumberMarsDay);
+      const repeatedSol: Sol = allSols.find((sol) => sol.solNumberMarsDay === newSol.solNumberMarsDay);
 
-      if (existingSol) {
-        await solRepository.save(existingSol);
-      } else {
+      if (!repeatedSol) {
         await solRepository.save(newSol);
       }
     }

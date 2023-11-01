@@ -16,6 +16,12 @@ const router = Router();
  */
 router.use('/v1', loginRoute);
 router.use('/v1', recoveryRoute);
+/**
+ * GET route for soles data
+ *
+ * @route GET /soles
+ * @group Soles data
+ */
 router.use('/v1', solesRoute);
 
 router.get('/', new HomeController().hello);
