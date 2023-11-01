@@ -13,7 +13,7 @@ export class User extends BaseEntity {
   id: number;
 
   @Column()
-  name: string;
+  fullName: string;
 
   @Column()
   email: string;
@@ -22,8 +22,8 @@ export class User extends BaseEntity {
   password: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }
