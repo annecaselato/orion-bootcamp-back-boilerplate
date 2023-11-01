@@ -7,7 +7,7 @@ import { authenticateToken } from './middleware/AuthMiddleware';
 const router = Router();
 
 //garantir apenas acesso autenticado à dashboard
-router.all('/dashboard', authenticateToken, (req, res) => {
+router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
