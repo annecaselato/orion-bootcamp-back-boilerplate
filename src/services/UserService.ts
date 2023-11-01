@@ -5,18 +5,18 @@ import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
 
 export class UserService {
-  private userService: Repository<User>;
+  private userRepository: Repository<User>;
 
   constructor() {
-    this.userService = MysqlDataSource.getRepository(User);
+    this.userRepository = MysqlDataSource.getRepository(User);
   }
 
   async authenticate(
     email: string,
     password: string,
-    checkbox: boolean
-  ): Promise<string> {
-    const user = await this.userService.findOne({ where: { email: email } });
+    rebemberMe: boolean
+  ): Promise<string | undefined> {
+    const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       return undefined;
     }
@@ -30,24 +30,16 @@ export class UserService {
     if (!secretKey) {
       throw new Error('There is no token key');
     }
-
-    let expiredToken = '24h';
-    if (!checkbox) {
-      expiredToken = '1h';
-    }
+    const expirationToken = rebemberMe ? '24h' : '1h';
 
     const token = jwt.sign({ id: user.id }, secretKey, {
-      expiresIn: expiredToken
+      expiresIn: expirationToken
     });
 
     return token;
   }
 
-  async findById(id: number) {
-    const userId = await this.userService.findOne({ where: { id: id } });
-    if (!userId) {
-      return undefined;
-    }
-    return true;
+  async findById(id: number): Promise<User | undefined> {
+    return await this.userRepository.findOne({ where: { id } });
   }
 }

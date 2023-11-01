@@ -29,14 +29,17 @@ export default async function authMiddleware(
     const data = jwt.verify(token, secretKey);
     const { id } = data as TokenPayload;
 
-    const confirmId = await new UserService().findById(id);
-    if (!confirmId) {
+    const userById = await new UserService().findById(id);
+    if (!userById) {
       throw new Error('Invalid credentials');
     }
-    req.body = id;
+
+    const { password: _, ...user } = userById;
+    req.body = user;
 
     return next();
-  } catch {
-    return res.status(401).json({ message: 'Expired Token' });
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json(error.message);
   }
 }

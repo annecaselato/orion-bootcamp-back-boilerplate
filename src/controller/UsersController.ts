@@ -4,7 +4,7 @@ import { UserService } from '../services/UserService';
 export class UsersController {
   /**
    * @swagger
-   * /login:
+   * /users:
    *   post:
    *     summary: Rota para login do usuário
    *     tags: [Login]
@@ -13,18 +13,24 @@ export class UsersController {
    *     produces:
    *       - application/json
    *     requestBody:
-   *         required: true
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 email:
-   *                   type: string
-   *                 password:
-   *                   type: string
-   *                 checkbox:
-   *                   type: boolean
+   *       content:
+   *         application/json:
+   *           schema:
+   *             example:
+   *               email: user@email.com
+   *               password: pass123
+   *               rebemberMe: true
+   *             required:
+   *               - email
+   *               - password
+   *               - rebemberMe
+   *             properties:
+   *               email:
+   *                 type: string
+   *               password:
+   *                 type: string
+   *               rebemberMe:
+   *                 type: boolean
    *     responses:
    *       '200':
    *           description: 'Requisição executada com sucesso'
@@ -42,15 +48,15 @@ export class UsersController {
    */
 
   async login(req: Request, res: Response) {
-    const { email, password, checkbox } = req.body;
+    const { email, password, rebemberMe } = req.body;
     try {
       const result = await new UserService().authenticate(
         email,
         password,
-        checkbox
+        rebemberMe
       );
       if (result) {
-        return res.json({
+        return res.status(200).json({
           email: email,
           token: result
         });
@@ -66,7 +72,7 @@ export class UsersController {
 
   /**
    * @swagger
-   * /loading:
+   * /users/logged:
    *   get:
    *     summary: Rota com usuario logado
    *     security:
@@ -84,21 +90,14 @@ export class UsersController {
    *               schema:
    *                 type: object
    *                 properties:
-   *                   autorização:
-   *                     type: boolean
-   *                   userId:
+   *                   id:
+   *                     type: number
+   *                   email:
    *                     type: string
    *       '401':
    *           description: 'Acesso a rota negado'
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   autorização:
-   *                     type: boolean
    */
   loggedUser(req: Request, res: Response) {
-    return res.send({ userId: req.body });
+    return res.status(200).send({ user: req.body });
   }
 }
