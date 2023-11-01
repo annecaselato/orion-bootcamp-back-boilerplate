@@ -35,7 +35,7 @@ export default async function authMiddleware(
     }
 
     const { password: _, ...user } = userById;
-    req.body = user;
+    req.body.authUser = user;
 
     return next();
   } catch (error) {

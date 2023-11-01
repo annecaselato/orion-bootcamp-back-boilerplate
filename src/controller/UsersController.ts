@@ -98,6 +98,6 @@ export class UsersController {
    *           description: 'Acesso a rota negado'
    */
   loggedUser(req: Request, res: Response) {
-    return res.status(200).send({ user: req.body });
+    return res.status(200).send({ User: req.body.authUser });
   }
 }
