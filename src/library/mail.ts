@@ -23,7 +23,7 @@ export class EmailSender {
       process.env.JWT_SECRET_KEY,
       {
         algorithm: 'HS256',
-        expiresIn: 7200
+        expiresIn: '72h'
       }
     );
     try {
