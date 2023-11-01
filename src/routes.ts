@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { HomeController } from './controller/HomeController';
+// import { SolController } from './controller/SolController';
 import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
+import solesRoute from './api/v1/solesRoute';
 
 const router = Router();
 
@@ -14,6 +16,7 @@ const router = Router();
  */
 router.use('/v1', loginRoute);
 router.use('/v1', recoveryRoute);
+router.use('/v1', solesRoute);
 
 router.get('/', new HomeController().hello);
 

@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'sol' })
+@Entity({ name: 'soles' })
 export class Sol {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ unique: true })
-  sol: number;
+  solNumberMarsDay: number;
 
   @Column()
-  max_temp: number;
+  maximumTemperature: number;
 
   @Column()
-  min_temp: number;
+  minimumTemperature: number;
 }

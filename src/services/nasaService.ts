@@ -23,11 +23,7 @@ interface SolMars {
 }
 
 export class NasaService {
-  private URL: string;
-
-  constructor(URL: string) {
-    this.URL = URL;
-  }
+  private URL: string = 'https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json';
 
   private async fetchDataFromNasaApi(): Promise<SolMars[] | string> {
     try {
@@ -38,16 +34,20 @@ export class NasaService {
     }
   }
 
-  private async selectSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
-    const fourteenSolesData = [];
+  private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
+    const fourteenSolesData: Sol[] = [];
     fourteenSoles.forEach((sol) => {
-      const tempSol: Sol = new Sol();
-      tempSol.sol = Number(sol.sol);
-      tempSol.max_temp = Number(sol.max_temp);
-      tempSol.min_temp = Number(sol.min_temp);
-      fourteenSolesData.push(tempSol);
+      const temporarySol: Sol = new Sol();
+      temporarySol.solNumberMarsDay = parseInt(sol.sol);
+      temporarySol.maximumTemperature = parseInt(sol.max_temp);
+      temporarySol.minimumTemperature = parseInt(sol.min_temp);
+
+      fourteenSolesData.push(temporarySol);
     });
-    return fourteenSolesData;
+
+    const topFourteenSoles = fourteenSolesData.slice(0, 14);
+
+    return topFourteenSoles;
   }
 
   public async getFirstFourteenSoles(): Promise<Sol[]> {
@@ -55,9 +55,9 @@ export class NasaService {
 
     if (typeof soles === 'string') {
       throw new Error('Erro na solicitação à API: ' + soles);
+    } else {
+      const firstFourteen = soles.slice(0, 14);
+      return this.selectAndSaveSolesInfo(firstFourteen);
     }
-
-    const firstFourteen = soles.slice(0, 14);
-    return this.selectSolesInfo(firstFourteen);
   }
 }
