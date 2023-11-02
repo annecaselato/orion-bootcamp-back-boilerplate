@@ -12,11 +12,11 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
-router.get('/v1/getCharacters/:offset/:limit', (req, res) => {
-  const offset: number = Number(req.params.offset) || 0;
-  const limit: number = Number(req.params.limit) || 20;
+//TODO: colocar middleware de autenticação, criar controller
+router.get('/v1/getCharacters/:page', (req, res) => {
+  const page: number = Number(req.params.page) || 1;
 
-  MarvelAPIHandler.getCharacters(req, res, limit, offset);
+  MarvelAPIHandler.getCharacters(req, res, page);
 });
 
 router.post('/v1/login', new AuthController().login);
