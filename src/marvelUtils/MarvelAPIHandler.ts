@@ -7,13 +7,11 @@ const privateKey = '78b87919ce0eed1540a945af0fabfb8aa7215f9a';
 const baseURL = 'https://gateway.marvel.com/v1/public';
 
 export default class MarvelAPIHandler {
-  static async getCharacters(
-    req: Request,
-    res: Response,
-    limit: number = 20,
-    offset: number = 0
-  ) {
+  static async getCharacters(req: Request, res: Response, page: number = 1) {
     try {
+      const offset = (page - 1) * 9;
+      const limit = Math.min(100, page * 9); //valor máximo de 100 no limit
+
       const timestamp = Date.now();
       const hash = md5(timestamp + privateKey + apikey);
       const response = await axios.get(`${baseURL}/characters`, {
@@ -42,18 +40,6 @@ export default class MarvelAPIHandler {
       });
 
       res.json(characters);
-
-      //   console.log(characterData.length);
-
-      //   const characterName = characterData.name;
-      //   const characterDescription = characterData.description;
-      //   const characterThumb = characterData.thumbnail;
-
-      //   res.json({
-      //     name: characterName,
-      //     description: characterDescription,
-      //     thumbnail: characterThumb
-      //   });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
