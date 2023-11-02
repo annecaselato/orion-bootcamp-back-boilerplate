@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Repository } from '../repository/UserRepository';
 import { User } from '../entity/User';
+import { EmailSender } from '../library/mail';
 
 export class UserController {
   /**
@@ -158,6 +159,8 @@ export class UserController {
         (await user).email
       );
       res.status(201).json({ date: new Date(), status: true, data: savedUser });
+      const sendEmail = new EmailSender();
+      sendEmail.sendConfirmationEmail(await user);
     } catch (error) {
       res
         .status(500)

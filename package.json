@@ -30,6 +30,7 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
+    "@google-cloud/translate": "8.0.2",
     "@types/express-validator": "3.0.0",
     "axios": "1.6.0",
     "bcrypt": "5.1.1",

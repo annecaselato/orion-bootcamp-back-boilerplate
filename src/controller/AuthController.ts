@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 export class AuthController {
   /**
    * @swagger
-   * /login:
+   * /v1/login:
    *   post:
    *
    *     summary: Login
@@ -166,7 +166,7 @@ export class AuthController {
    *         description: Token de confirmação de cadastro
    *     responses:
    *       '200':
-   *         description: Cadastro confirmado com sucesso
+   *         description: Sucesso. O cadastro foi confirmado com êxito.
    *         content:
    *           application/json:
    *             schema:
@@ -175,8 +175,9 @@ export class AuthController {
    *                 message:
    *                   type: string
    *                   description: Mensagem de confirmação
+   *                   example: Cadastro feito com sucesso, efetue o login.
    *       '401':
-   *         description: Token inválido ou expirado
+   *         description: Erro de autenticação. O token fornecido é inválido ou expirou.
    *         content:
    *           application/json:
    *             schema:
@@ -185,7 +186,9 @@ export class AuthController {
    *                 erro:
    *                   type: string
    *                   description: Mensagem de erro
+   *                   example: Token inválido ou expirado.
    */
+
   async confirmRegistration(req: Request, res: Response): Promise<void> {
     const token = req.query.token as string;
 
@@ -198,8 +201,18 @@ export class AuthController {
         const user = await userRepository.findOneBy({
           email: userEmail
         });
+
+        // Verificar se o usuário já foi ativado
+        if (user.isActivated) {
+          return res
+            .status(200)
+            .json({ message: 'Email já confirmado anteriormente.' });
+        }
+
+        // Ativar o usuário e salvar no banco de dados
         user.isActivated = true;
-        userRepository.save(user);
+        await userRepository.save(user);
+
         return res
           .status(200)
           .json({ message: 'Cadastro feito com sucesso, efetue o login.' });
