@@ -6,12 +6,9 @@ import { authenticateToken } from './middleware/AuthMiddleware';
 
 const router = Router();
 
-router.get('/', function (req, res) {
-  res.send('esta é a pagina principal');
-});
-
-router.get('/v1/login', function (req, res) {
-  res.send('esta é a pagina de login');
+//garantir apenas acesso autenticado à dashboard
+router.all('/v1/dashboard', authenticateToken, (req, res) => {
+  res.sendStatus(200);
 });
 
 router.post('/v1/login', new AuthController().login);
