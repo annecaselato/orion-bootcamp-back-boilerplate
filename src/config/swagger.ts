@@ -5,7 +5,7 @@ export const swaggerConfig: swaggerJSDoc.OAS3Options = {
     openapi: '3.0.0',
     info: {
       title: 'Orion API',
-      description: 'Documentação da API do projeto Orion.',
+      description: 'Documentação da API do projeto MarvelPedia.',
       version: '1.0.0'
     },
     host: 'localhost:4444',
