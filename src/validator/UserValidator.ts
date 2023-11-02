@@ -8,9 +8,15 @@ function genderTypes(): typeof Gender {
 }
 
 export const validationField = [
-  body('name')
+  body('firstName')
     .notEmpty()
     .withMessage('Nome não pode ser vazio')
+    .bail()
+    .matches(/^[a-zA-Z\s]+$/),
+
+  body('lastName')
+    .notEmpty()
+    .withMessage('Sobrenome não pode ser vazio')
     .bail()
     .matches(/^[a-zA-Z\s]+$/),
 

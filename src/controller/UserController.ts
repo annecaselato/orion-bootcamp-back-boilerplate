@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { Repository } from '../repository/UserRepository';
 import { User } from '../entity/User';
 
@@ -15,9 +15,12 @@ export class UserController {
    *           schema:
    *             type: object
    *             properties:
-   *               name:
+   *               firstName:
    *                 type: string
    *                 description: Nome do usuário
+   *               lastName:
+   *                 type: string
+   *                 description: Sobrenome do usuário
    *               gender:
    *                 type: string
    *                 description: Gênero do usuário
@@ -32,7 +35,8 @@ export class UserController {
    *                 type: string
    *                 description: Senha do usuário
    *             example:
-   *               name: User test
+   *               firstName: User
+   *               lastName: tester
    *               gender: Prefiro não dizer
    *               birthDate: 1990-12-06
    *               email: email@email.com
@@ -57,9 +61,12 @@ export class UserController {
    *                     id:
    *                       type: integer
    *                       description: ID do usuário
-   *                     name:
+   *                     firstName:
    *                       type: string
    *                       description: Nome do usuário
+   *                     lastName:
+   *                       type: string
+   *                       description: Sobrenome do usuário
    *                     gender:
    *                       type: string
    *                       description: Gênero do usuário
@@ -82,7 +89,8 @@ export class UserController {
    *                 date: 2023-10-28T19:32:46.116Z
    *                 status: true
    *                 id: 10
-   *                 name: User test
+   *                 firstName: User
+   *                 lastName: tester
    *                 gender: Prefiro não dizer
    *                 birthDate: 2020-02-13
    *                 email: email@email.com

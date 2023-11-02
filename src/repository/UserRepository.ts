@@ -9,13 +9,15 @@ export class Repository {
   constructor() {}
 
   async createAndSave(req: Request) {
-    const { name, gender, birthDate, email, password } = req.body;
+    const { firstName, lastName, gender, birthDate, email, password } =
+      req.body;
 
     const salt = 10;
     const hashpassword = await bcrypt.hash(password, salt);
 
     const newUser: User = new User();
-    (newUser.name = name),
+    (newUser.firstName = firstName),
+      (newUser.lastName = lastName),
       (newUser.gender = gender),
       (newUser.birthDate = birthDate),
       (newUser.email = email),
