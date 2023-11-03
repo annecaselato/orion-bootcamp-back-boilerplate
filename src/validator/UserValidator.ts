@@ -2,14 +2,10 @@ import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { Repository } from '../repository/UserRepository';
 import { Gender } from '../library/genderTypes';
-import moment = require('moment');
+import moment from 'moment';
 
 function genderTypes(): typeof Gender {
   return Gender;
-}
-
-function tenYearsInDays(): number {
-  return 365 * 10;
 }
 
 export const validationField = [
@@ -44,7 +40,7 @@ export const validationField = [
     .bail()
     .custom((birthDate: Date) => {
       const today = moment();
-      if (today.diff(birthDate, 'days') < tenYearsInDays()) {
+      if (today.diff(birthDate, 'years') < 10) {
         return Promise.reject(
           'Idade mínima para acesso à plataforma é de 10 anos'
         );
