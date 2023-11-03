@@ -1,25 +1,41 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 import md5 from 'md5';
+import { Link } from 'swagger-jsdoc';
 
-const apikey = 'cf74744cec6c801980e3c73b4b00134b';
-const privateKey = '78b87919ce0eed1540a945af0fabfb8aa7215f9a';
-const baseURL = 'https://gateway.marvel.com/v1/public';
+const baseURL = (): string => {
+  return 'https://gateway.marvel.com/v1/public';
+};
+
+const maxMarvelAPILimit = (): number => {
+  return 100;
+};
+
+const cardsPerPage = (): number => {
+  return 9;
+};
+
+const maximunValidPage = (): number => {
+  return 174;
+};
 
 export default class MarvelAPIHandler {
   static async getCharacters(req: Request, res: Response, page: number = 1) {
     try {
-      const offset = (page - 1) * 9;
-      const limit = Math.min(100, page * 9); //valor máximo de 100 no limit
+      const validPage = Math.min(maximunValidPage(), page); // evita retornar objeto vazio
+      const offset = (validPage - 1) * cardsPerPage(); // se page === 1, offset = 0
+      const limit = Math.min(maxMarvelAPILimit(), validPage * cardsPerPage()); // valor máximo de 100 no limit
 
       const timestamp = Date.now();
-      const hash = md5(timestamp + privateKey + apikey);
-      const response = await axios.get(`${baseURL}/characters`, {
+      const hash = md5(
+        timestamp + process.env.MARVEL_PRIVATE_KEY + process.env.MARVEL_API_KEY
+      );
+      const response = await axios.get(`${baseURL()}/characters`, {
         params: {
           offset: offset,
           limit: limit,
           ts: timestamp,
-          apikey: apikey,
+          apikey: process.env.MARVEL_API_KEY,
           hash: hash
         }
       });
@@ -42,7 +58,7 @@ export default class MarvelAPIHandler {
       res.json(characters);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: 'Erro interno do servidor' });
     }
   }
 }
