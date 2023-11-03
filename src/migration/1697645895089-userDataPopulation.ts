@@ -2,12 +2,24 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 
 const USERS = [
   {
-    email: 'user1@test.com',
+    email: 'cintiasimoni.vet@gmail.com',
     password: 'Pa$$word123'
   },
   {
-    email: 'user2@test.com',
-    password: 'Pa$$word321'
+    email: 'flindenm@hotmail.com',
+    password: 'Pa$$word123'
+  },
+  {
+    email: 'lucasdejesus.rocha@hotmail.com',
+    password: 'Pa$$word123'
+  },
+  {
+    email: 'biel.sgrancio@hotmail.com',
+    password: 'Pa$$word123'
+  },
+  {
+    email: 'ricardonovais1@gmail.com',
+    password: 'Pa$$word123'
   }
 ];
 
