@@ -74,7 +74,7 @@ export class NasaService {
     } else {
       const firstFourteen: SolMars[] = [];
 
-      for (let i = 0; i <= 14 && i < soles.length; i++) {
+      for (let i = 0; i < 14 && i < soles.length; i++) {
         firstFourteen.push(soles[i]);
       }
 

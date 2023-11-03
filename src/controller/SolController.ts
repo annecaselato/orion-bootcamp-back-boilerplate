@@ -51,10 +51,19 @@ export class SolController {
 
       const solesData: Sol[] = await latestSols.getFirstFourteenSoles();
 
+      /**
+       *Here the sols ares sorted in DESCENDING order, in regards to the solNumberMarsDay field
+       *  in order to have it correctly saved in the database.
+       */
       solesData.sort((a: Sol, b: Sol) => a.solNumberMarsDay - b.solNumberMarsDay);
 
       await SolRepository.Save14MarsDays(solesData);
 
+      /**
+       *Here the sols ares sorted in ASCENDING order, because it allows for the JSON
+       *  provided to be in descending order (contrary to the database), for easier
+       *  fetching in the front end.
+       */
       solesData.sort((a: Sol, b: Sol) => b.solNumberMarsDay - a.solNumberMarsDay);
 
       res.status(200).json(solesData);
