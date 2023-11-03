@@ -2,9 +2,14 @@ import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { Repository } from '../repository/UserRepository';
 import { Gender } from '../library/genderTypes';
+import moment = require('moment');
 
 function genderTypes(): typeof Gender {
   return Gender;
+}
+
+function tenYearsInDays(): number {
+  return 365 * 10;
 }
 
 export const validationField = [
@@ -37,8 +42,15 @@ export const validationField = [
     })
     .withMessage('Formato incorreto de data')
     .bail()
-    .isBefore(new Date().toLocaleDateString())
-    .withMessage('Informe data válida'),
+    .custom((birthDate: Date) => {
+      const today = moment();
+      if (today.diff(birthDate, 'days') < tenYearsInDays()) {
+        return Promise.reject(
+          'Idade mínima para acesso à plataforma é de 10 anos'
+        );
+      }
+      return Promise.resolve();
+    }),
 
   body('email')
     .notEmpty()
