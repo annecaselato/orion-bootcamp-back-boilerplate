@@ -35,34 +35,42 @@ export class NasaService {
       const response = await axios.get(this.URL);
       return response.data.soles;
     } catch (error) {
-      throw new Error('Erro na solicitação à API: ' + error.message);
+      return 'Erro na solicitação à API: ' + error.message;
     }
   }
 
   /**
    *From all data fetched from the NASA API, it instantiates 14 of those "sols",
    *  which are mars days.
-   * @param fourteenSoles Array if 14 soles from API.
+   * @param fourteenSoles Array of 14 soles from API.
    * @returns {Promise<Sol[]>} Array of soles that will later be used to update
    *  the soles table in the database. See solRepository.
    */
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
-    const fourteenSolesData: Sol[] = [];
-    fourteenSoles.forEach((sol) => {
-      const temporarySol: Sol = new Sol();
-      temporarySol.solNumberMarsDay = parseInt(sol.sol);
-      temporarySol.maximumTemperature = parseInt(sol.max_temp);
-      temporarySol.minimumTemperature = parseInt(sol.min_temp);
+    let solIdCounter: number = 0;
+    const fourteenSolesData: Sol[] = fourteenSoles.map((sol) => {
+      const dataString: string = sol.terrestrial_date;
+      const datePartsArray: Array<string> = dataString.split('-');
+      const ano = parseInt(datePartsArray[0]);
+      const mes = parseInt(datePartsArray[1]) - 1;
+      const dia = parseInt(datePartsArray[2]);
 
-      fourteenSolesData.push(temporarySol);
+      const terrestrialDate: Date = new Date(ano, mes, dia);
+      return {
+        id: solIdCounter++,
+        solNumberMarsDay: parseInt(sol.sol),
+        maximumTemperature: parseInt(sol.max_temp),
+        minimumTemperature: parseInt(sol.min_temp),
+        timestamp: terrestrialDate
+      };
     });
-
     return fourteenSolesData;
   }
 
   /**
-   *This functions is called in the SolController and it server by calling other
-     2 methods in this class.
+   *This functions is called in the SolController and it calls 2 other methods in this class.
+   * First it calls the method that fetches data from the NASA API.
+   * Secondly, it saves the data to the database.
    * @returns {Promise<Sol[]>} Array of soles that will later be used to update
    *  the soles table in the database. See solRepository.
    */
@@ -72,7 +80,11 @@ export class NasaService {
     if (typeof soles === 'string') {
       throw new Error('Erro na solicitação à API: ' + soles);
     } else {
-      const firstFourteen = soles.slice(0, 14);
+      const firstFourteen: SolMars[] = [];
+
+      for (let i = 0; i <= 14 && i < soles.length; i++) {
+        firstFourteen.push(soles[i]);
+      }
       return this.selectAndSaveSolesInfo(firstFourteen);
     }
   }

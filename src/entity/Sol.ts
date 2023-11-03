@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 @Entity({ name: 'soles' })
 export class Sol {
@@ -13,4 +13,7 @@ export class Sol {
 
   @Column()
   minimumTemperature: number;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  timestamp: Date;
 }
