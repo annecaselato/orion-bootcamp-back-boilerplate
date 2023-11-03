@@ -9,9 +9,7 @@ export class SolRepository {
   public static async Save14MarsDays(soles: Sol[]): Promise<void> {
     const solRepository = MysqlDataSource.getRepository(Sol);
 
-    const allSols: Sol[] = await solRepository.find({
-      order: { solNumberMarsDay: 'DESC' }
-    });
+    const allSols: Sol[] = await solRepository.find();
 
     for (const newSol of soles) {
       const repeatedSol: Sol = allSols.find((sol) => sol.solNumberMarsDay === newSol.solNumberMarsDay);

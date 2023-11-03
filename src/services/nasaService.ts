@@ -47,7 +47,7 @@ export class NasaService {
    *  the soles table in the database. See solRepository.
    */
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
-    let solIdCounter: number = 0;
+    let solIdCounter: number = 1;
     const fourteenSolesData: Sol[] = fourteenSoles.map((sol) => {
       return {
         id: solIdCounter++,
@@ -77,6 +77,7 @@ export class NasaService {
       for (let i = 0; i <= 14 && i < soles.length; i++) {
         firstFourteen.push(soles[i]);
       }
+
       return this.selectAndSaveSolesInfo(firstFourteen);
     }
   }

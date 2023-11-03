@@ -51,7 +51,11 @@ export class SolController {
 
       const solesData: Sol[] = await latestSols.getFirstFourteenSoles();
 
+      solesData.sort((a: Sol, b: Sol) => a.solNumberMarsDay - b.solNumberMarsDay);
+
       await SolRepository.Save14MarsDays(solesData);
+
+      solesData.sort((a: Sol, b: Sol) => b.solNumberMarsDay - a.solNumberMarsDay);
 
       res.status(200).json(solesData);
     } catch {
