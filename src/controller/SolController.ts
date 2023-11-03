@@ -35,8 +35,6 @@ export class SolController {
    *                       type: number
    *                     minimumTemperature:
    *                       type: number
-   *                     timestamp:
-   *                       type: Date
    *       500:
    *         description: Internal error when fetching the data
    *         content:
