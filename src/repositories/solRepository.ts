@@ -10,7 +10,7 @@ export class SolRepository {
     const solRepository = MysqlDataSource.getRepository(Sol);
 
     const allSols: Sol[] = await solRepository.find({
-      order: { timestamp: 'DESC' }
+      order: { solNumberMarsDay: 'DESC' }
     });
 
     for (const newSol of soles) {

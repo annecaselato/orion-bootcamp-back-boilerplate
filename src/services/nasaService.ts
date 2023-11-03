@@ -49,19 +49,11 @@ export class NasaService {
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<Sol[]> {
     let solIdCounter: number = 0;
     const fourteenSolesData: Sol[] = fourteenSoles.map((sol) => {
-      const dataString: string = sol.terrestrial_date;
-      const datePartsArray: Array<string> = dataString.split('-');
-      const ano = parseInt(datePartsArray[0]);
-      const mes = parseInt(datePartsArray[1]) - 1;
-      const dia = parseInt(datePartsArray[2]);
-
-      const terrestrialDate: Date = new Date(ano, mes, dia);
       return {
         id: solIdCounter++,
         solNumberMarsDay: parseInt(sol.sol),
         maximumTemperature: parseInt(sol.max_temp),
-        minimumTemperature: parseInt(sol.min_temp),
-        timestamp: terrestrialDate
+        minimumTemperature: parseInt(sol.min_temp)
       };
     });
     return fourteenSolesData;
