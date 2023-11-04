@@ -29,4 +29,5 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
+
 export default router;

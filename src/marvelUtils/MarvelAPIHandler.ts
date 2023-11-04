@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 import md5 from 'md5';
-import { Link } from 'swagger-jsdoc';
+import MarvelAPITranslatorHandler from './MarvelAPITranslatorHandler';
 
 const baseURL = (): string => {
   return 'https://gateway.marvel.com/v1/public';
@@ -43,6 +43,7 @@ export default class MarvelAPIHandler {
       //res.json(response.data);
 
       const characterData = await response.data.data.results;
+      const marvelAPITranslator = new MarvelAPITranslatorHandler();
 
       const characters = characterData.map((character) => {
         const characterName = character.name;
@@ -55,10 +56,36 @@ export default class MarvelAPIHandler {
         };
       });
 
-      res.json(characters);
+      const charactersTranslated = await Promise.all(
+        characterData.map(async (character) => {
+          try {
+            const translatedCharacter =
+              await marvelAPITranslator.translateCharacter(character);
+            return translatedCharacter;
+          } catch (error) {
+            console.error('Erro ao traduzir:', error);
+            // Se houver erro na tradução, retorna o personagem original não traduzido
+            res.status(303).json({
+              date: new Date(),
+              status: true,
+              data: `Erro ao traduzir: ${error}`,
+              characters
+            });
+          }
+        })
+      );
+
+      res
+        .status(200)
+        .json({ date: new Date(), status: true, data: charactersTranslated });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Erro interno do servidor' });
+
+      res.status(500).json({
+        date: new Date(),
+        status: false,
+        data: 'Erro interno do servidor'
+      });
     }
   }
 }
