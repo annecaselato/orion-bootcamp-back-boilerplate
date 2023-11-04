@@ -16,7 +16,7 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 router.get('/v1/getCharacters/:page', (req, res) => {
   const page: number = Number(req.params.page) || 1;
 
-  MarvelAPIHandler.getCharacters(req, res, page);
+  new MarvelAPIHandler().getCharacters(req, res, page);
 });
 
 router.post('/v1/login', new AuthController().login);

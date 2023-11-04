@@ -3,58 +3,92 @@ import axios from 'axios';
 import md5 from 'md5';
 import MarvelAPITranslatorHandler from './MarvelAPITranslatorHandler';
 
-const baseURL = (): string => {
-  return 'https://gateway.marvel.com/v1/public';
-};
+interface MarvelAPIParams {
+  offset: number;
+  limit: number;
+  ts: number;
+  apikey: string;
+  hash: string;
+}
 
-const maxMarvelAPILimit = (): number => {
-  return 100;
-};
-
-const cardsPerPage = (): number => {
-  return 9;
-};
-
-const maximunValidPage = (): number => {
-  return 174;
-};
+interface MarvelCharactersProperties {
+  name: string;
+  description: string;
+  thumbnail: string;
+}
 
 export default class MarvelAPIHandler {
-  static async getCharacters(req: Request, res: Response, page: number = 1) {
-    try {
-      const validPage = Math.min(maximunValidPage(), page); // evita retornar objeto vazio
-      const offset = (validPage - 1) * cardsPerPage(); // se page === 1, offset = 0
-      const limit = Math.min(maxMarvelAPILimit(), validPage * cardsPerPage()); // valor máximo de 100 no limit
+  private timestamp: number = Date.now();
 
-      const timestamp = Date.now();
-      const hash = md5(
-        timestamp + process.env.MARVEL_PRIVATE_KEY + process.env.MARVEL_API_KEY
-      );
-      const response = await axios.get(`${baseURL()}/characters`, {
-        params: {
-          offset: offset,
-          limit: limit,
-          ts: timestamp,
-          apikey: process.env.MARVEL_API_KEY,
-          hash: hash
+  private hashGenarator = async (): Promise<string> => {
+    return md5(
+      this.timestamp +
+        process.env.MARVEL_PRIVATE_KEY +
+        process.env.MARVEL_API_KEY
+    );
+  };
+
+  private baseURL = (): string => {
+    return 'https://gateway.marvel.com/v1/public';
+  };
+
+  private maxMarvelAPILimit = (): number => {
+    return 100;
+  };
+
+  private cardsPerPage = (): number => {
+    return 9;
+  };
+
+  private maximunValidPage = (): number => {
+    return 174;
+  };
+
+  async getCharacters(
+    req: Request,
+    res: Response,
+    page: number = 1
+  ): Promise<void> {
+    const hash = await this.hashGenarator();
+    try {
+      const validPage = Math.min(this.maximunValidPage(), page); // evita retornar objeto vazio
+      const offset = (validPage - 1) * this.cardsPerPage(); // se page === 1, offset = 0
+      const limit = Math.min(
+        this.maxMarvelAPILimit(),
+        validPage * this.cardsPerPage()
+      ); // valor máximo de 100 no limit
+
+      const response = await axios.get<MarvelAPIParams>(
+        `${this.baseURL()}/characters`,
+        {
+          params: {
+            offset: offset,
+            limit: limit,
+            ts: this.timestamp,
+            apikey: process.env.MARVEL_API_KEY,
+            hash: hash
+          }
         }
-      });
+      );
 
       //res.json(response.data);
+      const characterData: Array<MarvelCharactersProperties> =
+        await response.data.data.results;
+      const marvelAPITranslator: MarvelAPITranslatorHandler =
+        new MarvelAPITranslatorHandler();
 
-      const characterData = await response.data.data.results;
-      const marvelAPITranslator = new MarvelAPITranslatorHandler();
-
-      const characters = characterData.map((character) => {
-        const characterName = character.name;
-        const characterDescription = character.description;
-        const characterThumb = character.thumbnail;
-        return {
-          name: characterName,
-          description: characterDescription,
-          thumbnail: characterThumb
-        };
-      });
+      const characters: Array<MarvelCharactersProperties> = characterData.map(
+        (character): MarvelCharactersProperties => {
+          const characterName = character.name;
+          const characterDescription = character.description;
+          const characterThumb = character.thumbnail;
+          return {
+            name: characterName,
+            description: characterDescription,
+            thumbnail: characterThumb
+          };
+        }
+      );
 
       const charactersTranslated = await Promise.all(
         characterData.map(async (character) => {
