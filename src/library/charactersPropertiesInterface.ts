@@ -1,5 +1,8 @@
 export default interface MarvelCharactersProperties {
   name: string;
   description: string;
-  thumbnail: string;
+  thumbnail: {
+    path: string;
+    extension: string;
+  };
 }

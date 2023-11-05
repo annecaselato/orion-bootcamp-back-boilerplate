@@ -1,4 +1,6 @@
-export const timestamp: number = Date.now();
+export const getTimestamp = (): number => {
+  return Date.now();
+};
 
 export const baseURL = (): string => {
   return 'https://gateway.marvel.com/v1/public';
