@@ -8,6 +8,10 @@ function genderTypes(): typeof Gender {
   return Gender;
 }
 
+const minimunAgeAllowed = (): number => {
+  return 10;
+};
+
 export const validationField = [
   body('firstName')
     .notEmpty()
@@ -40,7 +44,7 @@ export const validationField = [
     .bail()
     .custom((birthDate: Date) => {
       const today = moment();
-      if (today.diff(birthDate, 'years') < 10) {
+      if (today.diff(birthDate, 'years') < minimunAgeAllowed()) {
         return Promise.reject(
           'Idade mínima para acesso à plataforma é de 10 anos'
         );
