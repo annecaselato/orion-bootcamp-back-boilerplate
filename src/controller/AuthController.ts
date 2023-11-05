@@ -131,7 +131,7 @@ export class AuthController {
 
       //atribuir token jwt
       const token = await JwtHandler.signToken(
-        { name: user.name, email: user.email },
+        { id: user.id, name: user.name, email: user.email },
         {
           algorithm: 'HS256',
           expiresIn: 7200 //2 horas
