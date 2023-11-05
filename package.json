@@ -12,7 +12,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:generate ./src/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:run",
-    "migration:create": "typeorm-ts-node-commonjs migration:create ./src/migrations/createTestUsers"
+    "migration:create": "typeorm-ts-node-commonjs migration:create ./src/migrations/createTestUsers",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ./src/config/database.ts",
+    "migration:show": "typeorm-ts-node-commonjs migration:show -d ./src/config/database.ts"
   },
   "devDependencies": {
     "@types/cors": "2.8.14",
