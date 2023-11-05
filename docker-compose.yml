@@ -23,6 +23,8 @@ services:
       DB_CONNECTION_STRING: mysql://orion_root:j5m966qp7jiypfda@orion-mysql:3306
       MARVEL_API_KEY: 62b6e0cdc597884f34922038b64eb82e
       MARVEL_PRIVATE_KEY: f6ef79b8c8126fe30a11921202f27cf11696b24c
+      GOOGLE_TRANSLATE_API_KEY: AIzaSyD4vZC8mYs84cLpbMub2oW9_RoD9P13-Hg
+      GOOGLE_TRANSLATE_PROJECT_ID: folkloric-grid-403811
     networks:
       - orion-connect
 
