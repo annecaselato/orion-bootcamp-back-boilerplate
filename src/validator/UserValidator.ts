@@ -73,13 +73,20 @@ export const validationField = [
     .bail()
     .isStrongPassword({
       minLength: 8,
-      minUppercase: 1,
       minNumbers: 1,
       minSymbols: 1
     })
     .withMessage(
-      'Senha deve conter no mínimo 8 caracteres e ao menos 1 letra maiúscula, 1 número e 1 carcter especial'
+      'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
     )
+    .custom((value) => {
+      if (!/[a-zA-Z]/.test(value)) {
+        return Promise.reject(
+          'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
+        );
+      }
+      return Promise.resolve();
+    })
 ];
 
 export function Validator(req: Request, res: Response, next: NextFunction) {
