@@ -62,10 +62,10 @@ export const validationField = [
       const repository = new Repository();
       const existingUser = await repository.findOneByEmail(email);
       if (existingUser) {
-        return false;
+        return Promise.reject('E-mail já cadastrado');
       }
-    })
-    .withMessage('E-mail já cadastrado'), /// AJUSTAR PARA EXIBIR MENSAGEM NO REFINAMENTO
+      return Promise.resolve();
+    }),
 
   body('password')
     .notEmpty()
@@ -73,6 +73,8 @@ export const validationField = [
     .bail()
     .isStrongPassword({
       minLength: 8,
+      minLowercase: 0,
+      minUppercase: 0,
       minNumbers: 1,
       minSymbols: 1
     })
