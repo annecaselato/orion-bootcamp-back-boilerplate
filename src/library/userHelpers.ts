@@ -4,3 +4,11 @@ export enum Gender {
   'non-binary' = 'Não Binário',
   'unknown' = 'Prefiro não dizer'
 }
+
+export function genderTypes(): typeof Gender {
+  return Gender;
+}
+
+export const minimunAgeAllowed = (): number => {
+  return 10;
+};
