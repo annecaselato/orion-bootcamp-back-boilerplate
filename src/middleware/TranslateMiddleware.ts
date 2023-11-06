@@ -1,6 +1,6 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
 import { Request, Response, NextFunction } from 'express';
-import Characters from '../library/CharactersInterface';
+import Character from '../library/CharacterInterface';
 import { extractUntranslatedData } from '../library/charactersAuxiliaryFunctions';
 
 const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
@@ -12,7 +12,7 @@ export default class TranslateMiddleware {
   async translateCharacters(req: Request, res: Response, next: NextFunction) {
     const charactersData = res.locals.charactersData;
     try {
-      const translatedCharacters: Array<Characters> = await Promise.all(
+      const translatedCharacters: Array<Character> = await Promise.all(
         charactersData.map(async (character) => {
           const [nameTranslation]: string =
             await this.translateClient.translate(character.name, 'pt');
