@@ -3,9 +3,9 @@ import { validationField, Validator } from './validator/UserValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
-import MarvelAPIMiddleware from './middleware/MarvelAPIMiddleware';
-import TranslatorAPIMiddleware from './middleware/TranslatorAPIMiddleware';
-import MarvelTranslateController from './controller/MarvelTranslateController';
+import CharactersMiddleware from './middleware/CharactersMiddleware';
+import TranslateMiddleware from './middleware/TranslateMiddleware';
+import CharactersController from './controller/CharactersController';
 
 const router = Router();
 
@@ -18,9 +18,9 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 router.get('/v1/getCharacters/:page', (req, res, next) => {
   const page: number = Number(req.params.page) || 1;
 
-  new MarvelAPIMiddleware().getCharacters(req, res, page, () => {
-    new TranslatorAPIMiddleware().translateCharacters(req, res, (error) => {
-      new MarvelTranslateController().viewCharacters(error, req, res);
+  new CharactersMiddleware().getCharacters(req, res, page, () => {
+    new TranslateMiddleware().translateCharacters(req, res, (error) => {
+      new CharactersController().viewCharacters(error, req, res);
     });
   });
 });
