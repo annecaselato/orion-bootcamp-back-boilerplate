@@ -1,17 +1,11 @@
-import md5 from 'md5';
 import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
 
-export const hashGenarator = async (timestamp: number): Promise<string> => {
-  return md5(
-    timestamp + process.env.MARVEL_PRIVATE_KEY + process.env.MARVEL_API_KEY
-  );
-};
-
-export function extractWantedData(
-  characterers: Array<MarvelCharactersProperties>
+// apenas extrai name, description e thumb
+export function extractUntranslatedData(
+  charactersData: Array<MarvelCharactersProperties>
 ): Array<MarvelCharactersProperties> {
-  const extractedCharacters: Array<MarvelCharactersProperties> =
-    characterers.map((character): MarvelCharactersProperties => {
+  const untranslatedCharacters: Array<MarvelCharactersProperties> =
+    charactersData.map((character): MarvelCharactersProperties => {
       const characterName = character.name;
       const characterDescription = character.description;
       const characterThumb = character.thumbnail;
@@ -21,5 +15,5 @@ export function extractWantedData(
         thumbnail: characterThumb
       };
     });
-  return extractedCharacters;
+  return untranslatedCharacters;
 }

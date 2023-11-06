@@ -1,3 +1,7 @@
+import md5 from 'md5';
+
+// Funções de definição de constantes para get characters API Marvel
+
 export const getTimestamp = (): number => {
   return Date.now();
 };
@@ -16,4 +20,12 @@ export const cardsPerPage = (): number => {
 
 export const maximunValidPage = (): number => {
   return 174;
+};
+
+// Função auxiliar para geração de hash para API Marvel
+
+export const hashGenarator = async (timestamp: number): Promise<string> => {
+  return md5(
+    timestamp + process.env.MARVEL_PRIVATE_KEY + process.env.MARVEL_API_KEY
+  );
 };

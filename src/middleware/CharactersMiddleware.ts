@@ -2,10 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
 import MarvelAPIParams from '../library/marvelAPIParamsInterface';
-import * as marvelGetDefinitions from '../library/marvelGetDefinitions';
-import * as marvelGetHelpers from '../library/utilityFunctions';
+import * as marvelGetHelpers from '../library/marvelGetHelpers';
 
-export default class MarvelAPIMiddleware {
+export default class CharactersMiddleware {
   async getCharacters(
     req: Request,
     res: Response,
@@ -13,18 +12,18 @@ export default class MarvelAPIMiddleware {
     next: NextFunction
   ): Promise<void> {
     try {
-      const timestamp = marvelGetDefinitions.getTimestamp();
+      const timestamp = marvelGetHelpers.getTimestamp();
       const hash = await marvelGetHelpers.hashGenarator(timestamp);
-      const validPage = Math.min(marvelGetDefinitions.maximunValidPage(), page); // evita retornar array vazio
-      const offset = (validPage - 1) * marvelGetDefinitions.cardsPerPage(); // se page === 1, offset = 0
+      const validPage = Math.min(marvelGetHelpers.maximunValidPage(), page); // evita retornar array vazio
+      const offset = (validPage - 1) * marvelGetHelpers.cardsPerPage(); // se page === 1, offset = 0
 
       const limit = Math.min(
-        marvelGetDefinitions.maxMarvelAPILimit(),
-        validPage * marvelGetDefinitions.cardsPerPage()
+        marvelGetHelpers.maxMarvelAPILimit(),
+        validPage * marvelGetHelpers.cardsPerPage()
       ); // limit pode ser até o valor máximo definido pela API (100)
 
       const response = await axios.get<MarvelAPIParams>(
-        `${marvelGetDefinitions.baseURL()}/characters`,
+        `${marvelGetHelpers.baseURL()}/characters`,
         {
           params: {
             offset: offset,
@@ -35,16 +34,10 @@ export default class MarvelAPIMiddleware {
           }
         }
       );
-
       //res.json(response.data);
-      const characterData: Array<MarvelCharactersProperties> =
+      const charactersData: Array<MarvelCharactersProperties> =
         await response.data.data.results;
-
-      const characters: Array<MarvelCharactersProperties> =
-        marvelGetHelpers.extractWantedData(characterData);
-
-      const originalCharactersFiletered = characters;
-      res.locals.originalCharactersFiletered = originalCharactersFiletered;
+      res.locals.charactersData = charactersData;
 
       next();
     } catch (error) {
