@@ -3,7 +3,7 @@ import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entity/User';
 
-export class Repository {
+export class UserRepository {
   private repository = MysqlDataSource.getRepository(User);
 
   constructor() {}
