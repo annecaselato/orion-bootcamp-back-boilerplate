@@ -172,7 +172,7 @@ export class UserController {
     } catch (error) {
       res
         .status(500)
-        .json({ date: new Date(), status: false, data: error.message });
+        .json({ date: new Date(), status: false, data: 'Erro interno do servidor' });
     }
   };
 }

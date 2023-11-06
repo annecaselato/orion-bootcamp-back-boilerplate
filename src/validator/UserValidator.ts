@@ -62,10 +62,10 @@ export const validationField = [
       const repository = new Repository();
       const existingUser = await repository.findOneByEmail(email);
       if (existingUser) {
-        return false;
+        return Promise.reject('E-mail já cadastrado');
       }
-    })
-    .withMessage('E-mail já cadastrado'), /// AJUSTAR PARA EXIBIR MENSAGEM NO REFINAMENTO
+      return Promise.resolve();
+    }),
 
   body('password')
     .notEmpty()
@@ -73,13 +73,22 @@ export const validationField = [
     .bail()
     .isStrongPassword({
       minLength: 8,
-      minUppercase: 1,
+      minLowercase: 0,
+      minUppercase: 0,
       minNumbers: 1,
       minSymbols: 1
     })
     .withMessage(
-      'Senha deve conter no mínimo 8 caracteres e ao menos 1 letra maiúscula, 1 número e 1 carcter especial'
+      'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
     )
+    .custom((value) => {
+      if (!/[a-zA-Z]/.test(value)) {
+        return Promise.reject(
+          'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
+        );
+      }
+      return Promise.resolve();
+    })
 ];
 
 export function Validator(req: Request, res: Response, next: NextFunction) {
