@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
-import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
 import MarvelAPIParams from '../library/marvelAPIParamsInterface';
 import * as marvelGetHelpers from '../library/marvelGetHelpers';
 
@@ -35,8 +34,7 @@ export default class CharactersMiddleware {
         }
       );
       //res.json(response.data);
-      const charactersData: Array<MarvelCharactersProperties> =
-        await response.data.data.results;
+      const charactersData = await response.data.data.results;
       res.locals.charactersData = charactersData;
 
       next();

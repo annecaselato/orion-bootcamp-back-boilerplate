@@ -1,6 +1,6 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
 import { Request, Response, NextFunction } from 'express';
-import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
+import Characters from '../library/CharactersInterface';
 import { extractUntranslatedData } from '../library/charactersAuxiliaryFunctions';
 
 const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
@@ -10,11 +10,10 @@ export default class TranslateMiddleware {
   translateClient = new Translate({ projectId, key: apiKey });
 
   async translateCharacters(req: Request, res: Response, next: NextFunction) {
-    const charactersData: Array<MarvelCharactersProperties> =
-      res.locals.charactersData;
+    const charactersData = res.locals.charactersData;
     try {
-      const translatedCharacters = await Promise.all(
-        charactersData.map(async (character: MarvelCharactersProperties) => {
+      const translatedCharacters: Array<Characters> = await Promise.all(
+        charactersData.map(async (character) => {
           const [nameTranslation]: string =
             await this.translateClient.translate(character.name, 'pt');
           const [descriptionTranslation]: string =
