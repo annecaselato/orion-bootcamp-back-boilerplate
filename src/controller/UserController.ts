@@ -170,9 +170,11 @@ export class UserController {
       const sendEmail = new EmailSender();
       sendEmail.sendConfirmationEmail(await user);
     } catch (error) {
-      res
-        .status(500)
-        .json({ date: new Date(), status: false, data: 'Erro interno do servidor' });
+      res.status(500).json({
+        date: new Date(),
+        status: false,
+        data: 'Erro interno do servidor'
+      });
     }
   };
 }

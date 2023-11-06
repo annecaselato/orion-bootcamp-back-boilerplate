@@ -1,16 +1,8 @@
 import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { Repository } from '../repository/UserRepository';
-import { Gender } from '../library/genderTypes';
+import { genderTypes, minimunAgeAllowed } from '../library/userHelpers';
 import moment from 'moment';
-
-function genderTypes(): typeof Gender {
-  return Gender;
-}
-
-const minimunAgeAllowed = (): number => {
-  return 10;
-};
 
 export const validationField = [
   body('firstName')
