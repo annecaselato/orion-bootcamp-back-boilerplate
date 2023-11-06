@@ -14,13 +14,13 @@ export class Metrics {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User) // Define uma relação com a entidade User
-  @JoinColumn({ name: 'user_id' }) // Define a coluna de referência em Metrics
-  user: User; // Isso representa a relação com a tabela User
+  @ManyToOne(() => User) 
+  @JoinColumn({ name: 'user_id' }) 
+  user: User; 
 
-  @ManyToOne(() => Character) // Define uma relação com a entidade Character
-  @JoinColumn({ name: 'character_id' }) // Define a coluna de referência em Metrics
-  character: Character; // Isso representa a relação com a tabela Character
+  @ManyToOne(() => Character) 
+  @JoinColumn({ name: 'character_id' }) 
+  character: Character; 
 
   @Column({ type: 'int' })
   clicks: number;

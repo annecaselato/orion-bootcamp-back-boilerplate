@@ -49,11 +49,12 @@ export class CharacterController {
 
       res
         .status(200)
-        .send(
-          'O usuário ' +
-            req.body.user.id +
-            ' selecionou o personagem ' +
-            character_id
+        .send({date: new Date(),
+          status: false,
+          data: 'O usuário ' +
+          req.body.user.id +
+          ' selecionou o personagem ' +
+          character_id}
         );
     } catch (error) {
       return res.status(500).send({
