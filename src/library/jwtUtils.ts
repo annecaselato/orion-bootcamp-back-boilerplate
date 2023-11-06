@@ -12,4 +12,19 @@ export class JwtUtils {
   public static generateJWTToken(data: object, expiresIn: string): Promise<string> {
     return jwt.sign(data, secretKey, { expiresIn });
   }
+
+  /**
+   * Verifies a JWT token for authentication.
+   * @param token - The JWT token to be verified.
+   * @returns An object representing the verified data or a JWT verification error.
+   * @throws If the token is invalid or an error occurs during verification, an error object is returned.
+   */
+  public static verifyJWTToken(token: string): object | jwt.VerifyErrors {
+    try {
+      const verified = jwt.verify(token, secretKey);
+      return verified;
+    } catch (error) {
+      return { error };
+    }
+  }
 }
