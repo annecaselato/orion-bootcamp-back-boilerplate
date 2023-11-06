@@ -14,6 +14,8 @@ services:
       - 4444:4444
     command: npm run start:dev
     environment:
+      GMAIL_APP_PASSWORD: zjae xvxq rqlo sidf
+      GMAIL_APP_USER: orionwallteam@gmail.com
       JWT_SECRET: 5f4dcc3b5aa765d61d8327deb882cf99
       NODE_ENV: development
       SERVER_PORT: 4444
