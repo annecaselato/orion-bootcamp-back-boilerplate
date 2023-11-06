@@ -89,15 +89,16 @@ export class UserController {
    *               example:
    *                 date: 2023-10-28T19:32:46.116Z
    *                 status: true
-   *                 id: 10
-   *                 firstName: User
-   *                 lastName: tester
-   *                 gender: Prefiro não dizer
-   *                 birthDate: 2020-02-13
-   *                 email: email@email.com
-   *                 createdAt: 2023-10-28T19:32:46.000Z
-   *                 lastUpdate: 2023-10-28T19:32:46.000Z
-   *                 isActivated: false
+   *                 data:
+   *                   id: 10
+   *                   firstName: User
+   *                   lastName: tester
+   *                   gender: Prefiro não dizer
+   *                   birthDate: 2020-02-13
+   *                   email: email@email.com
+   *                   createdAt: 2023-10-28T19:32:46.000Z
+   *                   lastUpdate: 2023-10-28T19:32:46.000Z
+   *                   isActivated: false
    *       '400':
    *         description: Um ou mais dados fornecidos na requisição não atendem aos pré-requisitos
    *         content:
@@ -133,11 +134,11 @@ export class UserController {
    *                 date: 2023-10-28T16:48:16.792Z
    *                 status: false
    *                 data:
-   *                 type: field
-   *                 value: Mulhe
-   *                 msg: Selecione um gênero válido
-   *                 path: gender
-   *                 location: body
+   *                   type: field
+   *                   value: Mulhe
+   *                   msg: Selecione um gênero válido
+   *                   path: gender
+   *                   location: body
    *       '500':
    *         description: Erro interno do servidor. Não foi possível processar os dados no banco
    *         content:
