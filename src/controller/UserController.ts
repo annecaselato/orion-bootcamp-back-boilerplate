@@ -157,7 +157,7 @@ export class UserController {
    *               example:
    *                 date: 2023-10-28T19:59:19.751Z
    *                 status: false
-   *                 data: Duplicate entry 'email@email.com' for key 'users.IDX_97672ac88f789774dd47f7c8be
+   *                 data: Erro interno do servidor
    */
   create = async (req: Request, res: Response) => {
     try {
