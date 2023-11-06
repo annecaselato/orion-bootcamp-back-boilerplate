@@ -1,7 +1,7 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
 import { Request, Response, NextFunction } from 'express';
 import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
-import { extractUntranslatedData } from '../library/utilityFunctions';
+import { extractUntranslatedData } from '../library/charactersAuxiliaryFunctions';
 
 const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
 const projectId = process.env.GOOGLE_TRANSLATE_PROJECT_ID; // ID do projeto google Translate

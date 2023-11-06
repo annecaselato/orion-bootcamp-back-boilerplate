@@ -1,4 +1,4 @@
-import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
+import MarvelCharactersProperties from './charactersPropertiesInterface';
 
 // apenas extrai name, description e thumb
 export function extractUntranslatedData(
