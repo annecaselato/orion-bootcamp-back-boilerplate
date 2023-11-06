@@ -13,7 +13,7 @@ export default class CharactersController {
    *         required: false
    *         schema:
    *           type: integer
-   *           minimun: 1
+   *           minimum: 1
    *           default: 1
    *         description: número da página de interesse para visualização dos personagens
    *         example: 2
@@ -26,8 +26,9 @@ export default class CharactersController {
    *               type: object
    *               properties:
    *                 date:
-   *                   type: date
+   *                   type: string
    *                   description: Data de envio da resposta à requisição
+   *                   format: date
    *                 status:
    *                   type: boolean
    *                   description: Status de execução da requisição
@@ -45,22 +46,16 @@ export default class CharactersController {
    *                       description: Descrição do personagem
    *                     thumbnail:
    *                       type: string
-   *                       description: thumbnail url do personagem em formato string
-   *               examples:
-   *                 1:
-   *                  date: 2023-10-28T19:32:46.116Z
-   *                  status: true
-   *                  translated: true
-   *                  name: Vingadores
-   *                  description: Os heróis mais poderosos da Terra uniram forças para enfrentar ameaças que eram grandes demais para serem enfrentadas por qualquer herói. Com uma lista que inclui Capitão América, Homem de Ferro, Homem-Formiga, Hulk, Thor, Vespa e dezenas de outros ao longo dos anos, os Vingadores passaram a ser considerados o time número 1 da Terra.
-   *                  thumbnail: ttp://i.annihil.us/u/prod/marvel/i/mg/9/20/5102c774ebae7.jpg
-   *                 2:
-   *                  date: 2023-10-28T19:32:46.116Z
-   *                  status: true
-   *                  translated: false
-   *                  name: Avengers
-   *                  description: Earth's Mightiest Heroes joined forces to face threats that were too great for any one hero to face. With a roster that includes Captain America, Iron Man, Ant-Man, Hulk, Thor, Wasp and dozens of others over the years, the Avengers have come to be considered Earth's #1 team.
-   *                  thumbnail: ttp://i.annihil.us/u/prod/marvel/i/mg/9/20/5102c774ebae7.jpg
+   *                       description: thumbnail URL do personagem em formato string
+   *               example:
+   *                     date: "2023-10-28T19:32:46.116Z"
+   *                     status: true
+   *                     translated: true
+   *                     data:
+   *                       name: Vingadores
+   *                       description: Os heróis mais poderosos da Terra uniram forças para enfrentar ameaças que eram grandes demais para serem enfrentadas por qualquer herói. Com uma lista que inclui Capitão América, Homem de Ferro, Homem-Formiga, Hulk, Thor, Vespa e dezenas de outros ao longo dos anos, os Vingadores passaram a ser considerados o time número 1 da Terra.
+   *                       thumbnail: "http://i.annihil.us/u/prod/marvel/i/mg/9/20/5102c774ebae7.jpg"
+   
    *       '500':
    *         description: Erro interno do servidor. Não foi possível exibir os dados
    *         content:
@@ -69,8 +64,9 @@ export default class CharactersController {
    *               type: object
    *               properties:
    *                 date:
-   *                   type: date
+   *                   type: string
    *                   description: Data de envio da resposta à requisição
+   *                   format: date
    *                 status:
    *                   type: boolean
    *                   description: Status de execução da requisição
