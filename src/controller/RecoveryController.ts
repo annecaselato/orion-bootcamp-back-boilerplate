@@ -29,7 +29,7 @@ export class RecoveryController {
     const user = await UserRepository.findUserByEmail(email);
 
     if (!user) {
-      return res.status(400).end();
+      return res.status(200).end();
     }
 
     await UserRepository.addPasswordRecoveryToken(user, user.id);
