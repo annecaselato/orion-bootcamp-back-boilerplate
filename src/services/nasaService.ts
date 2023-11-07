@@ -34,7 +34,7 @@ export class NasaService {
     try {
       const response = await axios.get(this.URL);
       return response.data.soles;
-    } catch (error) {
+    } catch (error: string) {
       return 'Erro na solicitação à API: ' + error.message;
     }
   }

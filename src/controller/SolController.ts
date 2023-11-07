@@ -9,8 +9,7 @@ export class SolController {
    * /v1/soles:
    *   get:
    *     summary: Exposes soles data for frontend data consumption.
-   *     tags:
-   *       - soles
+   *     tags: [Soles]
    *     description: Days and climate data from mars. Maximum and minimum temperatures each mars day.
    *     consumes:
    *       - application/json
@@ -51,20 +50,11 @@ export class SolController {
 
       const solesData: Sol[] = await latestSols.getFirstFourteenSoles();
 
-      /**
-       *Here the sols ares sorted in DESCENDING order, in regards to the solNumberMarsDay field
-       *  in order to have it correctly saved in the database.
-       */
-      solesData.sort((a: Sol, b: Sol) => a.solNumberMarsDay - b.solNumberMarsDay);
+      solesData.sort((recentSol: Sol, oldSol: Sol) => recentSol.solNumberMarsDay - oldSol.solNumberMarsDay);
 
       await SolRepository.Save14MarsDays(solesData);
 
-      /**
-       *Here the sols ares sorted in ASCENDING order, because it allows for the JSON
-       *  provided to be in descending order (contrary to the database), for easier
-       *  fetching in the front end.
-       */
-      solesData.sort((a: Sol, b: Sol) => b.solNumberMarsDay - a.solNumberMarsDay);
+      solesData.sort((recentSol: Sol, oldSol: Sol) => oldSol.solNumberMarsDay - recentSol.solNumberMarsDay);
 
       res.status(200).json(solesData);
     } catch {
