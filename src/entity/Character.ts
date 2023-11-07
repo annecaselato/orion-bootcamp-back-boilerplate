@@ -20,10 +20,10 @@ export class Character {
   @Column({ type: 'varchar', length: 128, default: null })
   ptName: string;
 
-  @Column({ type: 'varchar', length: 2048, default: null })
+  @Column({ type: 'varchar', length: 2048 })
   description: string;
 
-  @Column({ type: 'varchar', length: 256, default: null })
+  @Column({ type: 'varchar', length: 256 })
   thumb: string;
 
   @Column({ default: false })
