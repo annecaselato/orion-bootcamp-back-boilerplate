@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate
+} from 'typeorm';
 
 @Entity('characters')
 export class Character {
@@ -36,5 +42,4 @@ export class Character {
   updateDates() {
     this.lastUpdate = new Date();
   }
-
 }
