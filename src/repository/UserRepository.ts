@@ -1,5 +1,4 @@
 import { MysqlDataSource } from '../config/database';
-import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entity/User';
 
@@ -8,11 +7,13 @@ export class Repository {
 
   constructor() {}
 
-  async createAndSave(req: Request) {
-    const { firstName, lastName, gender, birthDate, email, password } =
-      req.body;
+  private salt = () => 10;
 
-    const salt = 10;
+  async createAndSave(userData) {
+    const { firstName, lastName, gender, birthDate, email, password } =
+      userData;
+
+    const salt = this.salt();
     const hashpassword = await bcrypt.hash(password, salt);
 
     const newUser: User = new User();

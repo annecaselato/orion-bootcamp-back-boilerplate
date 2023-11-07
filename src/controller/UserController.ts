@@ -163,7 +163,8 @@ export class UserController {
   create = async (req: Request, res: Response) => {
     try {
       const repository: Repository = new Repository();
-      const user: Promise<User> = repository.createAndSave(req);
+      const userData = req.body;
+      const user: Promise<User> = repository.createAndSave(userData);
       const savedUser: User = await repository.findOneByEmail(
         (await user).email
       );
