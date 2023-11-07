@@ -1,7 +1,7 @@
-import MarvelCharactersProperties from './charactersPropertiesInterface';
+import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
 
 // apenas extrai name, description e thumb
-export function extractUntranslatedData(
+export function extractCharacters(
   charactersData: Array<MarvelCharactersProperties>
 ): Array<MarvelCharactersProperties> {
   const untranslatedCharacters: Array<MarvelCharactersProperties> =

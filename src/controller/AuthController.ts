@@ -1,7 +1,7 @@
 import { MysqlDataSource } from '../config/database';
 import { User } from '../entity/User';
 import { Request, Response } from 'express';
-import JwtHandler from '../jwtUtils/JwtHandler';
+import JwtHandler from '../handlers/JwtHandler';
 import bcrypt from 'bcrypt';
 
 export class AuthController {

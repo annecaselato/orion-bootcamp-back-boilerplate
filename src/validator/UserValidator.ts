@@ -1,7 +1,7 @@
 import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
 import { Repository } from '../repository/UserRepository';
-import { genderTypes, minimunAgeAllowed } from '../library/userHelpers';
+import { genderTypes, minimunAgeAllowed } from '../utils/userHelpers';
 import moment from 'moment';
 
 export const validationField = [

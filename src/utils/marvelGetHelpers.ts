@@ -2,6 +2,10 @@ import md5 from 'md5';
 
 // Funções de definição de constantes para get characters API Marvel
 
+export const initialPage = (): number => {
+  return 1;
+};
+
 export const getTimestamp = (): number => {
   return Date.now();
 };
