@@ -3,8 +3,6 @@ import { validationField, Validator } from './validator/userValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
-import CharactersMiddleware from './middleware/CharactersMiddleware';
-import TranslateMiddleware from './middleware/TranslateMiddleware';
 import CharactersController from './controller/CharactersController';
 
 const router = Router();
@@ -17,12 +15,7 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 //TODO: colocar middleware de autenticação
 router.get('/v1/getCharacters/:page', authenticateToken, (req, res, next) => {
   const page: number = Number(req.params.page) || 1;
-
-  new CharactersMiddleware().getCharacters(req, res, page, () => {
-    new TranslateMiddleware().translateCharacters(req, res, (error) => {
-      new CharactersController().viewCharacters(error, req, res);
-    });
-  });
+    new CharactersController().viewCharacters(req, res);
 });
 
 router.post('/v1/login', new AuthController().login);
