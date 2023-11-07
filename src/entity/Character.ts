@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
 
 @Entity('characters')
 export class Character {
@@ -16,4 +16,25 @@ export class Character {
 
   @Column({ type: 'varchar', length: 256 })
   thumb: string;
+
+  @Column({ default: false })
+  isTranslated: boolean;
+
+  @Column({ update: false })
+  createdAt: Date;
+
+  @Column()
+  lastUpdate: Date;
+
+  @BeforeInsert()
+  createdAtDate() {
+    this.createdAt = new Date();
+    this.lastUpdate = new Date();
+  }
+
+  @BeforeUpdate()
+  updateDates() {
+    this.lastUpdate = new Date();
+  }
+
 }
