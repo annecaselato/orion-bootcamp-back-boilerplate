@@ -1,17 +1,14 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
-import { Request, Response, NextFunction } from 'express';
 import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
-import { extractUntranslatedData } from '../library/charactersAuxiliaryFunctions';
+import { extractCharacters } from '../utils/formatHelpers';
 
 const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
 const projectId = process.env.GOOGLE_TRANSLATE_PROJECT_ID; // ID do projeto google Translate
 
-export default class TranslateMiddleware {
+export default class FormatHandler {
   translateClient = new Translate({ projectId, key: apiKey });
 
-  async translateCharacters(req: Request, res: Response, next: NextFunction) {
-    const charactersData: Array<MarvelCharactersProperties> =
-      res.locals.charactersData;
+  async extractCharactersAndTryTotranslate(charactersData) {
     try {
       const translatedCharacters = await Promise.all(
         charactersData.map(async (character: MarvelCharactersProperties) => {
@@ -20,21 +17,20 @@ export default class TranslateMiddleware {
           const [descriptionTranslation]: string =
             await this.translateClient.translate(character.description, 'pt');
           const characterThumb: string = `${character.thumbnail.path}.jpg`;
-
-          return {
+          const translatedCharacters = {
             name: nameTranslation,
             description: descriptionTranslation,
             thumbnail: characterThumb
           };
+          return translatedCharacters;
         })
       );
-      res.locals.translatedCharacters = translatedCharacters;
-      next();
+      return { translated: true, translatedCharacters };
     } catch (error) {
       // Se houver erro na tradução, retorna o personagem original não traduzido
-      const untranslatedCharacters = extractUntranslatedData(charactersData);
-      res.locals.untranslatedCharacters = untranslatedCharacters;
-      next(error);
+      console.error('Não foi possível traduzir os dados');
+      const untranslatedCharacters = extractCharacters(charactersData);
+      return { translated: false, untranslatedCharacters };
     }
   }
 }

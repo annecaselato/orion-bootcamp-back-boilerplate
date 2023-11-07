@@ -1,17 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
 import MarvelAPIParams from '../library/marvelAPIParamsInterface';
-import * as marvelGetHelpers from '../library/marvelGetHelpers';
+import * as marvelGetHelpers from '../utils/marvelGetHelpers';
 
-export default class CharactersMiddleware {
-  async getCharacters(
-    req: Request,
-    res: Response,
-    page: number = 1,
-    next: NextFunction
-  ): Promise<void> {
+export default class CharactersHandler {
+  async getCharacters(): Promise<MarvelCharactersProperties[]> {
     try {
+      const page: number = marvelGetHelpers.initialPage();
       const timestamp = marvelGetHelpers.getTimestamp();
       const hash = await marvelGetHelpers.hashGenarator(timestamp);
       const validPage = Math.min(marvelGetHelpers.maximunValidPage(), page); // evita retornar array vazio
@@ -37,17 +32,10 @@ export default class CharactersMiddleware {
       //res.json(response.data);
       const charactersData: Array<MarvelCharactersProperties> =
         await response.data.data.results;
-      res.locals.charactersData = charactersData;
-
-      next();
+      return charactersData;
     } catch (error) {
       console.error(error);
-
-      res.status(500).json({
-        date: new Date(),
-        status: false,
-        data: 'Erro interno do servidor'
-      });
+      return Promise.reject('Erro interno do servidor');
     }
   }
 }
