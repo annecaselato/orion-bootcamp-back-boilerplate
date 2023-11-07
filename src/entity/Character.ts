@@ -11,16 +11,19 @@ export class Character {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 128 })
-  en_name: string;
+  @Column({ type: 'int' })
+  idMarvel: number;
 
   @Column({ type: 'varchar', length: 128 })
-  pt_name: string;
+  enName: string;
 
-  @Column({ type: 'varchar', length: 2048 })
+  @Column({ type: 'varchar', length: 128, default: null })
+  ptName: string;
+
+  @Column({ type: 'varchar', length: 2048, default: null })
   description: string;
 
-  @Column({ type: 'varchar', length: 256 })
+  @Column({ type: 'varchar', length: 256, default: null })
   thumb: string;
 
   @Column({ default: false })

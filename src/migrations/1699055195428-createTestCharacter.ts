@@ -9,16 +9,24 @@ export class CreateTestCharacter1699055195428 implements MigrationInterface {
       .into(Character)
       .values([
         {
-          en_name: 'Captain America',
-          pt_name: 'Capitão América',
+          idMarvel: 11111,
+          enName: 'Captain America',
+          ptName: 'Capitão América',
           description: 'capitao que defende a america',
-          thumb: 'http://qwdwqdq.com/qwdwqdwq.jpg'
+          thumb: 'http://qwdwqdq.com/qwdwqdwq.jpg',
+          isTranslated: true,
+          createdAt: new Date(),
+          lastUpdate: new Date()
         },
         {
-          en_name: 'Iron Man',
-          pt_name: 'Homem de Ferro',
+          idMarvel: 22222,
+          enName: 'Iron Man',
+          ptName: 'Homem de Ferro',
           description: 'homem com armadura de ferro',
-          thumb: 'http://qwdwqdq.com/qw31asddjjgwq.jpg'
+          thumb: 'http://qwdwqdq.com/qw31asddjjgwq.jpg',
+          isTranslated: true,
+          createdAt: new Date(),
+          lastUpdate: new Date()
         }
       ])
       .execute();
