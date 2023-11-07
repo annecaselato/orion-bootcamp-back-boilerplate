@@ -15,7 +15,7 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 });
 
 //TODO: colocar middleware de autenticação
-router.get('/v1/getCharacters/:page', (req, res, next) => {
+router.get('/v1/getCharacters/:page', authenticateToken, (req, res, next) => {
   const page: number = Number(req.params.page) || 1;
 
   new CharactersMiddleware().getCharacters(req, res, page, () => {
