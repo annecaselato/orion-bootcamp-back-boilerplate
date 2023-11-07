@@ -12,6 +12,7 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
+//TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
   '/v1/select/:character_id',
   authenticateToken,

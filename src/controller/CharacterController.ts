@@ -4,6 +4,81 @@ import { MysqlDataSource } from '../config/database';
 import { Character } from '../entity/Character';
 import { Metrics } from '../entity/Metrics';
 
+/**
+ * @swagger
+ *
+ * /v1/select/{character_id}:
+ *   get:
+ *     summary: Requisita informações sobre personagem
+ *     description: Retorna detalhes sobre um personagem selecionado e realiza a contabilização da métrica de cliques por usuário por card
+ *     security:
+ *       - BearerAuth: []
+ *     tags: [Characters]
+ *     parameters:
+ *       - in: path
+ *         name: character_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: o ID do personagem
+ *     responses:
+ *       '200':
+ *           description: 'Requisição bem sucedida.'
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   date:
+ *                     type: object
+ *                   status:
+ *                     type: boolean
+ *                   data:
+ *                     type: string
+ *                     description: 'objeto json de retorno'
+ *               example:
+ *                 date: {}
+ *                 status: true
+ *                 data: 'O usuário 4 selecionou o personagem 1'
+ *       '404':
+ *           description: 'Requisição falhou.'
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   date:
+ *                     type: object
+ *                   status:
+ *                     type: boolean
+ *                   data:
+ *                     type: string
+ *                     description: 'objeto json de retorno'
+ *               example:
+ *                 date: {}
+ *                 status: false
+ *                 data: "Personagem não encontrado."
+ *       '500':
+ *           description: 'Erro interno.'
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   date:
+ *                     type: object
+ *                   status:
+ *                     type: boolean
+ *                   data:
+ *                     type: string
+ *                     description: 'objeto json de retorno'
+ *               example:
+ *                 date: {}
+ *                 status: false
+ *                 data: "Um erro interno ocorreu."
+ *
+ */
 export class CharacterController {
   async countClick(req: Request, res: Response) {
     try {
@@ -31,12 +106,28 @@ export class CharacterController {
           }
         });
 
+        if (!user) {
+          return res.status(404).send({
+            date: new Date(),
+            status: false,
+            data: 'Usuário não encontrado.'
+          });
+        }
+
         //find no personagem
         const character: Character = await characterRepository.findOne({
           where: {
             id: character_id
           }
         });
+
+        if (!character) {
+          return res.status(404).send({
+            date: new Date(),
+            status: false,
+            data: 'Personagem não encontrado.'
+          });
+        }
 
         //cria nova métrica na tabela
         const metricsEntry = new Metrics();
@@ -47,17 +138,15 @@ export class CharacterController {
         await MysqlDataSource.manager.save(metricsEntry);
       }
 
-      res
-        .status(200)
-        .send({
-          date: new Date(),
-          status: false,
-          data:
-            'O usuário ' +
-            req.body.user.id +
-            ' selecionou o personagem ' +
-            character_id
-        });
+      return res.status(200).send({
+        date: new Date(),
+        status: true,
+        data:
+          'O usuário ' +
+          req.body.user.id +
+          ' selecionou o personagem ' +
+          character_id
+      });
     } catch (error) {
       return res.status(500).send({
         date: new Date(),
