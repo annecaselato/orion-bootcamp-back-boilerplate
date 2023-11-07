@@ -43,6 +43,7 @@
     "md5": "2.3.0",
     "moment": "2.29.4",
     "mysql2": "3.6.2",
+    "node-cron": "3.0.2",
     "nodemailer": "6.9.6",
     "reflect-metadata": "0.1.13",
     "swagger-jsdoc": "6.2.8",
