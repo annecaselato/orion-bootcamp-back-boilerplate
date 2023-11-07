@@ -16,7 +16,9 @@ export class CharacterController {
         skip: offset
       });
 
-      return res.json(characters);
+      return res
+        .status(200)
+        .json({ date: new Date(), status: true, data: characters });
     } catch (error) {
       return res.status(500).send({
         date: new Date(),
