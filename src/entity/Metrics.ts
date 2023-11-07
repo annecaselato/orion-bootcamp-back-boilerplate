@@ -14,13 +14,13 @@ export class Metrics {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User) 
-  @JoinColumn({ name: 'user_id' }) 
-  user: User; 
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
-  @ManyToOne(() => Character) 
-  @JoinColumn({ name: 'character_id' }) 
-  character: Character; 
+  @ManyToOne(() => Character)
+  @JoinColumn({ name: 'character_id' })
+  character: Character;
 
   @Column({ type: 'int' })
   clicks: number;
