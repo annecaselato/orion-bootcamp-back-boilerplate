@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { validationField, Validator } from './validator/UserValidator';
+import { validationField, Validator } from './validator/userValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';

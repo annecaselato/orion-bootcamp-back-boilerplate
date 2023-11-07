@@ -56,7 +56,7 @@ export const validationField = [
       if (existingUser) {
         return Promise.reject('E-mail já cadastrado');
       }
-      return Promise.resolve();
+      return true;
     }),
 
   body('password')
