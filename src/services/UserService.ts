@@ -1,10 +1,9 @@
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
 import { outlookTransporter } from '../utils/nodeMailer';
-import { jwtRecoverPassword } from '../utils/jwtToken';
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -51,7 +50,14 @@ export class UserService {
       .where('user.email = :email', { email })
       .getOne();
     if (user) {
-      const token = await jwtRecoverPassword.createToken(String(user.id));
+      const token = jwt.sign(
+        { data: String(user.id) },
+        (process.env.JWT_PASS as Secret) || null,
+        {
+          expiresIn: '1d',
+          algorithm: 'HS256'
+        }
+      );
       await outlookTransporter.sendEmail(token, user.email, user.fullName);
     }
   }
