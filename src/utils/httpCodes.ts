@@ -1,7 +1,7 @@
-export default class httpCodes {
-  readonly OK: number = 200;
-  readonly CREATED: number = 201;
-  readonly BAD_REQUEST: number = 400;
-  readonly NOT_FOUND: number = 404;
-  readonly INTERNAL_SERVER_ERROR: number = 500;
+export enum httpCodes {
+  OK = 200,
+  CREATED = 201,
+  BAD_REQUEST = 400,
+  NOT_FOUND = 404,
+  INTERNAL_SERVER_ERROR = 500
 }
