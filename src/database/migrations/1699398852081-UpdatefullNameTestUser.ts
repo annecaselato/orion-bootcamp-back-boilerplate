@@ -1,13 +1,13 @@
 import { User } from '../entity/User';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class UpdateInitialUser1698452645417 implements MigrationInterface {
+export class UpdatefullNameTestUser1699398852081 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager
       .createQueryBuilder()
       .update(User)
-      .set({ name: 'Gustavo Gonçalves' })
-      .where('id = id', { id: 1 })
+      .set({ fullName: 'Gustavo Gonçalves da Silva' })
+      .where('email = email', { email: 'gustavogonçalves@gmail.com' })
       .execute();
   }
 
@@ -15,8 +15,8 @@ export class UpdateInitialUser1698452645417 implements MigrationInterface {
     await queryRunner.manager
       .createQueryBuilder()
       .update(User)
-      .set({ name: '' })
-      .where('id = id', { id: 1 })
+      .set({ fullName: '' })
+      .where('email = email', { email: 'gustavogonçalves@gmail.com' })
       .execute();
   }
 }
