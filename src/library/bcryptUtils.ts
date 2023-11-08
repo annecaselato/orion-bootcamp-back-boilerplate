@@ -13,7 +13,10 @@ export class BcryptUtils {
   }
 
   /**
-   *Compares the actual password with its encrypted version stored in the database.
+   * comparePassword
+   *
+   * Compares the actual password with its encrypted version stored in the database.
+   *
    * @param plainTextPassword representing actual password by user.
    * @param hashedPassword representing ecrypted password.
    * @returns {Promise<boolean>} True or false regarding correspondence between the 2 passwords.
