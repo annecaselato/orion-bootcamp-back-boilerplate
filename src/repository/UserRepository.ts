@@ -2,7 +2,7 @@ import { MysqlDataSource } from '../config/database';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entity/User';
 
-export class Repository {
+export class UserRepository {
   private repository = MysqlDataSource.getRepository(User);
 
   constructor() {}

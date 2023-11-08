@@ -1,4 +1,7 @@
 import { Request, Response } from 'express';
+import CharacterRepository from '../repository/CharacterRepository';
+import Character from '../library/CharacterInterface';
+import CharacterModel from '../library/CharacterInterface';
 
 export default class CharactersController {
   /**
@@ -79,11 +82,17 @@ export default class CharactersController {
    *                 data: Erro interno do servidor
    */
   viewCharacters(error, req: Request, res: Response) {
+    let untranslatedCharacters: Array<CharacterModel>;
+    let translatedCharacters: Array<CharacterModel>;
+
+    const repository: CharacterRepository = new CharacterRepository();
+
     if (error) {
       console.error('Erro ao traduzir os dados: ', error);
-      const untranslatedCharacters = res.locals.untranslatedCharacters;
+      untranslatedCharacters = res.locals.untranslatedCharacters;
 
       // Se houver erro na tradução, retorna o personagem original não traduzido
+      repository.createAndSave(untranslatedCharacters);
       res.status(200).json({
         date: new Date(),
         status: true,
@@ -91,7 +100,9 @@ export default class CharactersController {
         data: untranslatedCharacters
       });
     } else {
-      const translatedCharacters = res.locals.translatedCharacters;
+      translatedCharacters = res.locals.translatedCharacters;
+
+      repository.createAndSave(translatedCharacters);
       res.status(200).json({
         date: new Date(),
         status: true,

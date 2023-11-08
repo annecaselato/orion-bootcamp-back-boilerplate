@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Repository } from '../repository/UserRepository';
+import { UserRepository } from '../repository/UserRepository';
 import { User } from '../entity/User';
 import { EmailSender } from '../library/mail';
 
@@ -162,7 +162,7 @@ export class UserController {
    */
   create = async (req: Request, res: Response) => {
     try {
-      const repository: Repository = new Repository();
+      const repository: UserRepository = new UserRepository();
       const userData = req.body;
       const user: Promise<User> = repository.createAndSave(userData);
       const savedUser: User = await repository.findOneByEmail(
