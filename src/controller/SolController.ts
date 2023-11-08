@@ -3,12 +3,15 @@ import { NasaService } from '../services/nasaService';
 import { Sol } from '../entity/Sol';
 import { SolRepository } from '../repositories/solRepository';
 
+/**
+ * Controller for exposing data in the soles endpoint, and also saving the data to the database.
+ */
 export class SolController {
   /**
    * @swagger
    * /v1/soles:
    *   get:
-   *     summary: Exposes soles data for frontend data consumption.
+   *     summary: Exposes soles data for frontend data consumption, after saving this data in the database.
    *     tags: [Soles]
    *     description: Days and climate data from mars. Maximum and minimum temperatures each mars day.
    *     consumes:
@@ -48,15 +51,13 @@ export class SolController {
     try {
       const latestSols: NasaService = new NasaService();
 
-      const solesData: Sol[] = await latestSols.getFirstFourteenSoles();
+      const solesData = await latestSols.getFirstFourteenSoles();
 
-      solesData.sort((recentSol: Sol, oldSol: Sol) => recentSol.solNumberMarsDay - oldSol.solNumberMarsDay);
+      await SolRepository.save14MarsDays(solesData);
 
-      await SolRepository.Save14MarsDays(solesData);
+      const listedSoles: Sol[] = await SolRepository.listSoles();
 
-      solesData.sort((recentSol: Sol, oldSol: Sol) => oldSol.solNumberMarsDay - recentSol.solNumberMarsDay);
-
-      res.status(200).json(solesData);
+      res.status(200).json(listedSoles);
     } catch {
       res.status(500).json({ error: 'Erro ao buscar dados dos soles' });
     }
