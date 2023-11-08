@@ -45,10 +45,7 @@ export class UserService {
   }
 
   async recoverPassword(email: string): Promise<void> {
-    const user: User = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.email = :email', { email })
-      .getOne();
+    const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const token = jwt.sign(
         { data: String(user.id) },
