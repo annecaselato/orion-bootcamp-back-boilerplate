@@ -12,6 +12,13 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
+//TODO: colocar middleware de autenticação, criar controller
+router.get(
+  '/v1/getCharacters/:page',
+  authenticateToken,
+  new CharacterController().getCharactersPage
+);
+
 //TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
   '/v1/select/:character_id',
