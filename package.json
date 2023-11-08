@@ -27,6 +27,7 @@
     "eslint-plugin-prettier": "5.0.1",
     "nodemon": "3.0.1",
     "ts-node": "10.9.1",
+    "typedoc": "^0.25.3",
     "typescript": "5.2.2"
   },
   "dependencies": {
@@ -45,7 +46,6 @@
     "reflect-metadata": "0.1.13",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.0",
-    "typedoc": "0.25.3",
     "typeorm": "0.3.17"
   }
 }
