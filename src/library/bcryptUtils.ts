@@ -2,7 +2,10 @@ import * as bcrypt from 'bcrypt';
 
 export class BcryptUtils {
   /**
-   *Generates encrypted password using 'bcrypt.hash()' function.
+   * hashPassword
+   *
+   * Generates encrypted password using 'bcrypt.hash()' function.
+   *
    * @param password by user.
    * @returns {Promise<string>} String representing the encrypted version of the password, returned from
    * asynchronous call to bcrypt api.
