@@ -3,7 +3,10 @@ import { JwtUtils } from '../library/jwtUtils';
 import { UserRepository } from '../repositories/userRepository';
 
 /**
+ * authValidation
+ *
  * Middleware for authentication and authorization.
+ *
  * @param req - The Express request object.
  * @param res - The Express response object.
  * @param next - The next middleware function.
