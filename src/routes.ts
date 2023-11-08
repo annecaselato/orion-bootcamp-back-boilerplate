@@ -15,7 +15,7 @@ router.post(
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
 router.post(
   '/users/recover-password',
-  new UsersValidator().recoverPasswordValidate,
+  new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
 

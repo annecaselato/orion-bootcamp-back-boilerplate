@@ -12,7 +12,7 @@ export class UsersValidator extends ErrorsValidator {
   }
   public recoverPasswordValidate() {
     return [
-      body('email').trim().notEmpty().isEmail().withMessage('Invalid email'),
+      body('email').trim().isEmail().withMessage('Invalid email'),
       this.errorValidate
     ];
   }
