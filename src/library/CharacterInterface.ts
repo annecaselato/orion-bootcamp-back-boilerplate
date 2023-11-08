@@ -1,5 +1,8 @@
 export default interface CharacterModel {
-  name: string;
+  idMarvel: number;
+  enName: string;
+  ptName: string;
   description: string;
-  thumbnail: string;
+  thumb: string;
+  isTranslated: Boolean;
 }
