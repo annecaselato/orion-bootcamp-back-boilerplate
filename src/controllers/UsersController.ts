@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import httpCodes from '../utils/httpCodes';
-import { validationResult } from 'express-validator';
 
 export class UsersController {
   /**
@@ -130,18 +129,11 @@ export class UsersController {
    */
   async recoverPassword(req: Request, res: Response) {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res
-          .status(new httpCodes().BAD_REQUEST)
-          .json({ errors: errors.array() });
-      }
-
       const { email } = req.body;
       await new UserService().recoverPassword(email);
-      return res.status(new httpCodes().OK).json('OK');
+      return res.status(new httpCodes().OK).send('OK');
     } catch (error) {
-      return res.status(new httpCodes().BAD_REQUEST).json({ error });
+      return res.status(new httpCodes().BAD_REQUEST).json(error);
     }
   }
 }
