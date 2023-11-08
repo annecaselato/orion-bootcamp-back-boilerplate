@@ -1,33 +1,22 @@
 import nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
 import messageEmail from './messageEmail';
 
-class NodemailerProvider {
-  private readonly transporter: Mail;
-  constructor(
-    host: string,
-    port: number,
-    secure: boolean,
-    user: string,
-    pass: string
-  ) {
-    this.transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth: {
-        user,
-        pass
-      }
-    });
-  }
-
+export default class NodemailerProvider {
   async sendEmail(
     token: string,
     userEmail: string,
     userName: string
   ): Promise<void> {
-    await this.transporter.sendMail({
+    const outlookTransporter = nodemailer.createTransport({
+      host: process.env.HOST_SMTP,
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.MARTE_EMAIL,
+        pass: process.env.MARTE_PASS
+      }
+    });
+    await outlookTransporter.sendMail({
       from: `Marte 101 <${process.env.MARTE_EMAIL}>`,
       to: userEmail,
       subject: 'Redefinição de Senha',
@@ -35,11 +24,3 @@ class NodemailerProvider {
     });
   }
 }
-
-export const outlookTransporter = new NodemailerProvider(
-  process.env.HOST_SMTP,
-  587,
-  false,
-  process.env.MARTE_EMAIL,
-  process.env.MARTE_PASS
-);

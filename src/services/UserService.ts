@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
-import { outlookTransporter } from '../utils/nodeMailer';
+import NodemailerProvider from '../utils/nodeMailer';
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -55,7 +55,11 @@ export class UserService {
           algorithm: 'HS256'
         }
       );
-      await outlookTransporter.sendEmail(token, user.email, user.fullName);
+      await new NodemailerProvider().sendEmail(
+        token,
+        user.email,
+        user.fullName
+      );
     }
   }
 }
