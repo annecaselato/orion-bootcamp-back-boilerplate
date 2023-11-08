@@ -133,7 +133,7 @@ export class UsersController {
     try {
       const { email } = req.body;
       await new UserService().recoverPassword(email);
-      return res.status(httpCodes.OK).send('OK');
+      return res.status(httpCodes.OK).send();
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
