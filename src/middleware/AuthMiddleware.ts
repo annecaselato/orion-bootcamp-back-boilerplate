@@ -26,7 +26,7 @@ export function authenticateToken(req, res, next) {
         });
       }
 
-      req.body.user = JSON.stringify(decodedUser);
+      req.body.user = decodedUser;
 
       next();
     });
