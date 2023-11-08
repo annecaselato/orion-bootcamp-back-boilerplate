@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
-import httpCodes from '../utils/httpCodes';
+import { httpCodes } from '../utils/httpCodes';
 
 export class UsersController {
   /**
@@ -57,17 +57,17 @@ export class UsersController {
         rememberMe
       );
       if (result) {
-        return res.status(200).json({
+        return res.status(httpCodes.OK).json({
           email: email,
           token: result
         });
       } else {
         return res
-          .status(401)
+          .status(httpCodes.UNAUTHORIZED)
           .json({ mensagem: 'Incorrect username or password' });
       }
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 
@@ -99,7 +99,7 @@ export class UsersController {
    *           description: 'Acesso a rota negado'
    */
   loggedUser(req: Request, res: Response) {
-    return res.status(200).send({ user: req.body.authUser });
+    return res.status(httpCodes.OK).send({ user: req.body.authUser });
   }
 
   /**
@@ -133,9 +133,9 @@ export class UsersController {
     try {
       const { email } = req.body;
       await new UserService().recoverPassword(email);
-      return res.status(new httpCodes().OK).send('OK');
+      return res.status(httpCodes.OK).send('OK');
     } catch (error) {
-      return res.status(new httpCodes().BAD_REQUEST).json(error);
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 }
