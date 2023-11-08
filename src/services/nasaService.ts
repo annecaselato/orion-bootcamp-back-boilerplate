@@ -80,13 +80,6 @@ export class NasaService {
   public async getFirstFourteenSoles(): Promise<DeepPartial<Sol[]>> {
     const soles = await this.fetchDataFromNasaApi();
 
-    // return typeof soles === 'string' ? this.selectAndSaveSolesInfo([]) : this.selectAndSaveSolesInfo(soles.slice(0, 14));
-    if (typeof soles === 'string') {
-      // throw new Error('Erro na solicitação à API: ' + soles);
-      return [];
-    } else {
-      const firstFourteen = soles.slice(0, 14);
-      return this.selectAndSaveSolesInfo(firstFourteen);
-    }
+    return typeof soles === 'string' ? [] : this.selectAndSaveSolesInfo(soles.slice(0, 14));
   }
 }
