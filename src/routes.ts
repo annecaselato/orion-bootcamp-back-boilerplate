@@ -4,7 +4,6 @@ import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
 import { PasswordValidator } from './validators/PasswordValidator';
-import { PasswordController } from './controllers/PasswordController';
 
 const router = Router();
 
@@ -16,9 +15,9 @@ router.post(
 );
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
 router.patch(
-  '/password/change',
+  '/users/password-change',
   new PasswordValidator().passwordValidate(),
-  new PasswordController().updatePassword
+  new UsersController().updatePassword
 );
 
 export default router;

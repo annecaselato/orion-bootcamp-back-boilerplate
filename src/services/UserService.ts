@@ -1,8 +1,10 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
+import { randomInt } from 'crypto';
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -41,5 +43,19 @@ export class UserService {
 
   async findById(id: number): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { id } });
+  }
+
+  async updatePassword(id: number, password: string): Promise<string> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      return undefined;
+    }
+
+    if (user) {
+      const randomSalt = randomInt(10, 16);
+      const passwordHash = await hash(password, randomSalt);
+      user.password = passwordHash;
+      this.userRepository.save(user);
+    }
   }
 }
