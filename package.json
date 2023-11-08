@@ -45,6 +45,7 @@
     "reflect-metadata": "0.1.13",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.0",
+    "typedoc": "0.25.3",
     "typeorm": "0.3.17"
   }
 }
