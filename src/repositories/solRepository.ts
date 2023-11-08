@@ -7,15 +7,28 @@ import { DeepPartial } from 'typeorm';
  */
 export class SolRepository {
   /**
-   *Saves each newSol in the soles array is saved to the database, in case it's not already there
+   * save14MarsDays
+   *
+   * Saves each newSol in the soles array is saved to the database, in case it's not already there
+   *
    * @param soles Array of "soles" from: SolController and NasaService
    */
   public static async save14MarsDays(soles: DeepPartial<Sol[]>): Promise<void> {
-    await MysqlDataSource.getRepository(Sol).save(soles);
+    const solRepository = MysqlDataSource.getRepository(Sol);
+    const allSols: Sol[] = await solRepository.find();
+
+    for (const newSol of soles) {
+      const repeatedSol: DeepPartial<Sol> = allSols.find((sol) => sol.solNumberMarsDay === newSol.solNumberMarsDay);
+      if (!repeatedSol) {
+        await solRepository.save(soles);
+      }
+    }
   }
 
   /**
-   *Lists soles in descending order and limited to 14 items.
+   * listSoles
+   *
+   * Lists soles in descending order and limited to 14 items.
    */
   public static async listSoles(): Promise<Sol[]> {
     return MysqlDataSource.getRepository(Sol).find({
