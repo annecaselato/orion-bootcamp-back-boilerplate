@@ -13,6 +13,10 @@ router.post(
   new UsersController().login
 );
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
-router.post('/users/recover-password', new UsersController().recoverPassword);
+router.post(
+  '/users/recover-password',
+  new UsersValidator().recoverPasswordValidate,
+  new UsersController().recoverPassword
+);
 
 export default router;
