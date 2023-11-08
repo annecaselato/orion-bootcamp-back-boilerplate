@@ -118,9 +118,7 @@ export class UsersController {
    *           application/json:
    *             schema:
    *               example:
-   *               email: gustavogonçalves@gmail.com
-   *             required:
-   *               - email
+   *                 email: email@email.com
    *               type: object
    *               properties:
    *                 email:
