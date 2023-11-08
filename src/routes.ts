@@ -19,6 +19,13 @@ router.get(
   new CharacterController().getCharactersPage
 );
 
+//TODO: retornar informações detalhadas sobre o personagem selecionado
+router.get(
+  '/v1/select/:character_id',
+  authenticateToken,
+  new CharacterController().countClick
+);
+
 router.post('/v1/login', new AuthController().login);
 
 router.post(
@@ -29,5 +36,4 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
-
 export default router;
