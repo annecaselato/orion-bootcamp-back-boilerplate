@@ -17,7 +17,10 @@ export class JwtUtils {
   }
 
   /**
+   * verifyJWTToken
+   *
    * Verifies a JWT token for authentication.
+   *
    * @param token - The JWT token to be verified.
    * @returns An object representing the verified data or a JWT verification error.
    */
