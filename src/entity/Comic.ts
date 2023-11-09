@@ -15,10 +15,7 @@ import {
     idMarvel: number;
   
     @Column({ type: 'varchar', length: 128 })
-    enTitle: string;
-  
-    @Column({ type: 'varchar', length: 128 })
-    ptTitle: string;
+    title: string;
   
     @Column({ type: 'varchar', length: 2048, default: null })
     description: string;
