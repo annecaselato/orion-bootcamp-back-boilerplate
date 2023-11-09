@@ -124,7 +124,7 @@ export class UsersController {
    *                 email:
    *                   type: string
    *     responses:
-   *       '200':
+   *       '204':
    *           description: 'OK'
    *       '400':
    *           description: 'Solicitação inválida'
@@ -133,7 +133,7 @@ export class UsersController {
     try {
       const { email } = req.body;
       await new UserService().recoverPassword(email);
-      return res.status(httpCodes.OK).send();
+      return res.status(httpCodes.NO_CONTENT).send();
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
