@@ -5,7 +5,10 @@ import { User } from '../entity/Users';
 
 export class UserRepository {
   /**
-   *Adds passwordRecoveryToken to user instance for 30 minutes.
+   * addPasswordRecoveryToken
+   *
+   * Adds passwordRecoveryToken to user instance for 30 minutes.
+   *
    * @param user instance of a User.
    * @param userId number representing the user's id.
    * @returns {Promise<string>} Updates the user's token only, without interferring
