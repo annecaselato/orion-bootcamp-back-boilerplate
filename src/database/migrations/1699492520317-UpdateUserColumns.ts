@@ -18,8 +18,8 @@ export class UpdateUserColumns1699492520317 implements MigrationInterface {
       User,
       { email: 'gustavogonçalves@gmail.com' },
       {
-        firstName: '',
-        lastName: ''
+        firstName: null,
+        lastName: null
       }
     );
   }
