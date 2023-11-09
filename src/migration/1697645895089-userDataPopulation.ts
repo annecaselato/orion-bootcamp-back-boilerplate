@@ -23,6 +23,9 @@ const USERS = [
   }
 ];
 
+/**
+ * Populates user entity or undoes this operation
+ */
 export class UserDataPopulation1697645895089 implements MigrationInterface {
   /**
    * up
