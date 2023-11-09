@@ -13,5 +13,6 @@ router.post(
   new UsersController().login
 );
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
+router.post('/users/new-user', new UsersController().newUser);
 
 export default router;
