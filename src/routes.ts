@@ -3,7 +3,7 @@ import { validationField, Validator } from './validator/UserValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
-import MarvelAPIHandler from './marvelUtils/MarvelAPIHandler';
+import { CharacterController } from './controller/CharacterController';
 
 const router = Router();
 
@@ -13,11 +13,18 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 });
 
 //TODO: colocar middleware de autenticação, criar controller
-router.get('/v1/getCharacters/:page', (req, res) => {
-  const page: number = Number(req.params.page) || 1;
+router.get(
+  '/v1/getCharacters/:page',
+  authenticateToken,
+  new CharacterController().getCharactersPage
+);
 
-  MarvelAPIHandler.getCharacters(req, res, page);
-});
+//TODO: retornar informações detalhadas sobre o personagem selecionado
+router.get(
+  '/v1/select/:character_id',
+  authenticateToken,
+  new CharacterController().countClick
+);
 
 router.post('/v1/login', new AuthController().login);
 
@@ -29,5 +36,4 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
-
 export default router;
