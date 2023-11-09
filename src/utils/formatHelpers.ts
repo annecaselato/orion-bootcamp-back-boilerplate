@@ -1,19 +1,32 @@
-import MarvelCharactersProperties from '../library/charactersPropertiesInterface';
+import CharacterModel from '../library/CharacterInterface';
+
+export const imageNotAviable = (str: string): boolean => {
+  if (
+    str !== 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
 
 // apenas extrai name, description e thumb
-export function extractCharacters(
-  charactersData: Array<MarvelCharactersProperties>
-): Array<MarvelCharactersProperties> {
-  const untranslatedCharacters: Array<MarvelCharactersProperties> =
-    charactersData.map((character): MarvelCharactersProperties => {
+export function extractCharacters(charactersData): Array<CharacterModel> {
+  const untranslatedCharacters = charactersData.map(
+    (character): CharacterModel => {
+      const characterId = character.id;
       const characterName = character.name;
       const characterDescription = character.description;
       const characterThumb = character.thumbnail;
       return {
-        name: characterName,
+        idMarvel: characterId,
+        enName: characterName,
+        ptName: 'not aviable',
         description: characterDescription,
-        thumbnail: characterThumb
+        thumb: characterThumb,
+        isTranslated: false
       };
-    });
+    }
+  );
   return untranslatedCharacters;
 }
