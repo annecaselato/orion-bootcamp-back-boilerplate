@@ -53,7 +53,10 @@ export class UserRepository {
   }
 
   /**
-   *Finds a user in the database through a given email
+   * saveAccessTokenInUser
+   *
+   * Finds a user in the database through a given email
+   *
    * @param email used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not, in case email is not found.
    */
