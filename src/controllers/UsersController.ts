@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
+import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
 
 export class UsersController {
@@ -57,17 +58,17 @@ export class UsersController {
         rememberMe
       );
       if (result) {
-        return res.status(200).json({
+        return res.status(httpCodes.OK).json({
           email: email,
           token: result
         });
       } else {
         return res
-          .status(401)
+          .status(httpCodes.UNAUTHORIZED)
           .json({ mensagem: 'Incorrect username or password' });
       }
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 
@@ -99,7 +100,44 @@ export class UsersController {
    *           description: 'Acesso a rota negado'
    */
   loggedUser(req: Request, res: Response) {
-    return res.status(200).send({ user: req.body.authUser });
+    return res.status(httpCodes.OK).send({ user: req.body.authUser });
+  }
+
+  /**
+   * @swagger
+   * /users/recover-password:
+   *   post:
+   *     summary: Rota para redefinir senha do usuário.
+   *     tags: [Recove Password]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 email: email@email.com
+   *               type: object
+   *               properties:
+   *                 email:
+   *                   type: string
+   *     responses:
+   *       '204':
+   *           description: 'OK'
+   *       '400':
+   *           description: 'Solicitação inválida'
+   */
+  async recoverPassword(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      await new UserService().recoverPassword(email);
+      return res.status(httpCodes.NO_CONTENT).send();
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json(error);
+    }
   }
 
   async newUser(req: Request, res: Response) {
@@ -107,19 +145,21 @@ export class UsersController {
     try {
       const emailAlreadyInUse = await new UserService().findByEmail(email);
       if (emailAlreadyInUse) {
-        return res.status(409).json({ message: 'Email already in use' });
+        return res
+          .status(httpCodes.CONFLICT)
+          .json({ message: 'Email already in use' });
       }
       const salt = bcrypt.genSaltSync(10);
       const newPassword = bcrypt.hashSync(password, salt);
-      const newUser = await new UserService().newUser(
+      const { generatedMaps } = await new UserService().newUser(
         firstName,
         lastName,
         email,
         newPassword
       );
-      return res.status(201).json({ newUser });
+      return res.status(httpCodes.CREATED).json({ generatedMaps });
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 }

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
+import { httpCodes } from '../utils/httpCodes';
 
 interface TokenPayload {
   id: number;
@@ -15,7 +16,9 @@ export default async function authMiddleware(
 ) {
   const { authorization } = req.headers;
   if (!authorization) {
-    return res.status(401).json({ message: 'Token missing' });
+    return res
+      .status(httpCodes.UNAUTHORIZED)
+      .json({ message: 'Token missing' });
   }
 
   const token = authorization.replace('Bearer', '').trim();
@@ -39,6 +42,6 @@ export default async function authMiddleware(
 
     return next();
   } catch (error) {
-    return res.status(401).json(error.message);
+    return res.status(httpCodes.UNAUTHORIZED).json(error.message);
   }
 }

@@ -14,6 +14,9 @@ services:
       - 4444:4444
     command: npm run start:dev
     environment:
+      HOST_SMTP: ${HOST_SMTP}
+      MARTE_EMAIL: ${MARTE_EMAIL}
+      MARTE_PASS: ${MARTE_PASS}
       JWT_PASS: f58SZ3XvGvkvea2CQRLwKHNJHx4CLFNvLLqtXXyKAmBIYWMVcYUK27TAndRb4nsu
       NODE_ENV: development
       SERVER_PORT: 4444
@@ -21,7 +24,7 @@ services:
       DB_CONNECTION_STRING: mysql://orion_root:j5m966qp7jiypfda@orion-mysql:3306
     networks:
       - orion-connect
-  
+
   orion-mysql:
     container_name: orion-mysql
     image: mysql

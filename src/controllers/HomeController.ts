@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { httpCodes } from '../utils/httpCodes';
 
 export class HomeController {
   /**
@@ -26,6 +27,6 @@ export class HomeController {
    *                     description: 'objeto json de retorno'
    */
   hello(_req: Request, res: Response) {
-    return res.status(200).send('Hello');
+    return res.status(httpCodes.OK).send('Hello');
   }
 }
