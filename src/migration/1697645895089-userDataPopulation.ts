@@ -44,6 +44,8 @@ export class UserDataPopulation1697645895089 implements MigrationInterface {
   }
 
   /**
+   * down
+   *
    * Executa as operações de exclusão de dados na tabela "Users" durante a reversão da migração.
    *
    * @param queryRunner - O QueryRunner utilizado para executar as consultas no banco de dados.
