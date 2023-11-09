@@ -13,15 +13,9 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 });
 
 router.get(
-  '/v1/getCharacters/:page',
+  '/v1/getPage/:category/:page',
   authenticateToken,
-  new CharacterController().getCharactersPage
-);
-
-router.get(
-  '/v1/getComics/:page',
-  authenticateToken,
-  new CharacterController().getComicsPage
+  new CharacterController().getPage
 );
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
