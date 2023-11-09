@@ -7,8 +7,8 @@ import { Story } from '../entity/Story';
 export enum Categorie {
     'comic' = 'Comic',
     'event' = 'Event',
-    'serie' = 'Serie',
-    'storie' = 'Storie'
+    'series' = 'Series',
+    'story' = 'Story'
   }
 
 export default function identical(Object: CategorieModel, ObjectRegistered) {
