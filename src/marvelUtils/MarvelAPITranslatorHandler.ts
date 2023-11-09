@@ -1,7 +1,8 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
+import 'dotenv/config';
 
-const apiKey = 'AIzaSyD4vZC8mYs84cLpbMub2oW9_RoD9P13-Hg'; //Key da API google Translate
-const projectId = 'folkloric-grid-403811'; // ID do projeto google Translate
+const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
+const projectId = process.env.GOOGLE_TRANSLATE_PROJECT_ID; // ID do projeto google Translate
 
 export default class MarvelAPITranslatorHandler {
   translateClient = new Translate({ projectId, key: apiKey });

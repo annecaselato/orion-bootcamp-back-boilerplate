@@ -2,9 +2,10 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 import md5 from 'md5';
 import MarvelAPITranslatorHandler from './MarvelAPITranslatorHandler';
+import 'dotenv/config';
 
-const PUBLIC_KEY = 'd6935a5ba12ffc48bed7b437e35f8aca';
-const PRIVATE_KEY = '4f8a055b0352f0f2b17b611f9a9208398493b5b4';
+const PUBLIC_KEY_MARVEL = process.env.PUBLIC_KEY_MARVEL;
+const PRIVATE_KEY_MARVEL = process.env.PRIVATE_KEY_MARVEL;
 const baseURL = 'https://gateway.marvel.com/v1/public';
 
 export default class MarvelAPIHandler {
@@ -14,13 +15,13 @@ export default class MarvelAPIHandler {
       const limit = Math.min(100, page * 9); // valor máximo de 100 no limit
 
       const timestamp = Date.now();
-      const hash = md5(timestamp + PRIVATE_KEY + PUBLIC_KEY);
+      const hash = md5(timestamp + PRIVATE_KEY_MARVEL + PUBLIC_KEY_MARVEL);
       const response = await axios.get(`${baseURL}/characters`, {
         params: {
           offset: offset,
           limit: limit,
           ts: timestamp,
-          apikey: PUBLIC_KEY,
+          apikey: PUBLIC_KEY_MARVEL,
           hash: hash
         }
       });
