@@ -6,8 +6,8 @@ import {
     BeforeUpdate
   } from 'typeorm';
   
-  @Entity('series')
-  export class Serie {
+  @Entity('stories')
+  export class Story {
     @PrimaryGeneratedColumn()
     id: number;
   
