@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
+import bcrypt from 'bcrypt';
 
 export class UsersController {
   /**
@@ -99,5 +100,26 @@ export class UsersController {
    */
   loggedUser(req: Request, res: Response) {
     return res.status(200).send({ user: req.body.authUser });
+  }
+
+  async newUser(req: Request, res: Response) {
+    const { firstName, lastName, email, password } = req.body;
+    try {
+      const emailAlreadyInUse = await new UserService().findByEmail(email);
+      if (emailAlreadyInUse) {
+        return res.status(409).json({ message: 'Email already in use' });
+      }
+      const salt = bcrypt.genSaltSync(10);
+      const newPassword = bcrypt.hashSync(password, salt);
+      const newUser = await new UserService().newUser(
+        firstName,
+        lastName,
+        email,
+        newPassword
+      );
+      return res.status(201).json({ newUser });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
   }
 }
