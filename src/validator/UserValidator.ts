@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import { Repository } from '../repository/UserRepository';
+import { UserRepository } from '../repository/UserRepository';
 import { genderTypes, minimunAgeAllowed } from '../utils/userHelpers';
 import moment from 'moment';
 
@@ -51,7 +51,7 @@ export const validationField = [
     .isEmail()
     .withMessage('Informe um e-mail válido')
     .custom(async (email: string) => {
-      const repository = new Repository();
+      const repository = new UserRepository();
       const existingUser = await repository.findOneByEmail(email);
       if (existingUser) {
         return Promise.reject('E-mail já cadastrado');
