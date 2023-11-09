@@ -58,7 +58,7 @@ export class UserService {
       await new NodemailerProvider().sendEmail(
         token,
         user.email,
-        user.fullName
+        user.firstName
       );
     }
   }
