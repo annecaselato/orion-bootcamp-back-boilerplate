@@ -3,6 +3,9 @@ import { MysqlDataSource } from '../config/database';
 import { JwtUtils } from '../library/jwtUtils';
 import { User } from '../entity/Users';
 
+/**
+ * Deals with User database queries
+ */
 export class UserRepository {
   /**
    * addPasswordRecoveryToken
