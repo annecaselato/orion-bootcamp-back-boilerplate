@@ -10,4 +10,10 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+  public recoverPasswordValidate() {
+    return [
+      body('email').trim().isEmail().withMessage('Invalid email'),
+      this.errorValidate
+    ];
+  }
 }
