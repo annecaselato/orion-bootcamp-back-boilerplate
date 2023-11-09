@@ -4,5 +4,5 @@ export default interface CharacterModel {
   ptName: string;
   description: string;
   thumb: string;
-  isTranslated: Boolean;
+  isTranslated: boolean;
 }
