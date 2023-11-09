@@ -38,7 +38,6 @@ export class Character {
   @BeforeInsert()
   createdAtDate() {
     this.createdAt = new Date();
-    this.lastUpdate = new Date();
   }
 
   @BeforeUpdate()
