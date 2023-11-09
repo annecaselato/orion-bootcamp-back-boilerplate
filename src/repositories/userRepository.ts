@@ -41,7 +41,10 @@ export class UserRepository {
   }
 
   /**
-   *Finds a user in the database through a given id
+   * findUserById
+   *
+   * Finds a user in the database through a given id
+   *
    * @param id used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not
    */
