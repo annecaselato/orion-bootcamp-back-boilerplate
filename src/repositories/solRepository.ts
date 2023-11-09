@@ -14,6 +14,8 @@ export class SolRepository {
    * @param soles Array of "soles" from: SolController and NasaService
    */
   public static async save14MarsDays(soles: DeepPartial<Sol[]>): Promise<void> {
+    // Encontrar o sol com solNumberMarsDay mais alto
+    // Encontrar nos soles quais tem solNumberMarsDay maior que o sol anterior
     const solRepository = MysqlDataSource.getRepository(Sol);
     const allSols: Sol[] = await solRepository.find();
 
