@@ -12,7 +12,10 @@ export function validateEmailAndPassword(email: string, password: string): boole
 }
 
 /**
+ * validateEmail
+ *
  * Validates email format
+ *
  * @param email inserted by user when trying to authenticate.
  * @returns {boolean} If password format is valid or not
  */
