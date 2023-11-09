@@ -10,4 +10,20 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+  public passwordValidate() {
+    return [
+      body('password')
+        .notEmpty()
+        .isStrongPassword({
+          minLength: 8,
+          minLowercase: 0,
+          minUppercase: 0,
+          minNumbers: 1,
+          minSymbols: 1
+        })
+        .matches(/^(?=.*[a-zA-Z])/) //Validação para presença de no minimo uma letra no password
+        .withMessage('Invalid password'),
+      this.errorValidate
+    ];
+  }
 }

@@ -120,6 +120,9 @@ export class UsersController {
    *       content:
    *         application/json:
    *           schema:
+   *             example:
+   *               token: token jwt
+   *               password: pass@123
    *             type: object
    *             properties:
    *               token:
@@ -127,54 +130,28 @@ export class UsersController {
    *               password:
    *                 type: string
    *     responses:
-   *       '200':
-   *           description: 'Password changed successfully!'
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   status:
-   *                     type: boolean
-   *                   data:
-   *                     type: object
-   *                     description: 'objeto json de retorno'
+   *       '204':
+   *           description: 'Senha alterada com sucesso.'
    *       '400':
-   *           description: 'Invalid password.'
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   status:
-   *                     type: boolean
-   *                   data:
-   *                     type: object
-   *                     description: 'objeto json de retorno'
-   *       '500':
-   *           description: 'User not found.'
-   *           content:
-   *             application/json:
-   *               schema:
-   *                 type: object
-   *                 properties:
-   *                   status:
-   *                     type: boolean
-   *                   data:
-   *                     type: object
-   *                     description: 'objeto json de retorno'
+   *           description: 'Senha invalida ou Usuario não encontrado.'
    */
   updatePassword(req: Request, res: Response) {
+    const userService = new UserService();
+    const { token, password } = req.body;
     try {
-      const userService = new UserService();
-      const { token, password } = req.body;
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
-      userService.updatePassword(id, password);
-      return res
-        .status(200)
-        .json({ message: 'Password changed successfully!' });
+      if (id) {
+        userService.updatePassword(id, password);
+        return res.status(204);
+      } else {
+        return res
+          .status(400)
+          .json({ mensagem: 'Invalid password or user not found.' });
+      }
     } catch (error) {
-      return res.status(500).json(error);
+      return res
+        .status(400)
+        .json({ mensagem: 'Invalid password or user not found.' });
     }
   }
 }
