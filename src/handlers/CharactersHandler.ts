@@ -22,7 +22,6 @@ export default class CharactersHandler {
         }
       );
 
-      //res.json(response.data);
       const charactersData: Array<unknown> = await response.data.data.results;
       return charactersData;
     } catch (error) {
