@@ -18,9 +18,12 @@ export const swaggerConfig: swaggerJSDoc.OAS3Options = {
     components: {
       securitySchemes: {
         BearerAuth: {
+          description:
+            'Insira o token JWT para validar a autenticação do usuário.',
           in: 'header',
           type: 'http',
-          scheme: 'bearer'
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
         }
       }
     }
