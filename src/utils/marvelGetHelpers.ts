@@ -16,7 +16,7 @@ export const getTimestamp = (): number => {
 };
 
 export const baseURL = (): string => {
-  return 'https://gateway.marvel.com/v1/public';
+  return process.env.MARVEL_URL_BASE;
 };
 
 export const maxMarvelAPILimit = (): number => {
