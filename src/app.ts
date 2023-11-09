@@ -6,8 +6,11 @@ import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import CharactersHandler from './handlers/CharactersHandler';
 import FormatHandler from './handlers/FormatHandler';
-const cron = require("node-cron");
+import { offsetter } from './utils/marvelGetHelpers';
+import CharacterRepository from './repository/CharacterRepository';
 import routes from './routes';
+import cron from 'node-cron';
+import CharacterModel from 'library/CharacterInterface';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -23,18 +26,30 @@ app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
 
-cron.schedule('* 1 * * *', function charactersUpdateSchedule () {
+cron.schedule('0 */1 * * *', async function charactersUpdateSchedule() {
   console.log('Running task to update database every 1 hour');
-  try{
-    const charactersData = new CharactersHandler().getCharacters();
-    try{
-      const charactersTranslated = new FormatHandler().extractCharactersAndTryTotranslate(charactersData);
-    }catch(error){
+  try {
+    const charactershandler = new CharactersHandler();
+    const offset = offsetter();
+    let charactersData: Array<unknown>;
 
-    }
+    do {
+      charactersData = await charactershandler.getCharacters(
+        offset.next().value
+      );
 
-  }catch(error){
-    console.error('Unable to update database. Trying again in 1 hour');
+      const formatter = new FormatHandler();
+      const characters: CharacterModel[] =
+        await formatter.extractAndTryTotranslate(charactersData);
+
+      if (charactersData.length) {
+        const characterrepository = new CharacterRepository();
+        await characterrepository.updateOrSave(characters);
+      }
+    } while (charactersData.length);
+  } catch (error) {
+    console.error(error);
+    Promise.reject('Unable to update database. Trying again in 1 hour');
   }
 });
 
