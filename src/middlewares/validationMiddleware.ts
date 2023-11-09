@@ -24,7 +24,10 @@ function validateEmail(email: string): boolean {
 }
 
 /**
+ * validatePassword
+ *
  * Validates password format
+ *
  * @param password inserted by user when trying to authenticate.
  * @returns {boolean} If password format is valid or not
  * (Minimum 8 chars, 1 uppercase, 1 lowercase, 1 number and 1 special character)
