@@ -2,6 +2,9 @@ import * as jwt from 'jsonwebtoken';
 
 const secretKey = process.env.JWT_SECRET;
 
+/**
+ * Generates and verifies token for a given user
+ */
 export class JwtUtils {
   /**
    * generateJWTToken
