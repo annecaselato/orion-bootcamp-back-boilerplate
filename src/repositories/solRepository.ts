@@ -23,8 +23,8 @@ export class SolRepository {
       .getRawOne();
 
     for (const newSol of soles) {
-      if (!newSol.solNumberMarsDay > latestSavedSol) {
-        await solRepository.save(soles);
+      if (newSol.solNumberMarsDay > latestSavedSol) {
+        await solRepository.save(newSol);
       }
     }
   }
