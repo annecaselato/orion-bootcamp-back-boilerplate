@@ -22,10 +22,10 @@ export class SolRepository {
       .select('MAX(Sol.solNumberMarsDay)', 'latestSavedSol')
       .getRawOne();
 
-    for (const newSol of soles) {
-      if (newSol.solNumberMarsDay > latestSavedSol) {
-        await solRepository.save(newSol);
-      }
+    const solsToSave = soles.filter((newSol) => newSol.solNumberMarsDay > latestSavedSol);
+
+    if (solsToSave.length > 0) {
+      await solRepository.save(solsToSave);
     }
   }
 
