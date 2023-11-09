@@ -1,5 +1,8 @@
 import * as bcrypt from 'bcrypt';
 
+/**
+ * Encrypts passwords and compares the real password with hashed one
+ */
 export class BcryptUtils {
   /**
    * hashPassword
