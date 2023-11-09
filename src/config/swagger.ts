@@ -25,5 +25,5 @@ export const swaggerConfig: swaggerJSDoc.OAS3Options = {
       }
     }
   },
-  apis: ['src/controller/*.ts', 'controller/*.js']
+  apis: ['src/controllers/*.ts', 'controllers/*.js']
 };
