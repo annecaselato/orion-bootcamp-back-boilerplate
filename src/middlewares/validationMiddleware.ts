@@ -1,5 +1,8 @@
 /**
- *Calls functions to validate email and password
+ * validateEmailAndPassword
+ *
+ * Calls functions to validate email and password
+ *
  * @param email inserted by user when trying to authenticate.
  * @param password inserted by user when trying to authenticate.
  * @returns {boolean} If password or email format is invalid it returns false
