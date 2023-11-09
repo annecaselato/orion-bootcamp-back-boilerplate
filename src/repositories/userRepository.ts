@@ -10,7 +10,7 @@ export class UserRepository {
   /**
    * addPasswordRecoveryToken
    *
-   * Adds passwordRecoveryToken to user instance for 30 minutes.
+   * Adds passwordRecoveryToken to user instance for 24 hours.
    *
    * @param user instance of a User.
    * @param userId number representing the user's id.
