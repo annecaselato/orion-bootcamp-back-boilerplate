@@ -31,14 +31,14 @@ import {
   
     @Column({ update: false })
     createdAt: Date;
-  
-    @Column()
-    lastUpdate: Date;
-  
+
     @BeforeInsert()
     createdAtDate() {
       this.createdAt = new Date();
     }
+  
+    @Column()
+    lastUpdate: Date;
   
     @BeforeUpdate()
     updateDates() {
