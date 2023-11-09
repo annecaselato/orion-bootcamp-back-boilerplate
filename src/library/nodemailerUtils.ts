@@ -1,5 +1,8 @@
 import nodemailer from 'nodemailer';
 
+/**
+ * Sends emails for users
+ */
 export class NodemailerService {
   private static transporter: nodemailer.Transporter;
 
