@@ -157,7 +157,7 @@ export class UsersController {
         email,
         newPassword
       );
-      return res.status(httpCodes.CREATED).json({ generatedMaps });
+      return res.status(httpCodes.CREATED).json(generatedMaps[0]);
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
