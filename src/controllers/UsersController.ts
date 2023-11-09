@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import jwt from 'jsonwebtoken';
+import { httpCodes } from '../utils/httpCodes';
 
 type JwtPayload = {
   id: number;
@@ -60,17 +61,17 @@ export class UsersController {
         rememberMe
       );
       if (result) {
-        return res.status(200).json({
+        return res.status(httpCodes.OK).json({
           email: email,
           token: result
         });
       } else {
         return res
-          .status(401)
+          .status(httpCodes.UNAUTHORIZED)
           .json({ mensagem: 'Incorrect username or password' });
       }
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 
@@ -102,7 +103,44 @@ export class UsersController {
    *           description: 'Acesso a rota negado'
    */
   loggedUser(req: Request, res: Response) {
-    return res.status(200).send({ user: req.body.authUser });
+    return res.status(httpCodes.OK).send({ user: req.body.authUser });
+  }
+
+  /**
+   * @swagger
+   * /users/recover-password:
+   *   post:
+   *     summary: Rota para redefinir senha do usuário.
+   *     tags: [Recove Password]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 email: email@email.com
+   *               type: object
+   *               properties:
+   *                 email:
+   *                   type: string
+   *     responses:
+   *       '204':
+   *           description: 'OK'
+   *       '400':
+   *           description: 'Solicitação inválida'
+   */
+  async recoverPassword(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      await new UserService().recoverPassword(email);
+      return res.status(httpCodes.NO_CONTENT).send();
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json(error);
+    }
   }
 
   /**
@@ -142,15 +180,15 @@ export class UsersController {
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
       if (id) {
         userService.updatePassword(id, password);
-        return res.status(204);
+        return res.status(httpCodes.OK);
       } else {
         return res
-          .status(400)
+          .status(httpCodes.UNAUTHORIZED)
           .json({ mensagem: 'Invalid password or user not found.' });
       }
     } catch (error) {
       return res
-        .status(400)
+        .status(httpCodes.UNAUTHORIZED)
         .json({ mensagem: 'Invalid password or user not found.' });
     }
   }

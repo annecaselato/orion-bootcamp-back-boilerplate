@@ -10,6 +10,7 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+  
   public passwordValidate() {
     return [
       body('password')
@@ -23,6 +24,13 @@ export class UsersValidator extends ErrorsValidator {
         })
         .matches(/^(?=.*[a-zA-Z])/) //Validação para presença de no minimo uma letra no password
         .withMessage('Invalid password'),
+        this.errorValidate
+    ];
+  }
+  
+  public recoverPasswordValidate() {
+    return [
+      body('email').trim().isEmail().withMessage('Invalid email'),
       this.errorValidate
     ];
   }
