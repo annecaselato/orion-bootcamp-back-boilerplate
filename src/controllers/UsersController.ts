@@ -9,7 +9,7 @@ export class UsersController {
    * /users/login:
    *   post:
    *     summary: Rota para login do usuário
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -79,7 +79,7 @@ export class UsersController {
    *     summary: Rota com usuario logado
    *     security:
    *       - BearerAuth: []
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -108,7 +108,7 @@ export class UsersController {
    * /users/recover-password:
    *   post:
    *     summary: Rota para redefinir senha do usuário.
-   *     tags: [Recove Password]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -139,6 +139,45 @@ export class UsersController {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
+
+  /**
+   * @swagger
+   * /users/new-user:
+   *   post:
+   *     summary: Rota para criar novo usuário.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 firstName: nome
+   *                 lastName: sobrenome
+   *                 email: email@email.com
+   *                 password: 123456A#
+   *               type: object
+   *               properties:
+   *                 firstName:
+   *                   type: string
+   *                 lastName:
+   *                   type: sring
+   *                 email:
+   *                   type: string
+   *                 password:
+   *                   type: string
+   *     responses:
+   *       '201':
+   *           description: 'Um JSON com os campos id, createdAt e updatedAt.'
+   *       '400':
+   *           description: 'Solicitação inválida.'
+   *       '409':
+   *           description: 'email já está em uso.'
+   */
 
   async newUser(req: Request, res: Response) {
     const { firstName, lastName, email, password } = req.body;
