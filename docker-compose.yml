@@ -30,9 +30,9 @@ services:
       MYSQL_ROOT_PASSWORD: m45ug42qkr5pdzbb
       MYSQL_DATABASE: orion
     ports:
-      - 3307:3306
+      - 3306:3306
     volumes:
-      - ~/docker/volumes/OrionApi_MySQL2:/var/lib/mysql
+      - ~/docker/volumes/OrionApi_MySQL:/var/lib/mysql
     networks:
       - orion-connect
     logging:
