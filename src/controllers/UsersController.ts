@@ -8,7 +8,7 @@ export class UsersController {
    * /users/login:
    *   post:
    *     summary: Rota para login do usuário
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -47,14 +47,13 @@ export class UsersController {
    *       '401':
    *           description: 'Requisição não autorizada'
    */
-
   async login(req: Request, res: Response) {
-    const { email, password, rememberMe } = req.body;
+    const { email, password, rebemberMe } = req.body;
     try {
       const result = await new UserService().authenticate(
         email,
         password,
-        rememberMe
+        rebemberMe
       );
       if (result) {
         return res.status(httpCodes.OK).json({
@@ -70,7 +69,6 @@ export class UsersController {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
-
   /**
    * @swagger
    * /users/logged:
@@ -78,7 +76,7 @@ export class UsersController {
    *     summary: Rota com usuario logado
    *     security:
    *       - BearerAuth: []
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -136,6 +134,19 @@ export class UsersController {
       return res.status(httpCodes.NO_CONTENT).send();
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
+    }
+  }
+
+  async registerUserEmail(req: Request, res: Response) {
+    const { email, username } = req.body;
+    try {
+      const result = await new UserService().emailWelcome(email, username);
+
+      if (result) {
+        return res.status(httpCodes.OK).json('OK');
+      }
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json({ error });
     }
   }
 }

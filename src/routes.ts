@@ -18,5 +18,6 @@ router.post(
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
+router.post('/teste', new UsersController().registerUserEmail);
 
 export default router;
