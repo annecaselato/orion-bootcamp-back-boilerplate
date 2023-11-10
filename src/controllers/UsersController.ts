@@ -172,11 +172,25 @@ export class UsersController {
    *                   type: string
    *     responses:
    *       '201':
-   *           description: 'Um JSON com os campos id, createdAt e updatedAt.'
+   *           description: 'Dados do usuário cadastrado'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   createdAt:
+   *                     type: string
+   *                   id:
+   *                     type: number
+   *                   firstName:
+   *                     type: string
+   *                   lastName:
+   *                     type: sring
+   *                   email:
+   *                     type: string
+   *
    *       '400':
    *           description: 'Solicitação inválida.'
-   *       '409':
-   *           description: 'email já está em uso.'
    */
 
   async newUser(req: Request, res: Response) {
