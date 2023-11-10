@@ -12,6 +12,7 @@ export class RecoveryController {
    * /v1/recovery:
    *   post:
    *     summary: Request password recovery for a user.
+   *     tags: [Recovery]
    *     requestBody:
    *       required: true
    *       content:
@@ -22,10 +23,8 @@ export class RecoveryController {
    *               email:
    *                 type: string
    *     responses:
-   *       200:
+   *       204:
    *         description: Password recovery request successful
-   *       400:
-   *         description: Invalid email
    */
   public static async recovery(req: Request, res: Response): Promise<Response> {
     const { email } = req.body;
@@ -33,13 +32,13 @@ export class RecoveryController {
     const user = await UserRepository.findUserByEmail(email);
 
     if (!user) {
-      return res.status(200).end();
+      return res.status(204).end();
     }
 
     await UserRepository.addPasswordRecoveryToken(user, user.id);
 
     NodemailerService.sendPasswordRecoveryEmail(user.email);
 
-    return res.status(200).end();
+    return res.status(204).end();
   }
 }

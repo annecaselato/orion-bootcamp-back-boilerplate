@@ -27,8 +27,9 @@ export class JwtUtils {
    * @param token - The JWT token to be verified.
    * @returns An object representing the verified data or a JWT verification error.
    */
-  public static verifyJWTToken(token: string): object | jwt.VerifyErrors {
+  public static verifyJWTToken(bearerToken: string): object | jwt.VerifyErrors {
     try {
+      const token = bearerToken.split(' ')[1];
       return jwt.verify(token, secretKey);
     } catch (error) {
       return { error };

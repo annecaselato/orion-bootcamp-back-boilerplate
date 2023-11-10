@@ -32,8 +32,8 @@ export class LoginController {
    *         - password
    *       example:
    *         id: 1
-   *         email: teste@teste.com
-   *         password: RioDeJan!23
+   *         email: user1@test.com
+   *         password: Pa$$$word123
    */
 
   /**
@@ -43,6 +43,7 @@ export class LoginController {
    *     summary: Route used for users to attempt authentication in the app. The function
    *       is set as static to allow calling it directly from the class, without the need to
    *       instantiate the class, not needing to instantiate.
+   *     tags: [Login]
    *     requestBody:
    *       required: true
    *       content:
@@ -52,8 +53,10 @@ export class LoginController {
    *             properties:
    *               email:
    *                 type: string
+   *                 example: user1@test.com
    *               password:
    *                 type: string
+   *                 example: Pa$$$word123
    *     responses:
    *       200:
    *         description: Login successful
@@ -71,8 +74,6 @@ export class LoginController {
    *                       type: string
    *                     email:
    *                       type: string
-   *                 token:
-   *                   type: string
    *       400:
    *         description: Invalid email and/or password
    *         content:
