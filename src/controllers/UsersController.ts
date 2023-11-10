@@ -262,7 +262,7 @@ export class UsersController {
       }
       return res.status(httpCodes.UNAUTHORIZED).send(false);
     } catch (error) {
-      return res.status(httpCodes.BAD_REQUEST).json(error);
+      return res.status(httpCodes.UNAUTHORIZED).json(error);
     }
   }
 }
