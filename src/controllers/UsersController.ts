@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export class UsersController {
   /**
@@ -211,5 +212,19 @@ export class UsersController {
     return res
       .status(httpCodes.CREATED)
       .json({ user: { createdAt, id, firstName, lastName, email } });
+  }
+
+  async tokenValidation(req: Request, res: Response) {
+    const { token } = req.body;
+    try {
+      const { data } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
+      const user = await new UserService().findById(data);
+      if (user) {
+        return res.status(httpCodes.OK).send(true);
+      }
+      return res.status(httpCodes.UNAUTHORIZED).send(false);
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json(error);
+    }
   }
 }
