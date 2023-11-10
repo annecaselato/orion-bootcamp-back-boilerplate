@@ -20,7 +20,7 @@ export class UsersValidator extends ErrorsValidator {
   public createNewUser() {
     return [
       body('firstName').trim().notEmpty().withMessage('Invalid first name'),
-      body('lastName').trim().notEmpty().withMessage('Invalid first name'),
+      body('lastName').trim().notEmpty().withMessage('Invalid last name'),
       body('email').trim().isEmail().withMessage('Invalid email'),
       body('password')
         .notEmpty()
