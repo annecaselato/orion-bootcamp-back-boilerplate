@@ -72,7 +72,7 @@ export class UserService {
     lastName: string,
     email: string,
     password: string
-  ): Promise<User | undefined> {
+  ): Promise<User> {
     const newUser = this.userRepository.save({
       firstName,
       lastName,
