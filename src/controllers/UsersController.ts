@@ -237,17 +237,12 @@ export class UsersController {
    *                   type: string
    *     responses:
    *       '200':
-   *           description: 'booleano autorizando acesso'
+   *           description: 'Booleano autorizando acesso'
    *           content:
    *             application/json:
    *               schema:
-   *                 type: object
-   *                 properties:
-   *                   token:
-   *                     type: string
+   *                 type: boolean
    *
-   *       '400':
-   *           description: 'Solicitação inválida.'
    *       '401':
    *           description: 'Acesso a rota negado'
    */
