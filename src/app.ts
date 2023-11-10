@@ -31,18 +31,18 @@ cron.schedule('0 */1 * * *', async function charactersUpdateSchedule() {
   try {
     const charactershandler = new CharactersHandler();
     const offset = offsetter();
-    let charactersData: Array<unknown>;
+    let charactersData: Array<unknown> = [];
 
     do {
       charactersData = await charactershandler.getCharacters(
         offset.next().value
       );
 
-      const formatter = new FormatHandler();
-      const characters: CharacterModel[] =
-        await formatter.extractAndTryTotranslate(charactersData);
-
       if (charactersData.length) {
+        const formatter = new FormatHandler();
+        const characters: CharacterModel[] =
+          await formatter.extractAndTryTotranslate(charactersData);
+
         const characterrepository = new CharacterRepository();
         await characterrepository.updateOrSave(characters);
       }
