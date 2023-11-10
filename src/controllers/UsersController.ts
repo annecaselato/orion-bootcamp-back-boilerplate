@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export class UsersController {
   /**
