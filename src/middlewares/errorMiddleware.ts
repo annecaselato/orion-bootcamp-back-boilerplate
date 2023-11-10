@@ -3,7 +3,7 @@ import { ApplicationErrorService } from '../services/aplicationErrorService';
 import { Request as ExpressRequest } from 'express';
 
 interface Request extends ExpressRequest {
-  user?: { id: number }; // Adjust this to match the shape of your user object
+  user?: { id: number };
 }
 
 class CustomError extends Error {
@@ -18,11 +18,10 @@ class CustomError extends Error {
 export const errorMiddleware = async (err: Error | CustomError, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
 
-  // Save the error to the database
   const errorService = new ApplicationErrorService();
   await errorService.create([
     {
-      userId: req.user ? req.user.id : null, // If you have an authentication system
+      userId: req.user ? req.user.id : null,
       error: {
         name: err.name,
         message: err.message,
@@ -31,7 +30,6 @@ export const errorMiddleware = async (err: Error | CustomError, req: Request, re
     }
   ]);
 
-  // Respond to the client with a generic error
   if (err instanceof CustomError) {
     res.status(err.statusCode).json({ error: err.message });
   } else {
