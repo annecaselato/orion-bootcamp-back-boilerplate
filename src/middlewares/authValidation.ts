@@ -29,7 +29,7 @@ export async function authValidation(req: Request, res: Response, next: NextFunc
   try {
     const user = await UserRepository.findUserById(userId);
 
-    if (user.accessToken !== accessToken) {
+    if (user.accessToken !== accessToken.split(' ')[1]) {
       res.status(401).json({ message: 'Access token inválido' });
       return;
     }
