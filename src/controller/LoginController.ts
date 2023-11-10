@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { validateEmailAndPassword } from '../middlewares/validationMiddleware';
+import { UserValidationsMiddleware } from '../middlewares/validationMiddleware';
 import { UserRepository } from '../repositories/userRepository';
 import { BcryptUtils } from '../library/bcryptUtils';
 import { JwtUtils } from '../library/jwtUtils';
@@ -88,7 +88,9 @@ export class LoginController {
       return res.status(400).send('E-mail e/ou senha inválidos');
     }
 
-    if (validateEmailAndPassword(email, password)) {
+    const userValidator = UserValidationsMiddleware.validateEmailAndPassword(email, password);
+
+    if (!userValidator) {
       return res.status(400).json({ message: 'E-mail e/ou senha inválidos' });
     }
 
