@@ -7,7 +7,7 @@ import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import { DataSource } from 'typeorm';
 import { NodemailerService } from './library/nodemailerUtils';
-import { errorMiddleware } from './middlewares/errorMiddleware';
+import { ErrorMiddleware } from './middlewares/errorMiddleware';
 
 MysqlDataSource.initialize()
   .then(async (connection: DataSource) => {
@@ -25,7 +25,7 @@ NodemailerService.init();
 app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
-app.use(errorMiddleware);
+app.use(ErrorMiddleware.handleError);
 
 const swaggerSpec = swaggerJSDoc(swaggerConfig);
 
