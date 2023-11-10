@@ -138,19 +138,6 @@ export class UsersController {
     }
   }
 
-<<<<<<< HEAD
-  async registerUserEmail(req: Request, res: Response) {
-    const { email, username } = req.body;
-    try {
-      const result = await new UserService().emailWelcome(email, username);
-
-      if (result) {
-        return res.status(httpCodes.OK).json('OK');
-      }
-    } catch (error) {
-      return res.status(httpCodes.BAD_REQUEST).json({ error });
-    }
-=======
   /**
    * @swagger
    * /users/new-user:
@@ -222,6 +209,18 @@ export class UsersController {
     return res
       .status(httpCodes.CREATED)
       .json({ user: { createdAt, id, firstName, lastName, email } });
->>>>>>> e7cea84ca854631a7099899c80697e7fc437386b
+  }
+
+  async registerUserEmail(req: Request, res: Response) {
+    const { email, username } = req.body;
+    try {
+      const result = await new UserService().emailWelcome(email, username);
+
+      if (result) {
+        return res.status(httpCodes.OK).json('OK');
+      }
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json({ error });
+    }
   }
 }
