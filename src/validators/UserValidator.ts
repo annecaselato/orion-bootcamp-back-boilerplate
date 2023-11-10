@@ -36,4 +36,11 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+
+  public tokenValidation() {
+    return [
+      body('token').trim().notEmpty().withMessage('token empty'),
+      this.errorValidate
+    ];
+  }
 }
