@@ -72,8 +72,8 @@ export class UserService {
     lastName: string,
     email: string,
     password: string
-  ) {
-    const newUser = this.userRepository.insert({
+  ): Promise<User | undefined> {
+    const newUser = this.userRepository.save({
       firstName,
       lastName,
       email,
