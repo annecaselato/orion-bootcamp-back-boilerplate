@@ -3,9 +3,15 @@ import { MysqlDataSource } from '../config/database';
 import { JwtUtils } from '../library/jwtUtils';
 import { User } from '../entity/Users';
 
+/**
+ * Deals with User database queries
+ */
 export class UserRepository {
   /**
-   *Adds passwordRecoveryToken to user instance for 30 minutes.
+   * addPasswordRecoveryToken
+   *
+   * Adds passwordRecoveryToken to user instance for 24 hours.
+   *
    * @param user instance of a User.
    * @param userId number representing the user's id.
    * @returns {Promise<string>} Updates the user's token only, without interferring
@@ -23,7 +29,10 @@ export class UserRepository {
   }
 
   /**
-   *Finds a user in the database through a given email
+   * findUserByEmail
+   *
+   * Finds a user in the database through a given email
+   *
    * @param email used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not
    */
@@ -32,7 +41,10 @@ export class UserRepository {
   }
 
   /**
-   *Finds a user in the database through a given id
+   * findUserById
+   *
+   * Finds a user in the database through a given id
+   *
    * @param id used as reference to find the user.
    * @returns {Promise<User | undefinded>} Returns user or not
    */
@@ -41,9 +53,13 @@ export class UserRepository {
   }
 
   /**
-   *Finds a user in the database through a given email
-   * @param email used as reference to find the user.
-   * @returns {Promise<User | undefinded>} Returns user or not, in case email is not found.
+   * saveAccessTokenInUser
+   *
+   * Finds a user in the database through a given email
+   *
+   * @param userId ID used as reference to find the user.
+   * @param token used to update user's token.
+   * @returns {Promise<UpdateResult>} Returns updated user with the new access token.
    */
   public static async saveAccessTokenInUser(userId: number, token: string): Promise<UpdateResult> {
     return MysqlDataSource.getRepository(User).update(userId, {

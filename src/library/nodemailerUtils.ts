@@ -1,12 +1,17 @@
 import nodemailer from 'nodemailer';
 
+/**
+ * Sends emails for users
+ */
 export class NodemailerService {
   private static transporter: nodemailer.Transporter;
 
   /**
+   * init
+   *
    * Initializes the Nodemailer transport with the SMTP settings from MailTrap.
    */
-  static init(): void {
+  public static init(): void {
     NodemailerService.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
@@ -17,10 +22,13 @@ export class NodemailerService {
   }
 
   /**
+   * sendPasswordRecoveryEmail
+   *
    * Sends a password recovery email to the specified email address.
+   *
    * @param email - The email address to send the password recovery email to.
    */
-  static async sendPasswordRecoveryEmail(email: string): Promise<void> {
+  public static async sendPasswordRecoveryEmail(email: string): Promise<void> {
     const mailOptions = {
       from: 'admin',
       to: email,

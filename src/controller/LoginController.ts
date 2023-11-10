@@ -4,6 +4,11 @@ import { UserRepository } from '../repositories/userRepository';
 import { BcryptUtils } from '../library/bcryptUtils';
 import { JwtUtils } from '../library/jwtUtils';
 
+/**
+ * 1 - Gets user's email and password from request body
+ * 2 - Finds user by email
+ * 3 - Generates access token
+ */
 export class LoginController {
   /**
    * @swagger

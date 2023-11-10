@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { JwtUtils } from '../library/jwtUtils';
 import { UserRepository } from '../repositories/userRepository';
-
+/**
+ * Finds user and removes access token.
+ */
 export class LogoutController {
   /**
    * @swagger

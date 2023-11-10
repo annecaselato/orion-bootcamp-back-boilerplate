@@ -23,8 +23,13 @@ const USERS = [
   }
 ];
 
+/**
+ * Populates user entity or undoes this operation
+ */
 export class UserDataPopulation1697645895089 implements MigrationInterface {
   /**
+   * up
+   *
    * Executa as operações de inserção de dados na tabela "Users" durante a migração.
    *
    * @param queryRunner - O QueryRunner utilizado para executar as consultas no banco de dados.
@@ -42,6 +47,8 @@ export class UserDataPopulation1697645895089 implements MigrationInterface {
   }
 
   /**
+   * down
+   *
    * Executa as operações de exclusão de dados na tabela "Users" durante a reversão da migração.
    *
    * @param queryRunner - O QueryRunner utilizado para executar as consultas no banco de dados.

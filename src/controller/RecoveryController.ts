@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import { UserRepository } from '../repositories/userRepository';
 import { NodemailerService } from '../library/nodemailerUtils';
 
+/**
+ * Controller user password recovery. Returns status 200 if user is found or not. If
+ * user is found, attaches possword recovery token to the user object and sends recovery email.
+ */
 export class RecoveryController {
   /**
    * @swagger
