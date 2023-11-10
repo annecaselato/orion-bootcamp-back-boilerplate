@@ -148,7 +148,7 @@ export class UsersController {
    * /users/password-change:
    *   patch:
    *     summary: Rota para alteração de senha
-   *     tags: [Senha]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -180,11 +180,11 @@ export class UsersController {
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
       if (id) {
         userService.updatePassword(id, password);
-        return res.status(httpCodes.OK);
+        return res.status(httpCodes.NO_CONTENT);
       } else {
         return res
           .status(httpCodes.UNAUTHORIZED)
-          .json({ mensagem: 'Invalid password or user not found.' });
+          .json({ mensagem: 'User not found.' });
       }
     } catch (error) {
       return res

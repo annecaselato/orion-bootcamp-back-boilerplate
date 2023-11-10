@@ -47,7 +47,7 @@ export class UserService {
   async updatePassword(
     id: number,
     password: string
-  ): Promise<User | undefined> {
+  ): Promise<void | undefined> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       return undefined;
@@ -58,7 +58,7 @@ export class UserService {
       this.userRepository.save(user);
     }
   }
-  
+
   async recoverPassword(email: string): Promise<void> {
     const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
@@ -75,6 +75,6 @@ export class UserService {
         user.email,
         user.firstName
       );
-    }  
+    }
   }
 }
