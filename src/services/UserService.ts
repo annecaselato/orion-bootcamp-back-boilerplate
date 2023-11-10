@@ -70,4 +70,23 @@ export class UserService {
       username
     );
   }
+
+  async findByEmail(email: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({ where: { email } });
+  }
+
+  async newUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ): Promise<User> {
+    const newUser = this.userRepository.save({
+      firstName,
+      lastName,
+      email,
+      password
+    });
+    return newUser;
+  }
 }
