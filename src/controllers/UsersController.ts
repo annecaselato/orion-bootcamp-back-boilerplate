@@ -201,8 +201,7 @@ export class UsersController {
         .status(httpCodes.BAD_REQUEST)
         .json({ message: 'Email already in use' });
     }
-    const salt = bcrypt.genSaltSync(10);
-    const newPassword = bcrypt.hashSync(password, salt);
+    const newPassword = await bcrypt.hash(password, 10);
     const { id, createdAt } = await new UserService().newUser(
       firstName,
       lastName,
