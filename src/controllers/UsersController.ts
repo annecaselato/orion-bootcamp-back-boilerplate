@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export class UsersController {
   /**
@@ -211,5 +212,52 @@ export class UsersController {
     return res
       .status(httpCodes.CREATED)
       .json({ user: { createdAt, id, firstName, lastName, email } });
+  }
+
+  /**
+   * @swagger
+   * /users/token-validation:
+   *   post:
+   *     summary: Rota para validar o token.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTY5OTQ4MzUxNSwiZXhwIjoxNjk5NTY5OTE1fQ.dNusL_TYB-u617roeRFR1hLjAFPa2NOQTgBvcplrWTw
+   *               type: object
+   *               properties:
+   *                 token:
+   *                   type: string
+   *     responses:
+   *       '200':
+   *           description: 'Booleano autorizando acesso'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: boolean
+   *
+   *       '401':
+   *           description: 'Acesso a rota negado'
+   */
+
+  async tokenValidation(req: Request, res: Response) {
+    const { token } = req.body;
+    try {
+      const { data } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
+      const user = await new UserService().findById(data);
+      if (user) {
+        return res.status(httpCodes.OK).send(true);
+      }
+      return res.status(httpCodes.UNAUTHORIZED).send(false);
+    } catch (error) {
+      return res.status(httpCodes.UNAUTHORIZED).json(error);
+    }
   }
 }

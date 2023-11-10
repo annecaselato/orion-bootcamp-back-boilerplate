@@ -23,5 +23,10 @@ router.post(
   new UsersValidator().createNewUser(),
   new UsersController().newUser
 );
+router.post(
+  '/users/token-validation',
+  new UsersValidator().tokenValidation(),
+  new UsersController().tokenValidation
+);
 
 export default router;
