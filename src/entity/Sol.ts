@@ -8,8 +8,8 @@ export class Sol {
   @Column({ unique: true })
   solNumberMarsDay: number;
 
-  @Column({ unique: true })
-  terrestrialDate: Date;
+  @Column()
+  terrestrialDate: string;
 
   @Column()
   maximumTemperature: number;

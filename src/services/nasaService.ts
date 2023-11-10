@@ -58,10 +58,13 @@ export class NasaService {
    */
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<DeepPartial<Sol[]>> {
     const fourteenSolesData: DeepPartial<Sol[]> = fourteenSoles.map((sol) => {
-      const dateParts = sol.terrestrial_date.split('-');
+      // const dateParts = sol.terrestrial_date.split('-');
+      // const day = parseInt(dateParts[2]);
+      // const month = parseInt(dateParts[1]);
+      // const year = parseInt(dateParts[0]);
       return {
         solNumberMarsDay: parseInt(sol.sol),
-        terrestrialDate: new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`),
+        terrestrialDate: sol.terrestrial_date,
         maximumTemperature: parseInt(sol.max_temp),
         minimumTemperature: parseInt(sol.min_temp)
       };
