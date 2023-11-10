@@ -39,7 +39,7 @@ export class UsersValidator extends ErrorsValidator {
 
   public tokenValidation() {
     return [
-      body('token').trim().notEmpty().withMessage('token empty'),
+      body('token').trim().notEmpty().withMessage("Token's empty"),
       this.errorValidate
     ];
   }
