@@ -214,6 +214,44 @@ export class UsersController {
       .json({ user: { createdAt, id, firstName, lastName, email } });
   }
 
+  /**
+   * @swagger
+   * /users/token-validation:
+   *   post:
+   *     summary: Rota para validar o token.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTY5OTQ4MzUxNSwiZXhwIjoxNjk5NTY5OTE1fQ.dNusL_TYB-u617roeRFR1hLjAFPa2NOQTgBvcplrWTw
+   *               type: object
+   *               properties:
+   *                 token:
+   *                   type: string
+   *     responses:
+   *       '200':
+   *           description: 'booleano autorizando acesso'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   token:
+   *                     type: string
+   *
+   *       '400':
+   *           description: 'Solicitação inválida.'
+   *       '401':
+   *           description: 'Acesso a rota negado'
+   */
+
   async tokenValidation(req: Request, res: Response) {
     const { token } = req.body;
     try {
