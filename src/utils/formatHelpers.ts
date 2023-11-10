@@ -1,9 +1,10 @@
 import CharacterModel from '../library/CharacterInterface';
 
-export const imageNotAviable = (str: string): boolean => {
-  return (
-    str == 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
-  );
+export const thumbFomatter = (str: string): string => {
+  return str ==
+    'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available'
+    ? ''
+    : `${str}.jpg`;
 };
 
 // apenas extrai name, description e thumb

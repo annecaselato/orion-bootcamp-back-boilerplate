@@ -1,6 +1,6 @@
 import { Translate } from '@google-cloud/translate/build/src/v2';
 import CharacterModel from '../library/CharacterInterface';
-import { extractCharacters, imageNotAviable } from '../utils/formatHelpers';
+import { extractCharacters, thumbFomatter } from '../utils/formatHelpers';
 import 'dotenv/config';
 
 const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Translate
@@ -21,9 +21,7 @@ export default class FormatHandler {
 
           const path: string = character.thumbnail.path;
 
-          const characterThumb: string | undefined = imageNotAviable(path)
-            ? ''
-            : `${character.thumbnail.path}.jpg`;
+          const characterThumb: string | undefined = thumbFomatter(path);
 
           const translated: boolean = true;
           const idMarvel: number = character.id;
