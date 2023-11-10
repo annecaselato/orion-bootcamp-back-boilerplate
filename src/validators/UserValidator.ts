@@ -16,4 +16,24 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+
+  public createNewUser() {
+    return [
+      body('firstName').trim().notEmpty().withMessage('Invalid first name'),
+      body('lastName').trim().notEmpty().withMessage('Invalid last name'),
+      body('email').trim().isEmail().withMessage('Invalid email'),
+      body('password')
+        .notEmpty()
+        .isStrongPassword({
+          minLength: 8,
+          minLowercase: 0,
+          minUppercase: 0,
+          minNumbers: 1,
+          minSymbols: 1
+        })
+        .matches(/^(?=.*[a-zA-Z])/) //Validação para presença de no minimo uma letra no password
+        .withMessage('Invalid password'),
+      this.errorValidate
+    ];
+  }
 }

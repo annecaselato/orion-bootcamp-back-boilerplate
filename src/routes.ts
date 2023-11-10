@@ -18,5 +18,10 @@ router.post(
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
+router.post(
+  '/users/new-user',
+  new UsersValidator().createNewUser(),
+  new UsersController().newUser
+);
 
 export default router;

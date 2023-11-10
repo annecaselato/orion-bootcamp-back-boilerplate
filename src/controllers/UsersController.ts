@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
+import bcrypt from 'bcrypt';
 
 export class UsersController {
   /**
@@ -8,7 +9,7 @@ export class UsersController {
    * /users/login:
    *   post:
    *     summary: Rota para login do usuário
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -78,7 +79,7 @@ export class UsersController {
    *     summary: Rota com usuario logado
    *     security:
    *       - BearerAuth: []
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -107,7 +108,7 @@ export class UsersController {
    * /users/recover-password:
    *   post:
    *     summary: Rota para redefinir senha do usuário.
-   *     tags: [Recove Password]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -137,5 +138,78 @@ export class UsersController {
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
+  }
+
+  /**
+   * @swagger
+   * /users/new-user:
+   *   post:
+   *     summary: Rota para criar novo usuário.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 firstName: nome
+   *                 lastName: sobrenome
+   *                 email: email@email.com
+   *                 password: 123456A#
+   *               type: object
+   *               properties:
+   *                 firstName:
+   *                   type: string
+   *                 lastName:
+   *                   type: sring
+   *                 email:
+   *                   type: string
+   *                 password:
+   *                   type: string
+   *     responses:
+   *       '201':
+   *           description: 'Dados do usuário cadastrado'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   createdAt:
+   *                     type: string
+   *                   id:
+   *                     type: number
+   *                   firstName:
+   *                     type: string
+   *                   lastName:
+   *                     type: sring
+   *                   email:
+   *                     type: string
+   *
+   *       '400':
+   *           description: 'Solicitação inválida.'
+   */
+
+  async newUser(req: Request, res: Response) {
+    const { firstName, lastName, email, password } = req.body;
+    const emailAlreadyInUse = await new UserService().findByEmail(email);
+    if (emailAlreadyInUse) {
+      return res
+        .status(httpCodes.BAD_REQUEST)
+        .json({ message: 'Email already in use' });
+    }
+    const newPassword = await bcrypt.hash(password, 10);
+    const { id, createdAt } = await new UserService().newUser(
+      firstName,
+      lastName,
+      email,
+      newPassword
+    );
+    return res
+      .status(httpCodes.CREATED)
+      .json({ user: { createdAt, id, firstName, lastName, email } });
   }
 }
