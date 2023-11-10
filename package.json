@@ -10,6 +10,7 @@
     "build": "npm run lint && npx tsc",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "typedoc": "npx typedoc --entryPointStrategy expand ./src",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:generate ./src/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/config/database.ts migration:run",
     "migration:create": "typeorm-ts-node-commonjs migration:create ./src/migrations/createTestUsers"
@@ -27,6 +28,7 @@
     "eslint-plugin-prettier": "5.0.1",
     "nodemon": "3.0.1",
     "ts-node": "10.9.1",
+    "typedoc": "^0.25.3",
     "typescript": "5.2.2"
   },
   "dependencies": {
