@@ -26,11 +26,10 @@ function validateEmail(email: string): boolean {
 /**
  * validatePassword
  *
- * Validates password format
+ * Validates password format: Minimum 8 chars, 1 uppercase, 1 lowercase, 1 number and 1 special character.
  *
  * @param password inserted by user when trying to authenticate.
- * @returns {boolean} If password format is valid or not
- * (Minimum 8 chars, 1 uppercase, 1 lowercase, 1 number and 1 special character)
+ * @returns {boolean} If password format is valid or not.
  */
 function validatePassword(password: string): boolean {
   return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/.test(password);

@@ -57,8 +57,9 @@ export class UserRepository {
    *
    * Finds a user in the database through a given email
    *
-   * @param email used as reference to find the user.
-   * @returns {Promise<User | undefinded>} Returns user or not, in case email is not found.
+   * @param userId ID used as reference to find the user.
+   * @param token used to update user's token.
+   * @returns {Promise<UpdateResult>} Returns updated user with the new access token.
    */
   public static async saveAccessTokenInUser(userId: number, token: string): Promise<UpdateResult> {
     return MysqlDataSource.getRepository(User).update(userId, {
