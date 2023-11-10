@@ -181,24 +181,22 @@ export class UsersController {
 
   async newUser(req: Request, res: Response) {
     const { firstName, lastName, email, password } = req.body;
-    try {
-      const emailAlreadyInUse = await new UserService().findByEmail(email);
-      if (emailAlreadyInUse) {
-        return res
-          .status(httpCodes.BAD_REQUEST)
-          .json({ message: 'Email already in use' });
-      }
-      const salt = bcrypt.genSaltSync(10);
-      const newPassword = bcrypt.hashSync(password, salt);
-      const { generatedMaps } = await new UserService().newUser(
-        firstName,
-        lastName,
-        email,
-        newPassword
-      );
-      return res.status(httpCodes.CREATED).json(generatedMaps[0]);
-    } catch (error) {
-      return res.status(httpCodes.BAD_REQUEST).json(error);
+    const emailAlreadyInUse = await new UserService().findByEmail(email);
+    if (emailAlreadyInUse) {
+      return res
+        .status(httpCodes.BAD_REQUEST)
+        .json({ message: 'Email already in use' });
     }
+    const salt = bcrypt.genSaltSync(10);
+    const newPassword = bcrypt.hashSync(password, salt);
+    const { id, createdAt } = await new UserService().newUser(
+      firstName,
+      lastName,
+      email,
+      newPassword
+    );
+    return res
+      .status(httpCodes.CREATED)
+      .json({ user: { createdAt, id, firstName, lastName, email } });
   }
 }
