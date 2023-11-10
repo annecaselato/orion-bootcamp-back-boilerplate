@@ -43,19 +43,4 @@ router.use('/v1', logoutRoute);
 
 router.get('/', new HomeController().hello);
 
-router.get('/error', (req, res, next) => {
-  try {
-    const error = new Error('This is a test error');
-    const errorObject = {
-      name: error.name,
-      message: error.message,
-      stack: error.stack,
-      customProperty: 'This is a custom property'
-    };
-    throw errorObject;
-  } catch (error) {
-    next(error);
-  }
-});
-
 export default router;
