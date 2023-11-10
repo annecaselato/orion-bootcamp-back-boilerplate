@@ -17,10 +17,11 @@ export const swaggerConfig: swaggerJSDoc.OAS3Options = {
     },
     components: {
       securitySchemes: {
-        BearerAuth: {
+        bearerAuth: {
           in: 'header',
           type: 'http',
-          scheme: 'bearer'
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
         }
       }
     }

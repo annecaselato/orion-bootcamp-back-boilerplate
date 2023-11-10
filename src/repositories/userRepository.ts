@@ -50,4 +50,16 @@ export class UserRepository {
       accessToken: token
     });
   }
+
+  /**
+   * Removes the access token from a user.
+   *
+   * @param userId - The id of the user from which the access token will be removed.
+   * @returns A Promise<UpdateResult> that is resolved when the update operation is completed.
+   */
+  public static async removeAccessTokenFromUser(userId: number): Promise<UpdateResult> {
+    return MysqlDataSource.getRepository(User).update(userId, {
+      accessToken: null
+    });
+  }
 }

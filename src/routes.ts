@@ -3,6 +3,7 @@ import { HomeController } from './controller/HomeController';
 import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
+import logoutRoute from './api/v1/logoutRoute';
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.use('/v1', loginRoute);
  */
 
 router.use('/v1', recoveryRoute);
+
 /**
  * GET route for soles data
  *
@@ -30,6 +32,14 @@ router.use('/v1', recoveryRoute);
  * @group Soles data
  */
 router.use('/v1', solesRoute);
+
+/**
+ * PATCH route for logout
+ *
+ * @route PATCH /logout
+ * @group Logout
+ */
+router.use('/v1', logoutRoute);
 
 router.get('/', new HomeController().hello);
 
