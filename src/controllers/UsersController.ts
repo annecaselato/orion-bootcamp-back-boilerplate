@@ -185,7 +185,7 @@ export class UsersController {
       const emailAlreadyInUse = await new UserService().findByEmail(email);
       if (emailAlreadyInUse) {
         return res
-          .status(httpCodes.CONFLICT)
+          .status(httpCodes.BAD_REQUEST)
           .json({ message: 'Email already in use' });
       }
       const salt = bcrypt.genSaltSync(10);
