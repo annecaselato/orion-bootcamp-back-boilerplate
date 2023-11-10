@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'soles' })
 export class Sol {
@@ -9,11 +9,17 @@ export class Sol {
   solNumberMarsDay: number;
 
   @Column({ unique: true })
-  te: number;
+  terrestrialDate: Date;
 
   @Column()
   maximumTemperature: number;
 
   @Column()
   minimumTemperature: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
