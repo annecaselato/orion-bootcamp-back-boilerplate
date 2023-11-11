@@ -11,8 +11,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 50 })
+  firstName: string;
+
   @Column({ type: 'varchar', length: 150 })
-  name: string;
+  lastName: string;
 
   @Column({ type: 'varchar', length: 30 })
   gender: string;

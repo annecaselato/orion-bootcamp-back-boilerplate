@@ -1,16 +1,19 @@
 import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import { Repository } from '../repository/UserRepository';
-import { Gender } from '../library/genderTypes';
-
-function genderTypes(): typeof Gender {
-  return Gender;
-}
+import { UserRepository } from '../repository/UserRepository';
+import { genderTypes, minimunAgeAllowed } from '../utils/userHelpers';
+import moment from 'moment';
 
 export const validationField = [
-  body('name')
+  body('firstName')
     .notEmpty()
     .withMessage('Nome não pode ser vazio')
+    .bail()
+    .matches(/^[a-zA-Z\s]+$/),
+
+  body('lastName')
+    .notEmpty()
+    .withMessage('Sobrenome não pode ser vazio')
     .bail()
     .matches(/^[a-zA-Z\s]+$/),
 
@@ -31,8 +34,15 @@ export const validationField = [
     })
     .withMessage('Formato incorreto de data')
     .bail()
-    .isBefore(new Date().toLocaleDateString())
-    .withMessage('Informe data válida'),
+    .custom((birthDate: Date) => {
+      const today = moment();
+      if (today.diff(birthDate, 'years') < minimunAgeAllowed()) {
+        return Promise.reject(
+          'Idade mínima para acesso à plataforma é de 10 anos'
+        );
+      }
+      return Promise.resolve();
+    }),
 
   body('email')
     .notEmpty()
@@ -41,13 +51,13 @@ export const validationField = [
     .isEmail()
     .withMessage('Informe um e-mail válido')
     .custom(async (email: string) => {
-      const repository = new Repository();
+      const repository = new UserRepository();
       const existingUser = await repository.findOneByEmail(email);
       if (existingUser) {
-        return false;
+        return Promise.reject('E-mail já cadastrado');
       }
-    })
-    .withMessage('E-mail já cadastrado'), /// AJUSTAR PARA EXIBIR MENSAGEM NO REFINAMENTO
+      return true;
+    }),
 
   body('password')
     .notEmpty()
@@ -55,13 +65,22 @@ export const validationField = [
     .bail()
     .isStrongPassword({
       minLength: 8,
-      minUppercase: 1,
+      minLowercase: 0,
+      minUppercase: 0,
       minNumbers: 1,
       minSymbols: 1
     })
     .withMessage(
-      'Senha deve conter no mínimo 8 caracteres e ao menos 1 letra maiúscula, 1 número e 1 carcter especial'
+      'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
     )
+    .custom((value) => {
+      if (!/[a-zA-Z]/.test(value)) {
+        return Promise.reject(
+          'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
+        );
+      }
+      return Promise.resolve();
+    })
 ];
 
 export function Validator(req: Request, res: Response, next: NextFunction) {

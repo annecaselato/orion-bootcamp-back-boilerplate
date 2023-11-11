@@ -6,8 +6,8 @@ import {
   BeforeUpdate
 } from 'typeorm';
 
-@Entity('characters')
-export class Character {
+@Entity('events')
+export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -15,10 +15,7 @@ export class Character {
   idMarvel: number;
 
   @Column({ type: 'varchar', length: 128 })
-  enName: string;
-
-  @Column({ type: 'varchar', length: 128, default: null })
-  ptName: string;
+  title: string;
 
   @Column({ type: 'varchar', length: 2048, default: null })
   description: string;
@@ -32,13 +29,13 @@ export class Character {
   @Column({ update: false })
   createdAt: Date;
 
-  @Column()
-  lastUpdate: Date;
-
   @BeforeInsert()
   createdAtDate() {
     this.createdAt = new Date();
   }
+
+  @Column()
+  lastUpdate: Date;
 
   @BeforeUpdate()
   updateDates() {

@@ -4,8 +4,13 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
+import CharactersHandler from './handlers/CharactersHandler';
+import FormatHandler from './handlers/FormatHandler';
+import { offsetter } from './utils/marvelGetHelpers';
+import CharacterRepository from './repository/CharacterRepository';
 import routes from './routes';
 import cron from 'node-cron';
+import CharacterModel from 'library/CharacterInterface';
 import { EmailSender } from './library/mail';
 import { User } from './entity/User';
 
@@ -43,6 +48,33 @@ cron.schedule('0 7 * * *', async () => {
 app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
+
+cron.schedule('0 */1 * * *', async function charactersUpdateSchedule() {
+  console.log('Running task to update database every 1 hour');
+  try {
+    const charactershandler = new CharactersHandler();
+    const offset = offsetter();
+    let charactersData: Array<unknown> = [];
+
+    do {
+      charactersData = await charactershandler.getCharacters(
+        offset.next().value
+      );
+
+      if (charactersData.length) {
+        const formatter = new FormatHandler();
+        const characters: CharacterModel[] =
+          await formatter.extractAndTryTotranslate(charactersData);
+
+        const characterrepository = new CharacterRepository();
+        await characterrepository.updateOrSave(characters);
+      }
+    } while (charactersData.length);
+  } catch (error) {
+    console.error(error);
+    Promise.reject('Unable to update database. Trying again in 1 hour');
+  }
+});
 
 const swaggerSpec = swaggerJSDoc(swaggerConfig);
 

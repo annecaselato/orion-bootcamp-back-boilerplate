@@ -9,7 +9,8 @@ export class CreateTestUsers1698447684549 implements MigrationInterface {
       .into(User)
       .values([
         {
-          name: 'testone',
+          firstName: 'testone',
+          lastName: 'da silva',
           gender: 'homem (cis ou trans)',
           birthDate: '2001-12-05',
           email: 'betaorionisorion@gmail.com',
@@ -19,7 +20,8 @@ export class CreateTestUsers1698447684549 implements MigrationInterface {
           lastUpdate: new Date()
         },
         {
-          name: 'testtwo',
+          firstName: 'testtwo',
+          lastName: 'dos santos',
           gender: 'prefiro não informar',
           birthDate: '1990-04-25',
           email: 'email@gmail.com',

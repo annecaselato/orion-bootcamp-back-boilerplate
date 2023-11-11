@@ -1,7 +1,7 @@
 import { MysqlDataSource } from '../config/database';
 import { User } from '../entity/User';
 import { Request, Response } from 'express';
-import JwtHandler from '../jwtUtils/JwtHandler';
+import JwtHandler from '../handlers/JwtHandler';
 import bcrypt from 'bcrypt';
 
 export class AuthController {
@@ -131,7 +131,7 @@ export class AuthController {
 
       //atribuir token jwt
       const token = await JwtHandler.signToken(
-        { id: user.id, name: user.name, email: user.email },
+        { id: user.id, name: user.firstName, email: user.email },
         {
           algorithm: 'HS256',
           expiresIn: 7200 //2 horas

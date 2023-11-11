@@ -1,4 +1,4 @@
-import JwtHandler from '../jwtUtils/JwtHandler';
+import JwtHandler from '../handlers/JwtHandler';
 
 export function authenticateToken(req, res, next) {
   try {

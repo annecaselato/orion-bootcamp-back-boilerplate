@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { validationField, Validator } from './validator/UserValidator';
+import { validationField, Validator } from './validator/userValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
@@ -12,11 +12,10 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
-//TODO: colocar middleware de autenticação, criar controller
 router.get(
-  '/v1/getCharacters/:page',
+  '/v1/getPage/:category/:page',
   authenticateToken,
-  new CharacterController().getCharactersPage
+  new CharacterController().getPage
 );
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado

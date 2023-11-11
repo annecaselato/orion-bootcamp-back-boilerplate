@@ -3,6 +3,17 @@ import { User } from '../entity/User';
 import { MysqlDataSource } from '../config/database';
 import { Character } from '../entity/Character';
 import { Metrics } from '../entity/Metrics';
+import { Comic } from '../entity/Comic';
+import { Series } from '../entity/Series';
+import { Story } from '../entity/Story';
+
+enum Category {
+  Characters = 'characters',
+  Comics = 'comics',
+  Series = 'series',
+  Stories = 'stories',
+  Events = 'events'
+}
 
 export class CharacterController {
   /**
@@ -159,14 +170,26 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/getCharacters/{page}:
+   * /v1/getPage/{category}/{page}:
    *   get:
-   *     summary: Requisita páginas de personagens
-   *     description: Retorna uma quantidade variável de personagens a depender da página selecionada
+   *     summary: Requisita páginas de uma categoria especificada
+   *     description: Retorna uma quantidade de 9 cards por página da categoria especificada
    *     security:
    *       - BearerAuth: []
    *     tags: [Characters]
    *     parameters:
+   *       - in: path
+   *         name: category
+   *         required: true
+   *         schema:
+   *           type: string
+   *           enum:
+   *             - characters
+   *             - comics
+   *             - series
+   *             - stories
+   *             - events
+   *         description: Categoria desejada
    *       - in: path
    *         name: page
    *         required: true
@@ -192,7 +215,7 @@ export class CharacterController {
    *               example:
    *                 date: {}
    *                 status: true
-   *                 data: <ARRAY DE PERSONAGENS JSON>
+   *                 data: <ARRAY DE OBJETOS JSON>
    *       '404':
    *           description: 'Requisição falhou.'
    *           content:
@@ -231,20 +254,68 @@ export class CharacterController {
    *                 data: "Um erro interno ocorreu."
    *
    */
-  async getCharactersPage(req: Request, res: Response) {
+  async getPage(req: Request, res: Response) {
     try {
+      const pageCategory: Category = req.params.category as Category;
       const page: number = Number(req.params.page);
-      const characterRepository = MysqlDataSource.getRepository(Character);
 
       const offset = (page - 1) * 9;
-      const limit = Math.min(100, page * 9); //valor máximo de 100 no limit
+      const limit = 9;
 
-      const characters = await characterRepository.find({
-        take: limit,
-        skip: offset
-      });
+      let cards;
 
-      if (characters.length === 0) {
+      switch (pageCategory) {
+        case Category.Characters:
+          const charactersRepository = MysqlDataSource.getRepository(Character);
+
+          cards = await charactersRepository.find({
+            take: limit,
+            skip: offset
+          });
+
+          break;
+
+        case Category.Comics:
+          const comicsRepository = MysqlDataSource.getRepository(Comic);
+
+          cards = await comicsRepository.find({
+            take: limit,
+            skip: offset
+          });
+
+          break;
+
+        case Category.Series:
+          const seriesRepository = MysqlDataSource.getRepository(Series);
+
+          cards = await seriesRepository.find({
+            take: limit,
+            skip: offset
+          });
+
+          break;
+
+        case Category.Stories:
+          const storiesRepository = MysqlDataSource.getRepository(Story);
+
+          cards = await storiesRepository.find({
+            take: limit,
+            skip: offset
+          });
+
+          break;
+        case Category.Events:
+          const eventsRepository = MysqlDataSource.getRepository(Event);
+
+          cards = await eventsRepository.find({
+            take: limit,
+            skip: offset
+          });
+
+          break;
+      }
+
+      if (cards.length === 0) {
         return res.status(404).send({
           date: new Date(),
           status: false,
@@ -254,7 +325,7 @@ export class CharacterController {
 
       return res
         .status(200)
-        .json({ date: new Date(), status: true, data: characters });
+        .json({ date: new Date(), status: true, data: cards });
     } catch (error) {
       return res.status(500).send({
         date: new Date(),

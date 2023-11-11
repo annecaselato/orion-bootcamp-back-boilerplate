@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { Repository } from '../repository/UserRepository';
+import { Request, Response } from 'express';
+import { UserRepository } from '../repository/UserRepository';
 import { User } from '../entity/User';
 import { EmailSender } from '../library/mail';
 
@@ -16,9 +16,12 @@ export class UserController {
    *           schema:
    *             type: object
    *             properties:
-   *               name:
+   *               firstName:
    *                 type: string
    *                 description: Nome do usuário
+   *               lastName:
+   *                 type: string
+   *                 description: Sobrenome do usuário
    *               gender:
    *                 type: string
    *                 description: Gênero do usuário
@@ -33,7 +36,8 @@ export class UserController {
    *                 type: string
    *                 description: Senha do usuário
    *             example:
-   *               name: User test
+   *               firstName: User
+   *               lastName: tester
    *               gender: Prefiro não dizer
    *               birthDate: 1990-12-06
    *               email: email@email.com
@@ -58,9 +62,12 @@ export class UserController {
    *                     id:
    *                       type: integer
    *                       description: ID do usuário
-   *                     name:
+   *                     firstName:
    *                       type: string
    *                       description: Nome do usuário
+   *                     lastName:
+   *                       type: string
+   *                       description: Sobrenome do usuário
    *                     gender:
    *                       type: string
    *                       description: Gênero do usuário
@@ -82,14 +89,16 @@ export class UserController {
    *               example:
    *                 date: 2023-10-28T19:32:46.116Z
    *                 status: true
-   *                 id: 10
-   *                 name: User test
-   *                 gender: Prefiro não dizer
-   *                 birthDate: 2020-02-13
-   *                 email: email@email.com
-   *                 createdAt: 2023-10-28T19:32:46.000Z
-   *                 lastUpdate: 2023-10-28T19:32:46.000Z
-   *                 isActivated: false
+   *                 data:
+   *                   id: 10
+   *                   firstName: User
+   *                   lastName: tester
+   *                   gender: Prefiro não dizer
+   *                   birthDate: 2020-02-13
+   *                   email: email@email.com
+   *                   createdAt: 2023-10-28T19:32:46.000Z
+   *                   lastUpdate: 2023-10-28T19:32:46.000Z
+   *                   isActivated: false
    *       '400':
    *         description: Um ou mais dados fornecidos na requisição não atendem aos pré-requisitos
    *         content:
@@ -125,11 +134,11 @@ export class UserController {
    *                 date: 2023-10-28T16:48:16.792Z
    *                 status: false
    *                 data:
-   *                 type: field
-   *                 value: Mulhe
-   *                 msg: Selecione um gênero válido
-   *                 path: gender
-   *                 location: body
+   *                   type: field
+   *                   value: Mulhe
+   *                   msg: Selecione um gênero válido
+   *                   path: gender
+   *                   location: body
    *       '500':
    *         description: Erro interno do servidor. Não foi possível processar os dados no banco
    *         content:
@@ -149,12 +158,13 @@ export class UserController {
    *               example:
    *                 date: 2023-10-28T19:59:19.751Z
    *                 status: false
-   *                 data: Duplicate entry 'email@email.com' for key 'users.IDX_97672ac88f789774dd47f7c8be
+   *                 data: Erro interno do servidor
    */
   create = async (req: Request, res: Response) => {
     try {
-      const repository: Repository = new Repository();
-      const user: Promise<User> = repository.createAndSave(req);
+      const repository: UserRepository = new UserRepository();
+      const userData = req.body;
+      const user: Promise<User> = repository.createAndSave(userData);
       const savedUser: User = await repository.findOneByEmail(
         (await user).email
       );
@@ -162,9 +172,11 @@ export class UserController {
       const sendEmail = new EmailSender();
       sendEmail.sendConfirmationEmail(await user);
     } catch (error) {
-      res
-        .status(500)
-        .json({ date: new Date(), status: false, data: error.message });
+      res.status(500).json({
+        date: new Date(),
+        status: false,
+        data: 'Erro interno do servidor'
+      });
     }
   };
 }

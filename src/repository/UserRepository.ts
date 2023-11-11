@@ -1,26 +1,23 @@
 import { MysqlDataSource } from '../config/database';
-import { Request } from 'express';
 import * as bcrypt from 'bcrypt';
 import { User } from '../entity/User';
 
-export class Repository {
+export class UserRepository {
   private repository = MysqlDataSource.getRepository(User);
+  private salt = (): number => 10;
 
-  constructor() {}
+  async createAndSave(userData): Promise<User> {
+    const salt = this.salt();
+    const hashpassword = await bcrypt.hash(userData.password, salt);
 
-  async createAndSave(req: Request) {
-    const { name, gender, birthDate, email, password } = req.body;
-
-    const salt = 10;
-    const hashpassword = await bcrypt.hash(password, salt);
-
-    const newUser: User = new User();
-    (newUser.name = name),
-      (newUser.gender = gender),
-      (newUser.birthDate = birthDate),
-      (newUser.email = email),
-      (newUser.password = hashpassword),
-      (newUser.lastUpdate = new Date());
+    const newUser = new User();
+    newUser.firstName = userData.firstName;
+    newUser.lastName = userData.lastName;
+    newUser.gender = userData.gender;
+    newUser.birthDate = userData.birthDate;
+    newUser.email = userData.email;
+    newUser.password = hashpassword;
+    newUser.lastUpdate = new Date();
 
     await this.repository.manager.save(newUser);
     return newUser;
