@@ -5,6 +5,9 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
+import cron from 'node-cron';
+import { EmailSender } from './library/mail';
+import { User } from './entity/User';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -15,6 +18,27 @@ MysqlDataSource.initialize()
   });
 
 const app = express();
+
+cron.schedule('0 7 * * *', async () => {
+  const emailSender = new EmailSender();
+  const userRepository = MysqlDataSource.getRepository(User);
+
+  try {
+    const currentTime = new Date();
+    const timeShipping = new Date(currentTime.getTime() - 60 * 60 * 1000 * 60);
+    const users = await userRepository
+      .createQueryBuilder('user')
+      .where('user.createdAt > :date', { date: timeShipping })
+      .andWhere('user.isActivated = false')
+      .getMany();
+
+    users.forEach(async (user) => {
+      await emailSender.sendConfirmationEmail(user);
+    });
+  } catch (error) {
+    console.error('Erro ao enviar e-mails de confirmação', error);
+  }
+});
 
 app.use(express.json());
 app.use(cors({ origin: true }));
