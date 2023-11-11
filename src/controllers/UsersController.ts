@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
-import jwt from 'jsonwebtoken';
 import { httpCodes } from '../utils/httpCodes';
+import bcrypt from 'bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 type JwtPayload = {
   id: number;
@@ -12,7 +13,7 @@ export class UsersController {
    * /users/login:
    *   post:
    *     summary: Rota para login do usuário
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -82,7 +83,7 @@ export class UsersController {
    *     summary: Rota com usuario logado
    *     security:
    *       - BearerAuth: []
-   *     tags: [Login]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -111,7 +112,7 @@ export class UsersController {
    * /users/recover-password:
    *   post:
    *     summary: Rota para redefinir senha do usuário.
-   *     tags: [Recove Password]
+   *     tags: [Users]
    *     consumes:
    *       - application/json
    *     produces:
@@ -140,6 +141,126 @@ export class UsersController {
       return res.status(httpCodes.NO_CONTENT).send();
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/new-user:
+   *   post:
+   *     summary: Rota para criar novo usuário.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 firstName: nome
+   *                 lastName: sobrenome
+   *                 email: email@email.com
+   *                 password: 123456A#
+   *               type: object
+   *               properties:
+   *                 firstName:
+   *                   type: string
+   *                 lastName:
+   *                   type: sring
+   *                 email:
+   *                   type: string
+   *                 password:
+   *                   type: string
+   *     responses:
+   *       '201':
+   *           description: 'Dados do usuário cadastrado'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   createdAt:
+   *                     type: string
+   *                   id:
+   *                     type: number
+   *                   firstName:
+   *                     type: string
+   *                   lastName:
+   *                     type: sring
+   *                   email:
+   *                     type: string
+   *
+   *       '400':
+   *           description: 'Solicitação inválida.'
+   */
+
+  async newUser(req: Request, res: Response) {
+    const { firstName, lastName, email, password } = req.body;
+    const emailAlreadyInUse = await new UserService().findByEmail(email);
+    if (emailAlreadyInUse) {
+      return res
+        .status(httpCodes.BAD_REQUEST)
+        .json({ message: 'Email already in use' });
+    }
+    const newPassword = await bcrypt.hash(password, 10);
+    const { id, createdAt } = await new UserService().newUser(
+      firstName,
+      lastName,
+      email,
+      newPassword
+    );
+    return res
+      .status(httpCodes.CREATED)
+      .json({ user: { createdAt, id, firstName, lastName, email } });
+  }
+
+  /**
+   * @swagger
+   * /users/token-validation:
+   *   post:
+   *     summary: Rota para validar o token.
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *         required: true
+   *         content:
+   *           application/json:
+   *             schema:
+   *               example:
+   *                 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTY5OTQ4MzUxNSwiZXhwIjoxNjk5NTY5OTE1fQ.dNusL_TYB-u617roeRFR1hLjAFPa2NOQTgBvcplrWTw
+   *               type: object
+   *               properties:
+   *                 token:
+   *                   type: string
+   *     responses:
+   *       '200':
+   *           description: 'Booleano autorizando acesso'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: boolean
+   *
+   *       '401':
+   *           description: 'Acesso a rota negado'
+   */
+
+  async tokenValidation(req: Request, res: Response) {
+    const { token } = req.body;
+    try {
+      const { data } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
+      const user = await new UserService().findById(data);
+      if (user) {
+        return res.status(httpCodes.OK).send(true);
+      }
+      return res.status(httpCodes.UNAUTHORIZED).send(false);
+    } catch (error) {
+      return res.status(httpCodes.UNAUTHORIZED).json(error);
     }
   }
 

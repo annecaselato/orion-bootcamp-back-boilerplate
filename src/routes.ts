@@ -20,6 +20,16 @@ router.post(
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
+router.post(
+  '/users/new-user',
+  new UsersValidator().createNewUser(),
+  new UsersController().newUser
+);
+router.post(
+  '/users/token-validation',
+  new UsersValidator().tokenValidation(),
+  new UsersController().tokenValidation
+);
 
 router.patch(
   '/users/password-change',
