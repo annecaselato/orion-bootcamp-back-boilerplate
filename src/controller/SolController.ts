@@ -53,10 +53,6 @@ export class SolController {
 
       const solesData = await latestSols.getFirstFourteenSoles();
 
-      console.log('oooooooooooooooo');
-      console.log(Date.parse('2023-01-11'));
-      console.log(typeof '2023-01-11');
-
       await SolRepository.save14MarsDays(solesData);
 
       const listedSoles: Sol[] = await SolRepository.listSoles();
