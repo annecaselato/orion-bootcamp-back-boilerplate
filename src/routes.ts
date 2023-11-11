@@ -7,11 +7,13 @@ import authMiddleware from './middlewares/authMiddleware';
 const router = Router();
 
 router.get('/', new HomeController().hello);
+
 router.post(
   '/users/login',
   new UsersValidator().loginValidate(),
   new UsersController().login
 );
+
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
 router.post(
   '/users/recover-password',
@@ -27,6 +29,13 @@ router.post(
   '/users/token-validation',
   new UsersValidator().tokenValidation(),
   new UsersController().tokenValidation
+);
+
+router.patch(
+  '/users/password-change',
+  new UsersValidator().tokenValidate(),
+  new UsersValidator().passwordValidate(),
+  new UsersController().updatePassword
 );
 
 export default router;

@@ -4,6 +4,9 @@ import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
+type JwtPayload = {
+  id: number;
+};
 export class UsersController {
   /**
    * @swagger
@@ -258,6 +261,63 @@ export class UsersController {
       return res.status(httpCodes.UNAUTHORIZED).send(false);
     } catch (error) {
       return res.status(httpCodes.UNAUTHORIZED).json(error);
+    }
+  }
+
+  /**
+   * @swagger
+   * /users/password-change:
+   *   patch:
+   *     summary: Rota para alteração de senha
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             example:
+   *               token: token jwt
+   *               password: pass@123
+   *             type: object
+   *             properties:
+   *               token:
+   *                 type: string
+   *               password:
+   *                 type: string
+   *     responses:
+   *       '204':
+   *           description: 'Senha alterada com sucesso.'
+   *       '400':
+   *           description: 'Senha invalida ou Usuario não encontrado.'
+   */
+  updatePassword(req: Request, res: Response) {
+    const userService = new UserService();
+    const { token, password } = req.body;
+    try {
+      const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
+      if (id) {
+        const user = userService.findById(id);
+        if (user) {
+          userService.updatePassword(id, password);
+          return res.status(httpCodes.NO_CONTENT);
+        } else {
+          return res
+            .status(httpCodes.UNAUTHORIZED)
+            .json({ mensagem: 'User not found.' });
+        }
+      } else {
+        return res
+          .status(httpCodes.UNAUTHORIZED)
+          .json({ mensagem: 'User not found.' });
+      }
+    } catch (error) {
+      return res
+        .status(httpCodes.UNAUTHORIZED)
+        .json({ mensagem: 'User not found.' });
     }
   }
 }

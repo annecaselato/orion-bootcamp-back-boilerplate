@@ -44,6 +44,21 @@ export class UserService {
     return await this.userRepository.findOne({ where: { id } });
   }
 
+  async updatePassword(
+    id: number,
+    password: string
+  ): Promise<void | undefined> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      return undefined;
+    }
+    if (user) {
+      const passwordHash = await bcrypt.hash(password, 10);
+      user.password = passwordHash;
+      this.userRepository.save(user);
+    }
+  }
+
   async recoverPassword(email: string): Promise<void> {
     const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
