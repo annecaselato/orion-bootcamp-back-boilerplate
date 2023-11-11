@@ -179,8 +179,15 @@ export class UsersController {
     try {
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
       if (id) {
-        userService.updatePassword(id, password);
-        return res.status(httpCodes.NO_CONTENT);
+        const user = userService.findById(id);
+        if (user) {
+          userService.updatePassword(id, password);
+          return res.status(httpCodes.NO_CONTENT);
+        } else {
+          return res
+            .status(httpCodes.UNAUTHORIZED)
+            .json({ mensagem: 'User not found.' });
+        }
       } else {
         return res
           .status(httpCodes.UNAUTHORIZED)
@@ -189,7 +196,7 @@ export class UsersController {
     } catch (error) {
       return res
         .status(httpCodes.UNAUTHORIZED)
-        .json({ mensagem: 'Invalid password or user not found.' });
+        .json({ mensagem: 'User not found.' });
     }
   }
 }

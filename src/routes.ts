@@ -23,6 +23,7 @@ router.post(
 
 router.patch(
   '/users/password-change',
+  new UsersValidator().tokenValidate(),
   new UsersValidator().passwordValidate(),
   new UsersController().updatePassword
 );

@@ -34,4 +34,16 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+
+  public tokenValidate() {
+    return [
+      body('token')
+        .notEmpty(),
+        .isJWT(),
+        .withMessage('Invalid token'),
+        this.errorValidate
+    ];
+  }
 }
+
+
