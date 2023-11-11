@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
-import { NodemailerProvider } from '../utils/nodeMailer';
+import { NodemailerProvider } from '../utils/NodemailerProvider';
+import { resolve } from 'path';
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -48,24 +49,23 @@ export class UserService {
           algorithm: 'HS256'
         }
       );
-      await new NodemailerProvider().sendEmail(
-        token,
-        user.email,
-        user.firstName
-      );
+      const path = resolve(__dirname, '../templates/emailRecoverPassword.hbs');
+      const subject = 'Redefinição de Senha';
+      const variables = {
+        userName: user.firstName,
+        token: token
+      };
+      await new NodemailerProvider().sendEmail(email, subject, variables, path);
     }
   }
 
-  async emailWelcome(email: string): Promise<User | undefined> {
-    const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) {
-      return undefined;
-    }
-
-    await new NodemailerProvider().sendEmailWelcome(
-      'lorenaborgessilva@gmail.com',
-      user.firstName
-    );
+  async emailWelcome(email: string, firstName: string): Promise<void> {
+    const path = resolve(__dirname, '../templates/emailWelcome.hbs');
+    const subject = 'Bem-vindo à Marte 101';
+    const variables = {
+      userName: firstName
+    };
+    await new NodemailerProvider().sendEmail(email, subject, variables, path);
   }
 
   async findByEmail(email: string): Promise<User | undefined> {

@@ -3,7 +3,6 @@ import { HomeController } from './controllers/HomeController';
 import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
-import { EmailController } from 'controllers/EmailsController';
 
 const router = Router();
 
@@ -19,11 +18,15 @@ router.post(
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
-router.post('/teste', new UsersController().registerUserEmail);
 router.post(
   '/users/new-user',
   new UsersValidator().createNewUser(),
   new UsersController().newUser
+);
+router.post(
+  '/users/token-validation',
+  new UsersValidator().tokenValidation(),
+  new UsersController().tokenValidation
 );
 
 export default router;
