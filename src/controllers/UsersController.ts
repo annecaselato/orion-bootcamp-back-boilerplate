@@ -50,12 +50,12 @@ export class UsersController {
    *           description: 'Requisição não autorizada'
    */
   async login(req: Request, res: Response) {
-    const { email, password, rebemberMe } = req.body;
+    const { email, password, rememberMe } = req.body;
     try {
       const result = await new UserService().authenticate(
         email,
         password,
-        rebemberMe
+        rememberMe
       );
       if (result) {
         return res.status(httpCodes.OK).json({
