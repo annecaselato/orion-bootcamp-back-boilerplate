@@ -3,6 +3,7 @@ import { HomeController } from './controllers/HomeController';
 import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
+import { EmailController } from 'controllers/EmailsController';
 
 const router = Router();
 

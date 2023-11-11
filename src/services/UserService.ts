@@ -56,10 +56,7 @@ export class UserService {
     }
   }
 
-  async emailWelcome(
-    email: string,
-    username: string
-  ): Promise<User | undefined> {
+  async emailWelcome(email: string): Promise<User | undefined> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       return undefined;
@@ -67,7 +64,7 @@ export class UserService {
 
     await new NodemailerProvider().sendEmailWelcome(
       'lorenaborgessilva@gmail.com',
-      username
+      user.firstName
     );
   }
 

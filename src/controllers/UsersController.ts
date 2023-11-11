@@ -212,9 +212,9 @@ export class UsersController {
   }
 
   async registerUserEmail(req: Request, res: Response) {
-    const { email, username } = req.body;
+    const { email } = req.body;
     try {
-      const result = await new UserService().emailWelcome(email, username);
+      const result = await new UserService().emailWelcome(email);
 
       if (result) {
         return res.status(httpCodes.OK).json('OK');
