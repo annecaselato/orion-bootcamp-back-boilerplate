@@ -24,9 +24,12 @@ export class AuthController {
    *                 type: string
    *               password:
    *                 type: string
+   *               rememberMe:
+   *                 type: boolean
    *             example:
    *               email: teste@teste.com
    *               password: teste123
+   *               rememberMe: true
    *     consumes:
    *       - application/json
    *     produces:
@@ -90,11 +93,11 @@ export class AuthController {
    */
 
   async login(req: Request, res: Response) {
-    const userRepository = MysqlDataSource.getRepository(User);
-    const rememberMe: boolean = (req.body.rememberMe as boolean) || false;
-
     try {
       //encontra usuario no banco de dados pelo email
+      const userRepository = MysqlDataSource.getRepository(User);
+      const rememberMe: boolean = (req.body.rememberMe as boolean) || false;
+
       const user = await userRepository
         .createQueryBuilder('user')
         .addSelect(['user.password'])
