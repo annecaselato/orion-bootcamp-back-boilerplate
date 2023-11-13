@@ -6,6 +6,9 @@ import {
   BeforeUpdate
 } from 'typeorm';
 
+/**
+ * Entidade com informações relacionadas a usuários da aplicação
+ */
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
