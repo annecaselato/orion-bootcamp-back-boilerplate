@@ -170,7 +170,7 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/getPage/{category}/{page}:
+   * /v1/{category}:
    *   get:
    *     summary: Requisita páginas de uma categoria especificada
    *     description: Retorna uma quantidade de 9 cards por página da categoria especificada
@@ -190,13 +190,19 @@ export class CharacterController {
    *             - stories
    *             - events
    *         description: Categoria desejada
-   *       - in: path
+   *       - in: query
    *         name: page
-   *         required: true
+   *         required: false
    *         schema:
    *           type: integer
    *           minimum: 1
    *         description: Página desejada
+   *       - in: query
+   *         name: search
+   *         required: false
+   *         schema:
+   *           type: string
+   *         description: Texto de busca especificado
    *     responses:
    *       '200':
    *           description: 'Requisição bem sucedida.'
@@ -257,63 +263,86 @@ export class CharacterController {
   async getPage(req: Request, res: Response) {
     try {
       const pageCategory: Category = req.params.category as Category;
-      const page: number = Number(req.params.page);
+      const pageNumber: number = Number(req.query.page) || 1;
+      const searchText: string = (req.query.search as string) || '';
 
-      const offset = (page - 1) * 9;
+      const offset = (pageNumber - 1) * 9;
       const limit = 9;
 
-      let cards;
+      let found;
 
       switch (pageCategory) {
         case Category.Characters:
           const charactersRepository = MysqlDataSource.getRepository(Character);
 
-          cards = await charactersRepository.find({
-            take: limit,
-            skip: offset
-          });
+          found = await charactersRepository
+            .createQueryBuilder('characters')
+            .where(
+              'characters.enName LIKE :character_name OR characters.ptName LIKE :character_name',
+              {
+                character_name: `%${searchText}%`
+              }
+            );
 
           break;
 
         case Category.Comics:
           const comicsRepository = MysqlDataSource.getRepository(Comic);
 
-          cards = await comicsRepository.find({
-            take: limit,
-            skip: offset
-          });
+          found = await comicsRepository
+            .createQueryBuilder('comics')
+            .where(
+              'comics.enTitle LIKE :comic_title OR comics.ptTitle LIKE :comic_title',
+              {
+                comic_title: `%${searchText}%`
+              }
+            );
 
           break;
 
         case Category.Series:
           const seriesRepository = MysqlDataSource.getRepository(Series);
 
-          cards = await seriesRepository.find({
-            take: limit,
-            skip: offset
-          });
+          found = await seriesRepository
+            .createQueryBuilder('series')
+            .where(
+              'series.enTitle LIKE :series_title OR series.ptTitle LIKE :series_title',
+              {
+                series_title: `%${searchText}%`
+              }
+            );
 
           break;
 
         case Category.Stories:
           const storiesRepository = MysqlDataSource.getRepository(Story);
 
-          cards = await storiesRepository.find({
-            take: limit,
-            skip: offset
-          });
+          found = await storiesRepository
+            .createQueryBuilder('stories')
+            .where(
+              'stories.enTitle LIKE :story_title OR stories.ptTitle LIKE :story_title',
+              {
+                story_title: `%${searchText}%`
+              }
+            );
 
           break;
         case Category.Events:
           const eventsRepository = MysqlDataSource.getRepository(Event);
 
-          cards = await eventsRepository.find({
-            take: limit,
-            skip: offset
-          });
+          found = await eventsRepository
+            .createQueryBuilder('events')
+            .where(
+              'events.enTitle LIKE :event_title OR events.ptTitle LIKE :event_title',
+              {
+                event_title: `%${searchText}%`
+              }
+            );
 
           break;
       }
+
+      const cards = await found.skip(offset).take(limit).getMany();
 
       if (cards.length === 0) {
         return res.status(404).send({
@@ -327,6 +356,7 @@ export class CharacterController {
         .status(200)
         .json({ date: new Date(), status: true, data: cards });
     } catch (error) {
+      console.log('Erro: ', error);
       return res.status(500).send({
         date: new Date(),
         status: false,
