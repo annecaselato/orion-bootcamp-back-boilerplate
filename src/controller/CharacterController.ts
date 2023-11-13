@@ -257,7 +257,7 @@ export class CharacterController {
   async getPage(req: Request, res: Response) {
     try {
       const pageCategory: Category = req.params.category as Category;
-      const page: number = Number(req.params.page);
+      const page: number = Number(req.query.page);
 
       const offset = (page - 1) * 9;
       const limit = 9;

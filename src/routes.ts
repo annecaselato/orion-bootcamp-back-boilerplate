@@ -13,14 +13,14 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 });
 
 router.get(
-  '/v1/getPage/:category/:page',
+  '/v1/:category',
   authenticateToken,
   new CharacterController().getPage
 );
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
-  '/v1/select/:character_id',
+  '/v1/characters/:character_id',
   authenticateToken,
   new CharacterController().countClick
 );
