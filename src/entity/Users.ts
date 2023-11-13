@@ -19,9 +19,6 @@ export class User {
   @Column({ nullable: true })
   accessToken: string;
 
-  @Column({ default: 'free' })
-  role: string;
-
   @CreateDateColumn()
   created_at: Date;
 
