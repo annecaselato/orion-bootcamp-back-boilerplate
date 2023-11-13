@@ -170,7 +170,7 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/getPage/{category}/{page}:
+   * /v1/{category}:
    *   get:
    *     summary: Requisita páginas de uma categoria especificada
    *     description: Retorna uma quantidade de 9 cards por página da categoria especificada
@@ -190,7 +190,7 @@ export class CharacterController {
    *             - stories
    *             - events
    *         description: Categoria desejada
-   *       - in: path
+   *       - in: query
    *         name: page
    *         required: true
    *         schema:
