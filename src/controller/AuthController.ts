@@ -3,6 +3,7 @@ import { User } from '../entity/User';
 import { Request, Response } from 'express';
 import JwtHandler from '../handlers/JwtHandler';
 import bcrypt from 'bcrypt';
+import { sign } from 'crypto';
 
 export class AuthController {
   /**
@@ -91,6 +92,7 @@ export class AuthController {
 
   async login(req: Request, res: Response) {
     const userRepository = MysqlDataSource.getRepository(User);
+    const rememberMe: boolean = (req.body.rememberMe as boolean) || false;
 
     try {
       //encontra usuario no banco de dados pelo email
@@ -130,12 +132,22 @@ export class AuthController {
       }
 
       //atribuir token jwt
+      let signOptions: object;
+      if (rememberMe) {
+        signOptions = {
+          algorithm: 'HS256',
+          expiresIn: '24h'
+        };
+      } else {
+        signOptions = {
+          algorithm: 'HS256',
+          expiresIn: '2h'
+        };
+      }
+
       const token = await JwtHandler.signToken(
         { id: user.id, name: user.firstName, email: user.email },
-        {
-          algorithm: 'HS256',
-          expiresIn: 7200 //2 horas
-        }
+        signOptions
       );
 
       return res
