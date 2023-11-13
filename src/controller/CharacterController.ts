@@ -18,6 +18,7 @@ enum Category {
 /**
  * Classe com operações relacionadas à operações relacionadas a cards exibidos na aplicação
  */
+//TODO: alterar nome do controller para algo como CardsController (sugestão)
 export class CharacterController {
   /**
    * @swagger
