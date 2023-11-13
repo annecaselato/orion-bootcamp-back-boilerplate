@@ -3,11 +3,15 @@ import { UserRepository } from '../repository/UserRepository';
 import { User } from '../entity/User';
 import { EmailSender } from '../library/mail';
 
+/**
+ * Classe com operações relacionadas a manipulação e criação de usuários
+ */
 export class UserController {
   /**
    * @swagger
    * /v1/signup:
    *   post:
+   * 
    *     summary: Adiciona novo usuário ao banco de dados
    *     tags: [signUp]
    *     requestBody:
