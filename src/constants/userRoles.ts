@@ -1,4 +1,5 @@
 export const userRoles = {
   Free: 'Free',
-  Premium: 'Premium'
+  Premium: 'Premium',
+  Astronaut: 'Astronaut'
 };
