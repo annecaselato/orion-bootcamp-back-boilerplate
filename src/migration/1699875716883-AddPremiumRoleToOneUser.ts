@@ -1,5 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { User } from '../entity/Users';
+import { userRoles } from '../constants/userRoles';
 
 /**
  * Changes one user (Fabrício) to have a Premium role
@@ -18,7 +19,7 @@ export class AddPremiumRoleToOneUser1699836534813 implements MigrationInterface 
     const userToUpdateRole = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
 
     if (userToUpdateRole) {
-      userToUpdateRole.role = 'Premium';
+      userToUpdateRole.role = userRoles['Premium'];
       await userRepository.save(userToUpdateRole);
     }
   }
@@ -36,7 +37,7 @@ export class AddPremiumRoleToOneUser1699836534813 implements MigrationInterface 
     const userToUpdateRole = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
 
     if (userToUpdateRole) {
-      userToUpdateRole.role = 'Free';
+      userToUpdateRole.role = userRoles['Free'];
       await userRepository.save(userToUpdateRole);
     }
   }
