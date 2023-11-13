@@ -11,7 +11,7 @@ export class UserController {
    * @swagger
    * /v1/signup:
    *   post:
-   * 
+   *
    *     summary: Adiciona novo usuário ao banco de dados
    *     tags: [signUp]
    *     requestBody:

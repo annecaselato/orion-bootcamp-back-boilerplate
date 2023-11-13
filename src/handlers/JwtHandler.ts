@@ -15,7 +15,6 @@ export default class JwtHandler {
     return jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
   }
 
-
   /**
    * Verifica a validade de um token JWT.
    *

@@ -10,7 +10,7 @@ import bcrypt from 'bcrypt';
 export class AuthController {
   /**
    * @swagger
-   * 
+   *
    * /v1/login:
    *   post:
    *
