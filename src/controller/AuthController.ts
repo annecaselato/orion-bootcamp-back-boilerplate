@@ -3,7 +3,6 @@ import { User } from '../entity/User';
 import { Request, Response } from 'express';
 import JwtHandler from '../handlers/JwtHandler';
 import bcrypt from 'bcrypt';
-import { sign } from 'crypto';
 
 export class AuthController {
   /**
