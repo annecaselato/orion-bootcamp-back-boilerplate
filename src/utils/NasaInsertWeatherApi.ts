@@ -6,7 +6,7 @@ export class NasaApi {
     const JSO = await axios.get(
       'https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json'
     );
-    const sols = JSO.data.soles.filter(
+    const soles = JSO.data.soles.filter(
       ({ sol }) =>
         sol == 259 ||
         sol == 260 ||
@@ -16,6 +16,6 @@ export class NasaApi {
         sol == 268 ||
         sol == 269
     );
-    return sols;
+    return soles;
   }
 }
