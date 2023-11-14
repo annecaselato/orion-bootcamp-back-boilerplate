@@ -5,19 +5,29 @@ const PLANCARDS: DeepPartial<PlanCard>[] = [
   {
     planCardTitle: 'Plano Pesquisador (Premium)',
     planCardDescription: 'Desbloqueie acesso total às maravilhas de Marte com o Plano Pesquisador (Premium) do Orion Marte.',
-    planCardImage: 'Caminho/imagem',
+    planCardImage: 'src/images/Foto_Premium.png',
     planCardButtonText: 'VEJA COMO SE TORNAR UM PESQUISADOR'
   },
   {
     planCardTitle: 'Plano Astronauta (Enterprise)',
     planCardDescription:
       'Maximize seu potencial explorador com o Plano Astronauta: soluções personalizadas, suporte exclusivo e pacote Premium.',
-    planCardImage: 'Caminho/imagem',
+    planCardImage: 'src/images/Foto_Astronauta.png',
     planCardButtonText: 'VEJA COMO SE TORNAR UM ASTRONAUTA'
   }
 ];
 
+/**
+ * Saves the above data as PlanCards in the database
+ */
 export class AddPlanCards1699903465157 implements MigrationInterface {
+  /**
+   * up
+   *
+   * For each of the PLANCARDS objects, creates a new entry for the PlanCard Entity
+   *
+   * @param queryRunner - QueryRunner object, used to make database queries.
+   */
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const planCard of PLANCARDS) {
       const newPlanCard = await queryRunner.manager.create('PlanCard', {
@@ -31,6 +41,13 @@ export class AddPlanCards1699903465157 implements MigrationInterface {
     }
   }
 
+  /**
+   * down
+   *
+   * Deletes PlanCards from the PlanCardEntity, if they match PLANCARDS objects.
+   *
+   * @param queryRunner - QueryRunner object, used to make database queries.
+   */
   public async down(queryRunner: QueryRunner): Promise<void> {
     for (const planCard of PLANCARDS) {
       await queryRunner.manager.delete('PlanCards', { planCardTitle: planCard.planCardTitle });
