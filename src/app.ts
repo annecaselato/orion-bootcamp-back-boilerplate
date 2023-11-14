@@ -34,6 +34,8 @@ app.get('/swagger.json', (_req, res) => res.send(swaggerSpec));
 
 console.log(`Add swagger on /swagger`);
 
+app.use('/images', express.static('./images'));
+
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server listening on port ${process.env.SERVER_PORT}`);
 });
