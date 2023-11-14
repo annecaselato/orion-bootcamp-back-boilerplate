@@ -1,3 +1,4 @@
+import moment from 'moment';
 import md5 from 'md5';
 import 'dotenv/config';
 
@@ -22,6 +23,14 @@ export const baseURL = (): string => {
 export const maxMarvelAPILimit = (): number => {
   return 100;
 };
+
+export function sevenDaysAgo(): string {
+  const today = moment();
+  const sevenDaysAgoString: string = today
+    .subtract(7, 'days')
+    .format('YYYY-MM-DD');
+  return sevenDaysAgoString;
+}
 
 // Função auxiliar para geração de hash para API Marvel
 
