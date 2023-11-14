@@ -57,28 +57,14 @@ export class NasaService {
    *  the soles table in the database. See solRepository.
    */
   private async selectAndSaveSolesInfo(fourteenSoles: SolMars[]): Promise<DeepPartial<Sol[]>> {
-    const months: { [key: string]: string } = {
-      '01': 'janeiro',
-      '02': 'fevereiro',
-      '03': 'março',
-      '04': 'abril',
-      '05': 'maio',
-      '06': 'junho',
-      '07': 'julho',
-      '08': 'agosto',
-      '09': 'setembro',
-      '10': 'outubro',
-      '11': 'novembro',
-      '12': 'dezembro'
-    };
     const fourteenSolesData: DeepPartial<Sol[]> = fourteenSoles.map((sol) => {
-      const dateParts: string[] = sol.terrestrial_date.split('-');
-      const day: string = dateParts[2];
-      const month: string = months[dateParts[1]];
-      const year: string = dateParts[0];
+      const dateParts = sol.terrestrial_date.split('-');
+      const day: number = parseInt(dateParts[2]);
+      const month: number = parseInt(dateParts[1]) - 1;
+      const year: number = parseInt(dateParts[0]);
       return {
         solNumberMarsDay: parseInt(sol.sol),
-        terrestrialDate: `${day} ${month} de ${year}`,
+        terrestrialDate: new Date(year, month, day),
         maximumTemperature: parseInt(sol.max_temp),
         minimumTemperature: parseInt(sol.min_temp)
       };

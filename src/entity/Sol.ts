@@ -9,7 +9,7 @@ export class Sol {
   solNumberMarsDay: number;
 
   @Column()
-  terrestrialDate: string;
+  terrestrialDate: Date;
 
   @Column()
   maximumTemperature: number;
