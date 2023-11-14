@@ -6,11 +6,11 @@ import {
   ManyToOne
 } from 'typeorm';
 
-import { Character } from './Character';
-import { User } from './User';
+import Character from './Character';
+import User from './User';
 
 @Entity('metrics')
-export class Metrics {
+export default class Metrics {
   @PrimaryGeneratedColumn()
   id: number;
 

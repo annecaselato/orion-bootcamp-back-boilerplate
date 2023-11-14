@@ -7,15 +7,18 @@ import {
 } from 'typeorm';
 
 @Entity('comics')
-export class Comic {
+export default class Comic {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ type: 'int' })
   idMarvel: number;
 
-  @Column({ type: 'varchar', length: 128 })
-  title: string;
+  @Column({ type: 'varchar', length: 256 })
+  enTitle: string;
+
+  @Column({ type: 'varchar', length: 256, default: null })
+  ptTitle: string;
 
   @Column({ type: 'varchar', length: 2048, default: null })
   description: string;
