@@ -1,6 +1,6 @@
 import { MysqlDataSource } from '../config/database';
 import * as bcrypt from 'bcrypt';
-import { User } from '../entity/User';
+import User from '../entity/User';
 
 export class UserRepository {
   private repository = MysqlDataSource.getRepository(User);
@@ -25,9 +25,7 @@ export class UserRepository {
 
   async findOneByEmail(userEmail: string) {
     const user = await this.repository.findOne({
-      where: {
-        email: userEmail
-      }
+      where: { email: userEmail }
     });
     return user;
   }

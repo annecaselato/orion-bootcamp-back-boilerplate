@@ -1,4 +1,4 @@
-import { Character } from '../entity/Character';
+import Character from '../entity/Character';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateTestCharacter1699055195428 implements MigrationInterface {

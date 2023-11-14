@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserRepository } from '../repository/UserRepository';
-import { User } from '../entity/User';
+import User from '../entity/User';
 import { EmailSender } from '../library/mail';
 
 export class UserController {
