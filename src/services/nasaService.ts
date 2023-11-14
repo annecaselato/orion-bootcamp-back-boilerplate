@@ -60,11 +60,11 @@ export class NasaService {
     const fourteenSolesData: DeepPartial<Sol[]> = fourteenSoles.map((sol) => {
       const dateParts = sol.terrestrial_date.split('-');
       const day: number = parseInt(dateParts[2]);
-      const month: number = parseInt(dateParts[1]);
+      const month: number = parseInt(dateParts[1]) - 1;
       const year: number = parseInt(dateParts[0]);
       return {
         solNumberMarsDay: parseInt(sol.sol),
-        terrestrialDate: new Date(day, month, year),
+        terrestrialDate: new Date(year, month, day),
         maximumTemperature: parseInt(sol.max_temp),
         minimumTemperature: parseInt(sol.min_temp)
       };
