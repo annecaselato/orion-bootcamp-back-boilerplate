@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import { httpCodes } from 'utils/httpCodes';
+import { httpCodes } from '../utils/httpCodes';
 
 export class ErrorsValidator {
   public errorValidate(req: Request, res: Response, next: NextFunction) {

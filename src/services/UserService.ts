@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { User } from '../database/entity/User';
-import NodemailerProvider from '../utils/nodeMailer';
+import { NodemailerProvider } from '../utils/NodemailerProvider';
+import { resolve } from 'path';
 
 export class UserService {
   private userRepository: Repository<User>;
@@ -21,22 +22,18 @@ export class UserService {
     if (!user) {
       return undefined;
     }
-
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return undefined;
     }
-
     const secretKey: string | undefined = process.env.JWT_PASS;
     if (!secretKey) {
       throw new Error('There is no token key');
     }
     const expirationToken = rebemberMe ? '24h' : '1h';
-
     const token = jwt.sign({ id: user.id }, secretKey, {
       expiresIn: expirationToken
     });
-
     return token;
   }
 
@@ -63,19 +60,30 @@ export class UserService {
     const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const token = jwt.sign(
-        { data: String(user.id) },
+        { id: String(user.id) },
         (process.env.JWT_PASS as Secret) || null,
         {
           expiresIn: '1d',
           algorithm: 'HS256'
         }
       );
-      await new NodemailerProvider().sendEmail(
-        token,
-        user.email,
-        user.firstName
-      );
+      const path = resolve(__dirname, '../templates/emailRecoverPassword.hbs');
+      const subject = 'Redefinição de Senha';
+      const variables = {
+        userName: user.firstName,
+        token: token
+      };
+      await new NodemailerProvider().sendEmail(email, subject, variables, path);
     }
+  }
+
+  async emailWelcome(email: string, firstName: string): Promise<void> {
+    const path = resolve(__dirname, '../templates/emailWelcome.hbs');
+    const subject = 'Bem-vindo à Marte 101';
+    const variables = {
+      userName: firstName
+    };
+    await new NodemailerProvider().sendEmail(email, subject, variables, path);
   }
 
   async findByEmail(email: string): Promise<User | undefined> {

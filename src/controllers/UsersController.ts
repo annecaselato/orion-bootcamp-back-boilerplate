@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 type JwtPayload = {
   id: number;
@@ -52,7 +52,6 @@ export class UsersController {
    *       '401':
    *           description: 'Requisição não autorizada'
    */
-
   async login(req: Request, res: Response) {
     const { email, password, rememberMe } = req.body;
     try {
@@ -196,7 +195,6 @@ export class UsersController {
    *       '400':
    *           description: 'Solicitação inválida.'
    */
-
   async newUser(req: Request, res: Response) {
     const { firstName, lastName, email, password } = req.body;
     const emailAlreadyInUse = await new UserService().findByEmail(email);
@@ -206,15 +204,20 @@ export class UsersController {
         .json({ message: 'Email already in use' });
     }
     const newPassword = await bcrypt.hash(password, 10);
-    const { id, createdAt } = await new UserService().newUser(
-      firstName,
-      lastName,
-      email,
-      newPassword
-    );
-    return res
-      .status(httpCodes.CREATED)
-      .json({ user: { createdAt, id, firstName, lastName, email } });
+    try {
+      await new UserService().emailWelcome(email, firstName);
+      const { id, createdAt } = await new UserService().newUser(
+        firstName,
+        lastName,
+        email,
+        newPassword
+      );
+      return res
+        .status(httpCodes.CREATED)
+        .json({ user: { createdAt, id, firstName, lastName, email } });
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json({ error });
+    }
   }
 
   /**
@@ -249,12 +252,11 @@ export class UsersController {
    *       '401':
    *           description: 'Acesso a rota negado'
    */
-
   async tokenValidation(req: Request, res: Response) {
     const { token } = req.body;
     try {
-      const { data } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
-      const user = await new UserService().findById(data);
+      const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
+      const user = await new UserService().findById(id);
       if (user) {
         return res.status(httpCodes.OK).send(true);
       }
