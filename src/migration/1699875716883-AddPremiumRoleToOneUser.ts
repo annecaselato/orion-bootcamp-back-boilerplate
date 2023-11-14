@@ -13,14 +13,14 @@ export class AddPremiumRoleToOneUser1699836534813 implements MigrationInterface 
    *
    * @param queryRunner - QueryRunner object, used to make database queries.
    */
-  public async up(queryRunner: QueryRunner): Promise<UpdateResult> {
+  public async up(queryRunner: QueryRunner): Promise<void> {
     const userRepository = queryRunner.manager.getRepository(User);
 
     const userToUpdateRole: User | undefined = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
     const userId: number = userToUpdateRole.id;
 
     if (userToUpdateRole) {
-      return userRepository.update(userId, {
+      await userRepository.update(userId, {
         role: userRoles['Premium']
       });
     }
@@ -36,11 +36,13 @@ export class AddPremiumRoleToOneUser1699836534813 implements MigrationInterface 
   public async down(queryRunner: QueryRunner): Promise<void> {
     const userRepository = queryRunner.manager.getRepository(User);
 
-    const userToUpdateRole = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
+    const userToUpdateRole: User | undefined = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
+    const userId: number = userToUpdateRole.id;
 
     if (userToUpdateRole) {
-      userToUpdateRole.role = userRoles['Free'];
-      await userRepository.save(userToUpdateRole);
+      await userRepository.update(userId, {
+        role: userRoles['Free']
+      });
     }
   }
 }
