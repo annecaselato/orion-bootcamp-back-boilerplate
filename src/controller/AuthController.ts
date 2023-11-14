@@ -4,9 +4,13 @@ import User from '../entity/User';
 import JwtHandler from '../services/JwtHandler';
 import bcrypt from 'bcrypt';
 
+/**
+ * Classe com operações relacionadas à autenticação do usuário na aplicação
+ */
 export class AuthController {
   /**
    * @swagger
+   *
    * /v1/login:
    *   post:
    *
