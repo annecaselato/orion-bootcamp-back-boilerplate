@@ -93,6 +93,7 @@ export class CharacterController {
    */
   async countClick(req: Request, res: Response) {
     try {
+      const cardCategory: Category = req.params.category as Category;
       const character_id: number = Number(req.params.character_id);
       const user_id: number = req.body.user.id;
 
