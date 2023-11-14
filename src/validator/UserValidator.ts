@@ -12,7 +12,7 @@ export const validationField = [
     .matches(/^[^\s]+[\s]{0,1}[a-zA-Z]+$/)
     .withMessage('Nome inválido')
     .bail()
-    .toLowerCase(),
+    .toUpperCase(),
 
   body('lastName')
     .notEmpty()
@@ -20,7 +20,7 @@ export const validationField = [
     .bail()
     .matches(/^[a-zA-Z\s]+$/)
     .bail()
-    .toLowerCase(),
+    .toUpperCase(),
 
   body('gender')
     .notEmpty()
