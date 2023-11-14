@@ -8,9 +8,11 @@ import { resolve } from 'path';
 
 export class UserService {
   private userRepository: Repository<User>;
+
   constructor() {
     this.userRepository = MysqlDataSource.getRepository(User);
   }
+
   async authenticate(
     email: string,
     password: string,

@@ -74,6 +74,7 @@ export class UsersController {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
+
   /**
    * @swagger
    * /users/logged:
@@ -194,7 +195,6 @@ export class UsersController {
    *       '400':
    *           description: 'Solicitação inválida.'
    */
-
   async newUser(req: Request, res: Response) {
     const { firstName, lastName, email, password } = req.body;
     const emailAlreadyInUse = await new UserService().findByEmail(email);
@@ -252,7 +252,6 @@ export class UsersController {
    *       '401':
    *           description: 'Acesso a rota negado'
    */
-
   async tokenValidation(req: Request, res: Response) {
     const { token } = req.body;
     try {
