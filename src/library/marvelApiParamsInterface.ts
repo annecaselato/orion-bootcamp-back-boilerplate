@@ -1,5 +1,5 @@
 export default interface MarvelAPIParams {
-  data: any;
+  data: undefined;
   offset: number;
   limit: number;
   ts: number;
