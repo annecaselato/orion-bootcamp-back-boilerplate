@@ -6,7 +6,7 @@ import { User } from './User';
 /**
  * Entidade que relaciona usuários aos seus personagens marcados como favoritos
  */
-@Entity('userfavorites')
+@Entity('user_favorites')
 export class UserFavorites {
   @PrimaryGeneratedColumn()
   id: number;
