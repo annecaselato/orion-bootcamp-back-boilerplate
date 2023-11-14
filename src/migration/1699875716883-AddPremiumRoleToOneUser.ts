@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, UpdateResult } from 'typeorm';
 import { User } from '../entity/Users';
 import { userRoles } from '../constants/userRoles';
 
@@ -13,14 +13,16 @@ export class AddPremiumRoleToOneUser1699836534813 implements MigrationInterface 
    *
    * @param queryRunner - QueryRunner object, used to make database queries.
    */
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  public async up(queryRunner: QueryRunner): Promise<UpdateResult> {
     const userRepository = queryRunner.manager.getRepository(User);
 
-    const userToUpdateRole = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
+    const userToUpdateRole: User | undefined = await userRepository.findOne({ where: { email: 'flindenm@hotmail.com' } });
+    const userId: number = userToUpdateRole.id;
 
     if (userToUpdateRole) {
-      userToUpdateRole.role = userRoles['Premium'];
-      await userRepository.save(userToUpdateRole);
+      return userRepository.update(userId, {
+        role: userRoles['Premium']
+      });
     }
   }
 
