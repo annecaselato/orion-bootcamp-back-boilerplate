@@ -10,13 +10,17 @@ export const validationField = [
     .withMessage('Nome não pode ser vazio')
     .bail()
     .matches(/^[^\s]+[\s]{0,1}[a-zA-Z]+$/)
-    .withMessage('Nome inválido'),
+    .withMessage('Nome inválido')
+    .bail()
+    .toLowerCase(),
 
   body('lastName')
     .notEmpty()
     .withMessage('Sobrenome não pode ser vazio')
     .bail()
-    .matches(/^[a-zA-Z\s]+$/),
+    .matches(/^[a-zA-Z\s]+$/)
+    .bail()
+    .toLowerCase(),
 
   body('gender')
     .notEmpty()
