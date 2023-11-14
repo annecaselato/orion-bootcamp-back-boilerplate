@@ -5,14 +5,14 @@ const PLANCARDS: DeepPartial<PlanCard>[] = [
   {
     planCardTitle: 'Plano Pesquisador (Premium)',
     planCardDescription: 'Desbloqueie acesso total às maravilhas de Marte com o Plano Pesquisador (Premium) do Orion Marte.',
-    planCardImage: 'src/images/Foto_Premium.png',
+    planCardImage: 'src/images/img_pesquisador_plan_Orion_Marte.png',
     planCardButtonText: 'VEJA COMO SE TORNAR UM PESQUISADOR'
   },
   {
     planCardTitle: 'Plano Astronauta (Enterprise)',
     planCardDescription:
       'Maximize seu potencial explorador com o Plano Astronauta: soluções personalizadas, suporte exclusivo e pacote Premium.',
-    planCardImage: 'src/images/Foto_Astronauta.png',
+    planCardImage: 'src/images/img_astronauta_plan_Orion_Marte.png',
     planCardButtonText: 'VEJA COMO SE TORNAR UM ASTRONAUTA'
   }
 ];
