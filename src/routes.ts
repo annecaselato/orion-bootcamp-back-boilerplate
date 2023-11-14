@@ -4,6 +4,7 @@ import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
 import logoutRoute from './api/v1/logoutRoute';
+import planCardsRoute from './api/v1/planCardsRoute';
 
 const router = Router();
 
@@ -32,6 +33,14 @@ router.use('/v1', recoveryRoute);
  * @group Soles data
  */
 router.use('/v1', solesRoute);
+
+/**
+ * GET route for PlanCards data
+ *
+ * @route GET /plan-cards
+ * @group plan cards data
+ */
+router.use('/v1', planCardsRoute);
 
 /**
  * PATCH route for logout
