@@ -9,7 +9,7 @@ const translateClient = new Translate({ projectId, key: apiKey });
 // avalia tradução de cada propriedade e não mais de todo o objeto
 export async function extractAndTryTotranslate(
   object,
-  Category
+  categoryAlias
 ): Promise<CategoryModel> {
   let translated: boolean = true;
   let description: string = '';
@@ -26,7 +26,7 @@ export async function extractAndTryTotranslate(
     description = object.description;
     translated = false;
     console.error(
-      `Não foi possível traduzir description do objeto: ${Category.name} IdMarvel: `,
+      `Não foi possível traduzir description do objeto: ${categoryAlias} IdMarvel: `,
       object.id,
       '\n' + error
     );
@@ -38,8 +38,6 @@ export async function extractAndTryTotranslate(
     thumb: thumbFormatter(object),
     isTranslated: translated
   };
-
-  let identifier;
 
   if (object.name) {
     try {
@@ -54,7 +52,7 @@ export async function extractAndTryTotranslate(
       formattedObject.ptName = 'not available';
       translated = false;
       console.error(
-        `Não foi possível traduzir o nome do objeto: ${Category.name} IdMarvel: `,
+        `Não foi possível traduzir o nome do objeto: ${categoryAlias} IdMarvel: `,
         object.id,
         '\n' + error
       );
@@ -72,7 +70,7 @@ export async function extractAndTryTotranslate(
       formattedObject.ptTitle = 'not available';
       translated = false;
       console.error(
-        `Não foi possível traduzir o título do objeto: ${Category.name} IdMarvel: `,
+        `Não foi possível traduzir o título do objeto: ${categoryAlias} IdMarvel: `,
         object.id,
         '\n' + error
       );

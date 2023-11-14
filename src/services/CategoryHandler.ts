@@ -4,7 +4,7 @@ import * as marvelGetHelpers from '../utils/marvelGetHelpers';
 import 'dotenv/config';
 
 export default class CategoryHandler {
-  async getElements(categoryToURL): Promise<unknown[]> {
+  async getElements(categoryAlias): Promise<unknown[]> {
     try {
       const timestamp = marvelGetHelpers.getTimestamp();
       const hash = await marvelGetHelpers.hashGenarator(timestamp);
@@ -16,7 +16,7 @@ export default class CategoryHandler {
 
       do {
         const response = await axios.get<MarvelAPIParams>(
-          `${marvelGetHelpers.baseURL()}/${categoryToURL}`,
+          `${marvelGetHelpers.baseURL()}/${categoryAlias}`,
           {
             params: {
               offset: offset.next().value,
@@ -36,7 +36,7 @@ export default class CategoryHandler {
       console.log(
         `${
           categoryData.length
-        } dados modificados em ${categoryToURL} desde ${marvelGetHelpers.sevenDaysAgo()}`
+        } dados modificados em '${categoryAlias}' desde ${marvelGetHelpers.sevenDaysAgo()}`
       );
       return categoryData;
     } catch (error) {

@@ -67,21 +67,21 @@ cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
   );
 
   for (const category of categories) {
-    const [className, categoryToURL] = category;
+    const [className, categoryAlias] = category;
 
     try {
       const categoryHandler = new CategoryHandler();
-      const dataArray = await categoryHandler.getElements(categoryToURL);
+      const dataArray = await categoryHandler.getElements(categoryAlias);
 
       const formatter = new CategoryFormatter();
       const formattedArray: Array<CategoryModel> =
-        await formatter.extractAndTryTotranslate(dataArray, className);
+        await formatter.extractAndTryTotranslate(dataArray, categoryAlias);
 
       const categoryRepository = new CategoryRepository();
       await categoryRepository.updateOrSave(formattedArray, className);
     } catch (error) {
       console.log(
-        `falha na execução da atualização do banco de dados de ${categoryToURL}
+        `falha na execução da atualização do banco de dados de ${categoryAlias}
         executando tarefa novamente em 1 hora`
       );
     }

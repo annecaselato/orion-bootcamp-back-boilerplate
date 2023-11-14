@@ -5,11 +5,11 @@ import 'dotenv/config';
 export default class CategoryFormatter {
   async extractAndTryTotranslate(
     objectsArray,
-    Category
+    categoryAlias
   ): Promise<CategoryModel[]> {
     const formattedObjects: CategoryModel[] = await Promise.all(
       objectsArray.map(async (object) => {
-        return await extractAndTryTotranslate(object, Category);
+        return await extractAndTryTotranslate(object, categoryAlias);
       })
     );
     return formattedObjects;
