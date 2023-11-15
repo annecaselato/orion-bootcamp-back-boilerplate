@@ -20,7 +20,7 @@ router.get(
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
-  '/v1/characters/:character_id',
+  '/v1/:category/:character_id',
   authenticateToken,
   new CharacterController().countClick
 );
