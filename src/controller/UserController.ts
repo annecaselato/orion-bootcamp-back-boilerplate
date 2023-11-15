@@ -40,8 +40,8 @@ export class UserController {
    *                 type: string
    *                 description: Senha do usuário
    *             example:
-   *               firstName: User
-   *               lastName: tester
+   *               firstName: User name
+   *               lastName: tester da silva
    *               gender: Prefiro não dizer
    *               birthDate: 1990-12-06
    *               email: email@email.com
@@ -95,8 +95,8 @@ export class UserController {
    *                 status: true
    *                 data:
    *                   id: 10
-   *                   firstName: User
-   *                   lastName: tester
+   *                   firstName: USER NAME
+   *                   lastName: TESTER DA SILVA
    *                   gender: Prefiro não dizer
    *                   birthDate: 2020-02-13
    *                   email: email@email.com

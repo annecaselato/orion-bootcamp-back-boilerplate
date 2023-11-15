@@ -11,11 +11,11 @@ export class CreateTestUsers1698447684549 implements MigrationInterface {
         {
           firstName: 'testone',
           lastName: 'da silva',
-          gender: 'homem (cis ou trans)',
+          gender: 'Homem (cis ou trans)',
           birthDate: '2001-12-05',
           email: 'betaorionisorion@gmail.com',
           password:
-            '$2b$10$9FzlGkF2pLcch5Scd/mpje3Nybkx7RjxqVwkk6X09VGrDIFjlgJSu',
+            '$2b$10$AEJD70.jSwKn7U.Z5dKXaO7Rbkmt7A5XfLJDWs37vJAtxgU51nT5K',
           // No uso real o usuário passa a senha e não a hash
           createdAt: new Date(),
           lastUpdate: new Date()
@@ -23,11 +23,11 @@ export class CreateTestUsers1698447684549 implements MigrationInterface {
         {
           firstName: 'testtwo',
           lastName: 'dos santos',
-          gender: 'prefiro não informar',
+          gender: 'Prefiro não dizer',
           birthDate: '1990-04-25',
           email: 'email@gmail.com',
           password:
-            '$2b$10$s.2ud3F4f4Z6i9OsoYFEtuFZC0wFIilycyjukBd5x/45w1qj/J3Le',
+            '$2b$10$WzFPvx6rTdnO3QTWk2KxWOpf4mAtqzhbq85qkbJISN8deSESj34ky',
           // No uso real o usuário passa a senha e não a hash
           createdAt: new Date(),
           lastUpdate: new Date()

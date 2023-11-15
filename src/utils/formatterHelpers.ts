@@ -6,7 +6,8 @@ const apiKey = process.env.GOOGLE_TRANSLATE_API_KEY; //Key da API google Transla
 const projectId = process.env.GOOGLE_TRANSLATE_PROJECT_ID; // ID do projeto google Translate
 const translateClient = new Translate({ projectId, key: apiKey });
 
-// avalia tradução de cada propriedade e não mais de todo o objeto
+// avalia tradução de cada propriedade individualmente
+// 'isTranslated: true' apenas se todos os atributos não nulos forem traduzidos
 export async function extractAndTryTotranslate(
   object,
   categoryAlias
