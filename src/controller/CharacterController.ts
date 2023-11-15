@@ -2,10 +2,12 @@ import { Request, Response } from 'express';
 import { User } from '../entity/User';
 import { MysqlDataSource } from '../config/database';
 import { Character } from '../entity/Character';
-import { Metrics } from '../entity/Metrics';
+import { UserCharacterClicks } from '../entity/UserCharacterClicks';
 import { Comic } from '../entity/Comic';
 import { Series } from '../entity/Series';
 import { Story } from '../entity/Story';
+import { Repository } from 'typeorm';
+import { UserComicClicks } from '../entity/UserComicClicks';
 
 enum Category {
   Characters = 'characters',
@@ -15,11 +17,70 @@ enum Category {
   Events = 'events'
 }
 
+async function insertNewMetricEntry(
+  metricEntry,
+  userRepository,
+  metricsRepository,
+  user_id: number,
+  category_id: number
+) {
+  //find no usuario
+  const user: User = await userRepository.findOne({
+    where: {
+      id: user_id
+    }
+  });
+
+  if (!user) {
+    return {
+      statusCode: 404,
+      resp: {
+        date: new Date(),
+        status: false,
+        data: 'Usuário não encontrado.'
+      }
+    };
+  }
+
+  //find no personagem
+  const character: Character = await metricsRepository.findOne({
+    where: {
+      id: category_id
+    }
+  });
+
+  if (!character) {
+    return {
+      statusCode: 404,
+      resp: {
+        date: new Date(),
+        status: false,
+        data: 'Recurso não encontrado.'
+      }
+    };
+  }
+
+  metricEntry.user = user;
+  metricEntry.character = character;
+  metricEntry.clicks = 1;
+
+  await MysqlDataSource.manager.save(metricEntry);
+
+  return {
+    statusCode: 200,
+    resp: {
+      date: new Date(),
+      status: true,
+      data: 'O usuário ' + user_id + ' selecionou o personagem ' + category_id
+    }
+  };
+}
+
 export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/select/{character_id}:
+   * /v1/select/{category_id}:
    *   get:
    *     summary: Requisita informações sobre personagem
    *     description: Retorna detalhes sobre um personagem selecionado e realiza a contabilização da métrica de cliques por usuário por card
@@ -28,7 +89,7 @@ export class CharacterController {
    *     tags: [Characters]
    *     parameters:
    *       - in: path
-   *         name: character_id
+   *         name: category_id
    *         required: true
    *         schema:
    *           type: integer
@@ -94,76 +155,95 @@ export class CharacterController {
   async countClick(req: Request, res: Response) {
     try {
       const cardCategory: Category = req.params.category as Category;
-      const character_id: number = Number(req.params.character_id);
+      const category_id: number = Number(req.params.category_id);
       const user_id: number = req.body.user.id;
 
       const userRepository = MysqlDataSource.getRepository(User);
-      const characterRepository = MysqlDataSource.getRepository(Character);
-      const metricsRepository = MysqlDataSource.getRepository(Metrics);
 
-      //procura para ver se a métrica já existe
-      const metric = await metricsRepository.findOne({
-        where: { user: { id: user_id }, character: { id: character_id } }
-      });
+      let statusCode, resp;
 
-      if (metric) {
-        metric.clicks += 1;
-
-        await metricsRepository.save(metric);
-      } else {
-        //find no usuario
-        const user: User = await userRepository.findOne({
-          where: {
-            id: user_id
-          }
-        });
-
-        if (!user) {
-          return res.status(404).send({
-            date: new Date(),
-            status: false,
-            data: 'Usuário não encontrado.'
-          });
-        }
-
-        //find no personagem
-        const character: Character = await characterRepository.findOne({
-          where: {
-            id: character_id
-          }
-        });
-
-        if (!character) {
-          return res.status(404).send({
-            date: new Date(),
-            status: false,
-            data: 'Personagem não encontrado.'
-          });
-        }
-
-        //cria nova métrica na tabela
-        const metricsEntry = new Metrics();
-        metricsEntry.user = user;
-        metricsEntry.character = character;
-        metricsEntry.clicks = 1;
-
-        await MysqlDataSource.manager.save(metricsEntry);
-      }
-
-      return res.status(200).send({
+      //resposta padrão
+      statusCode = 200;
+      resp = {
         date: new Date(),
         status: true,
-        data:
-          'O usuário ' +
-          req.body.user.id +
-          ' selecionou o personagem ' +
-          character_id
-      });
+        data: 'O usuário ' + user_id + ' selecionou o personagem ' + category_id
+      };
+
+      let metricsRepository, categoryRepository;
+      let metricEntry;
+
+      switch (cardCategory) {
+        case Category.Characters:
+          categoryRepository = MysqlDataSource.getRepository(Character);
+          metricsRepository =
+            MysqlDataSource.getRepository(UserCharacterClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, character: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewMetricEntry(
+              new UserCharacterClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Comics:
+          categoryRepository = MysqlDataSource.getRepository(Comic);
+          metricsRepository = MysqlDataSource.getRepository(UserComicClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, comic: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewMetricEntry(
+              new UserCharacterClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Series:
+          break;
+
+        case Category.Stories:
+          break;
+
+        case Category.Events:
+          break;
+      }
+
+      return res.status(statusCode).send(resp);
     } catch (error) {
       return res.status(500).send({
         date: new Date(),
         status: false,
-        data: 'Um erro interno ocorreu.'
+        data: 'Um erro interno ocorreu: ',
+        error
       });
     }
   }
