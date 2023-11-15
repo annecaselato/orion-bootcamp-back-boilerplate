@@ -6,11 +6,14 @@ import {
   ManyToOne
 } from 'typeorm';
 
-import { Character } from './Character';
+import { Comic } from './Comic';
 import { User } from './User';
 
-@Entity('metrics')
-export class Metrics {
+/**
+ * Entidade com informações de cliques por usuário por card de quadrinho.
+ */
+@Entity('user_comic_clicks')
+export class UserComicClicks {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,9 +21,9 @@ export class Metrics {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Character)
-  @JoinColumn({ name: 'character_id' })
-  character: Character;
+  @ManyToOne(() => Comic)
+  @JoinColumn({ name: 'comic_id' })
+  comic: Comic;
 
   @Column({ type: 'int' })
   clicks: number;
