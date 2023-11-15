@@ -13,10 +13,10 @@ export default class FormatHandler {
     try {
       const formattedCharacters: CharacterModel[] = await Promise.all(
         charactersData.map(async (character) => {
-          const [nameTranslation]: string | any =
+          const [nameTranslation]: string | undefined =
             await this.translateClient.translate(character.name, 'pt');
 
-          const [descriptionTranslation]: string | any =
+          const [descriptionTranslation]: string | undefined =
             await this.translateClient.translate(character.description, 'pt');
 
           const path: string = character.thumbnail.path;
