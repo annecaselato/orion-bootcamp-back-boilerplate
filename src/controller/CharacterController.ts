@@ -6,8 +6,12 @@ import { UserCharacterClicks } from '../entity/UserCharacterClicks';
 import { Comic } from '../entity/Comic';
 import { Series } from '../entity/Series';
 import { Story } from '../entity/Story';
+import { Event } from '../entity/Event';
 import { Repository } from 'typeorm';
 import { UserComicClicks } from '../entity/UserComicClicks';
+import { UserSeriesClicks } from '../entity/UserSeriesClicks';
+import { UserStoryClicks } from '../entity/UserStoryClicks';
+import { UserEventClicks } from '../entity/UserEventClicks';
 
 enum Category {
   Characters = 'characters',
@@ -18,6 +22,7 @@ enum Category {
 }
 
 async function insertNewMetricEntry(
+  category: Category,
   metricEntry,
   userRepository,
   metricsRepository,
@@ -55,7 +60,7 @@ async function insertNewMetricEntry(
       resp: {
         date: new Date(),
         status: false,
-        data: 'Recurso não encontrado.'
+        data: "Recurso da categoria '" + category + "' não encontrado."
       }
     };
   }
@@ -71,7 +76,14 @@ async function insertNewMetricEntry(
     resp: {
       date: new Date(),
       status: true,
-      data: 'O usuário ' + user_id + ' selecionou o personagem ' + category_id
+      data:
+        'O usuário ' +
+        user_id +
+        ' selecionou o recurso ' +
+        category_id +
+        " da categoria '" +
+        category +
+        "'."
     }
   };
 }
@@ -167,7 +179,14 @@ export class CharacterController {
       resp = {
         date: new Date(),
         status: true,
-        data: 'O usuário ' + user_id + ' selecionou o personagem ' + category_id
+        data:
+          'O usuário ' +
+          user_id +
+          ' selecionou o recurso ' +
+          category_id +
+          " da categoria '" +
+          cardCategory +
+          "'."
       };
 
       let metricsRepository, categoryRepository;
@@ -191,6 +210,7 @@ export class CharacterController {
           } else {
             //métrica é criada
             ({ statusCode, resp } = await insertNewMetricEntry(
+              cardCategory,
               new UserCharacterClicks(),
               userRepository,
               categoryRepository,
@@ -217,7 +237,8 @@ export class CharacterController {
           } else {
             //métrica é criada
             ({ statusCode, resp } = await insertNewMetricEntry(
-              new UserCharacterClicks(),
+              cardCategory,
+              new UserComicClicks(),
               userRepository,
               categoryRepository,
               user_id,
@@ -228,12 +249,84 @@ export class CharacterController {
           break;
 
         case Category.Series:
+          categoryRepository = MysqlDataSource.getRepository(Series);
+          metricsRepository = MysqlDataSource.getRepository(UserSeriesClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, series: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewMetricEntry(
+              cardCategory,
+              new UserSeriesClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
           break;
 
         case Category.Stories:
+          categoryRepository = MysqlDataSource.getRepository(Story);
+          metricsRepository = MysqlDataSource.getRepository(UserStoryClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, story: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewMetricEntry(
+              cardCategory,
+              new UserStoryClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
           break;
 
         case Category.Events:
+          categoryRepository = MysqlDataSource.getRepository(Event);
+          metricsRepository = MysqlDataSource.getRepository(UserEventClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, event: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewMetricEntry(
+              cardCategory,
+              new UserEventClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
           break;
       }
 
