@@ -15,12 +15,17 @@ enum Category {
   Events = 'events'
 }
 
+/**
+ * Classe com operações relacionadas à operações relacionadas a cards exibidos na aplicação
+ */
+//TODO: alterar nome do controller para algo como CardsController (sugestão)
 export class CharacterController {
   /**
    * @swagger
    *
    * /v1/select/{character_id}:
    *   get:
+   *
    *     summary: Requisita informações sobre personagem
    *     description: Retorna detalhes sobre um personagem selecionado e realiza a contabilização da métrica de cliques por usuário por card
    *     security:
@@ -173,6 +178,7 @@ export class CharacterController {
    *
    * /v1/{category}:
    *   get:
+   *
    *     summary: Requisita páginas de uma categoria especificada
    *     description: Retorna uma quantidade de 9 cards por página da categoria especificada
    *     security:

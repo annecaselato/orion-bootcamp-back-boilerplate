@@ -6,6 +6,9 @@ import {
   BeforeUpdate
 } from 'typeorm';
 
+/**
+ * Entidade com informações relacionadas a personagens da Marvel
+ */
 @Entity('characters')
 export class Character {
   @PrimaryGeneratedColumn()
