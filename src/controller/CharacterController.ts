@@ -23,22 +23,33 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/select/{character_id}:
+   * /v1/{category}/{character_id}:
    *   get:
    *
-   *     summary: Requisita informações sobre personagem
-   *     description: Retorna detalhes sobre um personagem selecionado e realiza a contabilização da métrica de cliques por usuário por card
+   *     summary: Requisita informações sobre um card
+   *     description: Retorna detalhes sobre um card selecionado e realiza a contabilização da métrica de cliques por usuário por card
    *     security:
    *       - BearerAuth: []
    *     tags: [Characters]
    *     parameters:
+   *       - in: path
+   *         name: category
+   *         required: true
+   *         schema:
+   *           type: string
+   *           enum:
+   *             - characters
+   *             - comics
+   *             - series
+   *             - stories
+   *             - events
    *       - in: path
    *         name: character_id
    *         required: true
    *         schema:
    *           type: integer
    *           minimum: 1
-   *         description: o ID do personagem
+   *         description: o ID do card
    *     responses:
    *       '200':
    *           description: 'Requisição bem sucedida.'
@@ -57,7 +68,7 @@ export class CharacterController {
    *               example:
    *                 date: {}
    *                 status: true
-   *                 data: 'O usuário 4 selecionou o personagem 1'
+   *                 data: 'O usuário 4 selecionou o recurso 1'
    *       '404':
    *           description: 'Requisição falhou.'
    *           content:
@@ -75,7 +86,7 @@ export class CharacterController {
    *               example:
    *                 date: {}
    *                 status: false
-   *                 data: "Personagem não encontrado."
+   *                 data: "Recurso não encontrado."
    *       '500':
    *           description: 'Erro interno.'
    *           content:
@@ -142,7 +153,7 @@ export class CharacterController {
           return res.status(404).send({
             date: new Date(),
             status: false,
-            data: 'Personagem não encontrado.'
+            data: 'Recurso não encontrado.'
           });
         }
 
@@ -161,7 +172,7 @@ export class CharacterController {
         data:
           'O usuário ' +
           req.body.user.id +
-          ' selecionou o personagem ' +
+          ' selecionou o recurso ' +
           character_id
       });
     } catch (error) {
