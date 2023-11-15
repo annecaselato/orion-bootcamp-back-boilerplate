@@ -7,7 +7,7 @@ export class NasaApi {
       'https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json'
     );
     const soles = JSO.data.soles;
-    const theLastSevenSoles = soles.slice(0, 7);
-    return theLastSevenSoles;
+    const theMostRecentSevenSoles = soles.slice(0, 7);
+    return theMostRecentSevenSoles;
   }
 }
