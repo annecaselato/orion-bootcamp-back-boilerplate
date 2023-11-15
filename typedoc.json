@@ -1,6 +1,6 @@
 {
-    "entryPoints": ["./src"],
-    "out": "docs",
-    "name": "MarvelPedia",
-    "theme": "default"
-  }
+  "entryPoints": ["./src"],
+  "out": "docs",
+  "name": "MarvelPedia",
+  "theme": "default"
+}
