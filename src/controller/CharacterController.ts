@@ -93,6 +93,7 @@ export class CharacterController {
    */
   async countClick(req: Request, res: Response) {
     try {
+      const cardCategory: Category = req.params.category as Category;
       const character_id: number = Number(req.params.character_id);
       const user_id: number = req.body.user.id;
 
@@ -170,7 +171,7 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/getPage/{category}/{page}:
+   * /v1/{category}:
    *   get:
    *     summary: Requisita páginas de uma categoria especificada
    *     description: Retorna uma quantidade de 9 cards por página da categoria especificada
@@ -190,7 +191,7 @@ export class CharacterController {
    *             - stories
    *             - events
    *         description: Categoria desejada
-   *       - in: path
+   *       - in: query
    *         name: page
    *         required: true
    *         schema:
@@ -257,7 +258,7 @@ export class CharacterController {
   async getPage(req: Request, res: Response) {
     try {
       const pageCategory: Category = req.params.category as Category;
-      const page: number = Number(req.params.page);
+      const page: number = Number(req.query.page);
 
       const offset = (page - 1) * 9;
       const limit = 9;
