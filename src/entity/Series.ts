@@ -2,8 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 /**
@@ -14,7 +14,7 @@ export default class Series {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', unique: true })
   idMarvel: number;
 
   @Column({ type: 'varchar', length: 256 })
@@ -32,19 +32,9 @@ export default class Series {
   @Column({ default: false })
   isTranslated: boolean;
 
-  @Column({ update: false })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @BeforeInsert()
-  createdAtDate() {
-    this.createdAt = new Date();
-  }
-
-  @Column()
+  @UpdateDateColumn()
   lastUpdate: Date;
-
-  @BeforeUpdate()
-  updateDates() {
-    this.lastUpdate = new Date();
-  }
 }
