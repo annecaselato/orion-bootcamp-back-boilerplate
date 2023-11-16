@@ -5,7 +5,7 @@ import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
 import logoutRoute from './api/v1/logoutRoute';
 import planCardsRoute from './api/v1/planCardsRoute';
-import homePageCardsRoute from './api/v1/getHomePageCardsRoute';
+import homePageCardsRoute from './api/v1/HomePageCardsRoute';
 
 const router = Router();
 
@@ -55,6 +55,7 @@ router.use('/v1', logoutRoute);
  * GET route for home page cards
  *
  * @route GET /get-home-page-cards
+ * @route POST /v1/create-home-page-card
  * @group Home Page Cards
  */
 router.use('/v1', homePageCardsRoute);

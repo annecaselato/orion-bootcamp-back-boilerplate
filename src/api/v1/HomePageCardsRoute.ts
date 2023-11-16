@@ -11,4 +11,6 @@ const homePageCardController = new HomePageCardController(homePageCardRepository
 
 router.get('/get-home-page-cards', (req, res) => homePageCardController.findAllHomePageCards(req, res));
 
+router.post('/create-home-page-card', (req, res) => homePageCardController.createHomePageCard(req, res));
+
 export default router;

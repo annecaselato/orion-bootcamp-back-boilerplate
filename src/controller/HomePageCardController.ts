@@ -68,4 +68,56 @@ export class HomePageCardController {
       res.status(400).send({ message: 'An error occurred while retrieving the home page cards.' });
     }
   }
+  /**
+   * @swagger
+   *  /v1/create-home-page-card:
+   *   post:
+   *     summary: Create a new HomePageCard
+   *     tags: [HomePageCards]
+   *     description: Create a new Home Page Card
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - title
+   *               - image
+   *               - description
+   *               - access
+   *             properties:
+   *               title:
+   *                 type: string
+   *               image:
+   *                 type: string
+   *               description:
+   *                 type: string
+   *               access:
+   *                 type: string
+   *     responses:
+   *       '201':
+   *         description: The HomePageCard was created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/HomePageCard'
+   *       '400':
+   *         description: An error occurred while creating the home page card
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 message:
+   *                   type: string
+   */
+  public async createHomePageCard(req: Request, res: Response): Promise<void> {
+    try {
+      const newCard = await this.homePageCardRepository.createHomePageCard(req.body);
+      res.status(201).send(newCard);
+    } catch (error) {
+      res.status(400).send({ message: 'An error occurred while creating the home page card.' });
+    }
+  }
 }
