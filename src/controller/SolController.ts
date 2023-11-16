@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { NasaService } from '../services/nasaService';
 import { Sol } from '../entity/Sol';
 import { SolRepository } from '../repositories/solRepository';
+import { JwtUtils } from '../library/jwtUtils';
 
 /**
  * Controller for exposing data in the soles endpoint, and also saving the data to the database.
@@ -13,6 +14,8 @@ export class SolController {
    *   get:
    *     summary: Exposes soles data for frontend data consumption, after saving this data in the database.
    *     tags: [Soles]
+   *     security:
+   *       - bearerAuth: []
    *     description: Days and climate data from mars. Maximum and minimum temperatures each mars day.
    *     consumes:
    *       - application/json
@@ -49,6 +52,13 @@ export class SolController {
    */
   public static async getSoles(req: Request, res: Response): Promise<void> {
     try {
+      const accessToken: string = req.headers.authorization;
+
+      const { id } = await JwtUtils.verifyJWTToken(accessToken);
+
+      if (!id) {
+        res.status(401).json({ error: 'Não autorizado. Token de acesso não encontrado' });
+      }
       const latestSols: NasaService = new NasaService();
 
       const solesData = await latestSols.getFirstFourteenSoles();
