@@ -6,17 +6,13 @@ import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import cron from 'node-cron';
-import CategoryHandler from './services/CategoryHandler';
-import CategoryFormatter from './services/CategoryFormatter';
+import MarvelService from './services/MarvelService';
+import DataFormatter from './utils/DataFormatter';
 import CategoryRepository from './repository/CategoryRepositoy';
 import CategoryModel from './library/CategoryInterface';
 import { EmailSender } from './library/mail';
-import Character from './entity/Character';
 import User from './entity/User';
-import Comic from './entity/Comic';
-import Series from './entity/Series';
-import Story from './entity/Story';
-import Event from './entity/Event';
+import { categoriesArray } from './library/categoiesArray';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -53,35 +49,29 @@ app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
 
-const categories = [
-  [Character, 'characters'],
-  [Comic, 'comics'],
-  [Series, 'series'],
-  [Story, 'stories'],
-  [Event, 'events']
-];
-
 cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
   console.log(
     'executando tarefa para atualizar bancos de dados de categorias a cada 1 hora'
   );
 
+  const categories = categoriesArray();
+
   for (const category of categories) {
-    const [className, categoryAlias] = category;
+    const [className, classAlias] = category;
 
     try {
-      const categoryHandler = new CategoryHandler();
-      const dataArray = await categoryHandler.getElements(categoryAlias);
+      const categoryHandler = new MarvelService();
+      const dataArray = await categoryHandler.getElements(classAlias);
 
-      const formatter = new CategoryFormatter();
+      const formatter = new DataFormatter();
       const formattedArray: Array<CategoryModel> =
-        await formatter.extractAndTryTotranslate(dataArray, categoryAlias);
+        await formatter.formatData(dataArray);
 
       const categoryRepository = new CategoryRepository();
       await categoryRepository.updateOrSave(formattedArray, className);
     } catch (error) {
       console.log(
-        `falha na execução da atualização do banco de dados de ${categoryAlias}
+        `falha na execução da atualização do banco de dados de ${classAlias}
         executando tarefa novamente em 1 hora`
       );
     }
