@@ -6,7 +6,7 @@ import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import cron from 'node-cron';
-import MarvelService from './services/MarvelService';
+import MarvelAPIService from './services/MarvelAPIService';
 import DataFormatter from './utils/DataFormatter';
 import CategoryRepository from './repository/CategoryRepositoy';
 import CategoryModel from './library/CategoryInterface';
@@ -60,7 +60,7 @@ cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
     const [className, classAlias] = category;
 
     try {
-      const categoryHandler = new MarvelService();
+      const categoryHandler = new MarvelAPIService();
       const dataArray = await categoryHandler.getElements(classAlias);
 
       const formatter = new DataFormatter();

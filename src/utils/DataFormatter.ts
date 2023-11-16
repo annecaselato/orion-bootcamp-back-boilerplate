@@ -1,5 +1,5 @@
 import CategoryModel from '../library/CategoryInterface';
-import TranslationService from '../services/TranslationService';
+import TranslationAPIService from '../services/TranslationAPIService';
 
 export default class DataFormatter {
   async formatData(objectsArray) {
@@ -12,7 +12,7 @@ export default class DataFormatter {
           if (objectCopy[key] === null || this._toBeIgnored().includes(key))
             continue;
 
-          const translator = new TranslationService();
+          const translator = new TranslationAPIService();
           const translatedValue = await translator.getTranslation(
             key,
             objectCopy[key]
