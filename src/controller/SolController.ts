@@ -3,6 +3,7 @@ import { NasaService } from '../services/nasaService';
 import { Sol } from '../entity/Sol';
 import { SolRepository } from '../repositories/solRepository';
 import { JwtUtils } from '../library/jwtUtils';
+import { AuthMiddleware } from '../middlewares/authValidation';
 
 /**
  * Controller for exposing data in the soles endpoint, and also saving the data to the database.
@@ -51,25 +52,16 @@ export class SolController {
    *                   type: string
    */
   public static async getSoles(req: Request, res: Response): Promise<void> {
-    try {
-      const accessToken: string = req.headers.authorization;
-
-      const { id } = await JwtUtils.verifyJWTToken(accessToken);
-
-      if (!id) {
-        res.status(401).json({ error: 'Não autorizado. Token de acesso não encontrado' });
+    AuthMiddleware.authValidation(req, res, async () => {
+      try {
+        const latestSols: NasaService = new NasaService();
+        const solesData = await latestSols.getFirstFourteenSoles();
+        await SolRepository.save14MarsDays(solesData);
+        const listedSoles: Sol[] = await SolRepository.listSoles();
+        res.status(200).json(listedSoles);
+      } catch {
+        res.status(500).json({ error: 'Erro ao buscar dados dos soles' });
       }
-      const latestSols: NasaService = new NasaService();
-
-      const solesData = await latestSols.getFirstFourteenSoles();
-
-      await SolRepository.save14MarsDays(solesData);
-
-      const listedSoles: Sol[] = await SolRepository.listSoles();
-
-      res.status(200).json(listedSoles);
-    } catch {
-      res.status(500).json({ error: 'Erro ao buscar dados dos soles' });
-    }
+    });
   }
 }
