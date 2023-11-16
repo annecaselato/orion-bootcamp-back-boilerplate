@@ -6,13 +6,16 @@ export class HomePageCard {
   id: number;
 
   @Column()
-  HomePageCardTitle: string;
+  title: string;
 
   @Column()
-  HomePageCardImage: string;
+  image: string;
 
   @Column()
-  HomePageCardDescription: string;
+  description: string;
+
+  @Column()
+  access: string;
 
   @CreateDateColumn()
   created_at: Date;

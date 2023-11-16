@@ -4,6 +4,7 @@ import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
 import logoutRoute from './api/v1/logoutRoute';
+import homePageCardsRoute from './api/v1/getHomePageCardsRoute';
 
 const router = Router();
 
@@ -41,6 +42,20 @@ router.use('/v1', solesRoute);
  */
 router.use('/v1', logoutRoute);
 
+/**
+ * GET route for home page cards
+ *
+ * @route GET /get-home-page-cards
+ * @group Home Page Cards
+ */
+router.use('/v1', homePageCardsRoute);
+
+/**
+ * GET route for home
+ *
+ * @route GET /
+ * @group Default
+ */
 router.get('/', new HomeController().hello);
 
 export default router;

@@ -1,6 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 import { HomePageCard } from '../entity/HomePageCard';
 
+/**
+ * Data for HomePageCards to be added to the database.
+ */
 const HOMEPAGECARD = [
   {
     title: 'Meteorologia em Marte',
@@ -40,7 +43,15 @@ const HOMEPAGECARD = [
   }
 ];
 
+/**
+ * Migration to add HomePageCards to the database.
+ */
 export class AddHomePageCards1700052154823 implements MigrationInterface {
+  /**
+   * up
+   * Run the migration and creates all the cards stated above in the HOMEPAGECARD const.
+   * @param queryRunner - QueryRunner object, used to make database queries.
+   */
   public async up(queryRunner: QueryRunner): Promise<void> {
     const homePageCardRepository = queryRunner.connection.getRepository(HomePageCard);
 
@@ -55,7 +66,11 @@ export class AddHomePageCards1700052154823 implements MigrationInterface {
       await homePageCardRepository.save(newHomePageCard);
     }
   }
-
+  /**
+   * down
+   * Reverts the migration.
+   * @param queryRunner - QueryRunner object, used to make database queries.
+   */
   public async down(queryRunner: QueryRunner): Promise<void> {
     const homePageCardRepository = queryRunner.connection.getRepository(HomePageCard);
 
