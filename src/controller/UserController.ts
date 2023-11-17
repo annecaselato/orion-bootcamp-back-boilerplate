@@ -4,7 +4,7 @@ import User from '../entity/User';
 import { EmailSender } from '../library/mail';
 
 /**
- * Classe com operações relacionadas a manipulação e criação de usuários
+ * Classe com operações relacionadas à manipulação e criação de usuários
  */
 export class UserController {
   /**
@@ -164,17 +164,34 @@ export class UserController {
    *                 status: false
    *                 data: Erro interno do servidor
    */
-  create = async (req: Request, res: Response) => {
+  /**
+   * Função para criação de usuário no User database com base nos dados fornecidos na requisição.
+   * @async
+   * @param req - Objeto de requisição do Express
+   * @param res - Objeto de resposta do Express
+   * @returns {Promise<void>} - Retorna promise a ser resolvida quando da criação do usuário ou rejeitada em caso de erro
+   */
+  create = async (req: Request, res: Response): Promise<void> => {
     try {
       const repository: UserRepository = new UserRepository();
 
+      // Extrai dados do usuário do corpo da requisição.
       const userData = req.body;
+
+      // Cria e salva usuário no banco de dados.
       const user: User = await repository.createAndSave(userData);
+
+      /**
+       * Responde à requisição com status 201, data da resposta, status de criação (true) e dados do usuário criado.
+       * Dados retornados não inclui hash da senha.
+       */
       res.status(201).json({ date: new Date(), status: true, data: user });
 
+      // Envia e-mail de confirmação de cadastro
       const sendEmail = new EmailSender();
       sendEmail.sendConfirmationEmail(user);
     } catch (error) {
+      // Trata erros repondendo com status 500, data da resposta, status de criação (false) e mensagem padrão de erro.
       res.status(500).json({
         date: new Date(),
         status: false,
