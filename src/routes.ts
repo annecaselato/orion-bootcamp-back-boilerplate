@@ -4,6 +4,7 @@ import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
 import logoutRoute from './api/v1/logoutRoute';
+import quotesRoute from './api/v1/quotesRoute';
 import planCardsRoute from './api/v1/planCardsRoute';
 import homePageCardsRoute from './api/v1/HomePageCardsRoute';
 
@@ -52,6 +53,7 @@ router.use('/v1', planCardsRoute);
 router.use('/v1', logoutRoute);
 
 /**
+<<<<<<< HEAD
  * GET route for home page cards
  *
  * @route GET /get-home-page-cards
@@ -66,6 +68,15 @@ router.use('/v1', homePageCardsRoute);
  * @route GET /
  * @group Default
  */
+=======
+ * GET route for quotes
+ *
+ * @route GET /quotes
+ * @group Quotes
+ */
+router.use('/v1', quotesRoute);
+
+>>>>>>> 1ce7b7ef54c01ef8c06341ee02f58dc2fc495d28
 router.get('/', new HomeController().hello);
 
 export default router;
