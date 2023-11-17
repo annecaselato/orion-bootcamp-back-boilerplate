@@ -6,8 +6,10 @@ import { Quote } from './../entity/Quotes';
  */
 export class QuoteRepository {
   /**
-   * Retrieves all quotes from the database.
+   * Retrieves quotes from the database, optionally paginated.
    *
+   * @param page - The page number for pagination.
+   * @param limit - The number of quotes per page.
    * @returns {Promise<Quote[]>} Array of Quote objects.
    */
   public static async getQuotes(page?: number, limit?: number): Promise<Quote[]> {
@@ -41,21 +43,4 @@ export class QuoteRepository {
   public static async getRandomQuotes(count: number): Promise<Quote[]> {
     return MysqlDataSource.getRepository(Quote).createQueryBuilder().orderBy('RAND()').limit(count).getMany();
   }
-
-  /**
-   * Retrieves a specified number of quotes in a paginated manner.
-   *
-   * @param page - The page number.
-   * @param limit - The number of quotes per page.
-   * @returns {Promise<Quote[]>} Array of paginated Quote objects.
-   */
-  // public static async getPaginatedQuotes(page: number, limit: number): Promise<Quote[]> {
-  //   const offset = (page - 1) * limit;
-  //   const quotes = await MysqlDataSource.getRepository(Quote).find({
-  //     skip: offset,
-  //     take: limit
-  //   });
-
-  //   return quotes;
-  // }
 }
