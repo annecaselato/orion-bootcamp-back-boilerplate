@@ -4,15 +4,15 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { MysqlDataSource } from './config/database';
 import { swaggerConfig } from './config/swagger';
-import CharactersHandler from './handlers/CharactersHandler';
-import FormatHandler from './handlers/FormatHandler';
-import { offsetter } from './utils/marvelGetHelpers';
-import CharacterRepository from './repository/CharacterRepository';
 import routes from './routes';
 import cron from 'node-cron';
-import CharacterModel from 'library/CharacterInterface';
+import MarvelAPIService from './services/MarvelAPIService';
+import DataFormatter from './utils/DataFormatter';
+import CategoryRepository from './repository/CategoryRepositoy';
+import CategoryModel from './models/CategoryInterface';
 import { EmailSender } from './library/mail';
-import { User } from './entity/User';
+import User from './entity/User';
+import { categoriesArray } from './library/categoiesArray';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -49,30 +49,32 @@ app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
 
-cron.schedule('0 */1 * * *', async function charactersUpdateSchedule() {
-  console.log('Running task to update database every 1 hour');
-  try {
-    const charactershandler = new CharactersHandler();
-    const offset = offsetter();
-    let charactersData: Array<unknown> = [];
+cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
+  console.log(
+    'executando tarefa para atualizar bancos de dados de categorias a cada 1 hora'
+  );
 
-    do {
-      charactersData = await charactershandler.getCharacters(
-        offset.next().value
+  const categories = categoriesArray();
+
+  for (const category of categories) {
+    const [className, classAlias] = category;
+
+    try {
+      const categoryHandler = new MarvelAPIService();
+      const dataArray = await categoryHandler.getElements(classAlias);
+
+      const formatter = new DataFormatter();
+      const formattedArray: Array<CategoryModel> =
+        await formatter.formatData(dataArray);
+
+      const categoryRepository = new CategoryRepository();
+      await categoryRepository.updateOrSave(formattedArray, className);
+    } catch (error) {
+      console.log(
+        `falha na execução da atualização do banco de dados de ${classAlias}
+        executando tarefa novamente em 1 hora`
       );
-
-      if (charactersData.length) {
-        const formatter = new FormatHandler();
-        const characters: CharacterModel[] =
-          await formatter.extractAndTryTotranslate(charactersData);
-
-        const characterrepository = new CharacterRepository();
-        await characterrepository.updateOrSave(characters);
-      }
-    } while (charactersData.length);
-  } catch (error) {
-    console.error(error);
-    Promise.reject('Unable to update database. Trying again in 1 hour');
+    }
   }
 });
 

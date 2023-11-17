@@ -25,10 +25,16 @@ router.get(
   new CharacterController().countClick
 );
 
+router.get(
+  '/v1/favorite/:character_id',
+  authenticateToken,
+  new CharacterController().favoriteCharacter
+);
+
 router.post('/v1/login', new AuthController().login);
 
 router.post(
-  '/v1/signUp',
+  '/v1/signup',
   validationField,
   Validator,
   new UserController().create

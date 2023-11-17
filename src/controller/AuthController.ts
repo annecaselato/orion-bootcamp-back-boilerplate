@@ -1,7 +1,7 @@
 import { MysqlDataSource } from '../config/database';
-import { User } from '../entity/User';
 import { Request, Response } from 'express';
-import JwtHandler from '../handlers/JwtHandler';
+import User from '../entity/User';
+import JwtHandler from '../services/JwtService';
 import bcrypt from 'bcrypt';
 
 /**
