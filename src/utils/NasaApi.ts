@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ISol from '../interfaces/ISol';
 
-export class NasaApi {
+export default class NasaApi {
   public async getSolesInWeatherApi(): Promise<ISol[]> {
     const JSO = await axios.get(process.env.MARTE_API);
     const soles = JSO.data.soles;
