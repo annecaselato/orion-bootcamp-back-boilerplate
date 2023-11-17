@@ -10,17 +10,17 @@ export class UserRepository {
     const salt = this.salt();
     const hashpassword = await bcrypt.hash(userData.password, salt);
 
-    const newUser = new User();
-    newUser.firstName = userData.firstName;
-    newUser.lastName = userData.lastName;
-    newUser.gender = userData.gender;
-    newUser.birthDate = userData.birthDate;
-    newUser.email = userData.email;
-    newUser.password = hashpassword;
-    newUser.lastUpdate = new Date();
+    const newUser: User = await this.repository.manager.save(User, {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      gender: userData.gender,
+      birthDate: userData.birthDate,
+      email: userData.email,
+      password: hashpassword
+    });
 
-    await this.repository.manager.save(newUser);
-    return newUser;
+    // retorna por busca para que não retorne hash
+    return this.findOneByEmail(newUser.email);
   }
 
   async findOneByEmail(userEmail: string) {
