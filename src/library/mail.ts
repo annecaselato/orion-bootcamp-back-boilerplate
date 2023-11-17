@@ -76,7 +76,7 @@ export class EmailSender {
       });
       console.log('Email de mudança de senha enviado com sucesso.');
     } catch (err) {
-      console.log('Erro ao enviar email de mudança de senha.', err);
+      console.error('Erro ao enviar email de mudança de senha.', err);
     }
   }
 }
