@@ -34,7 +34,7 @@ router.get(
 router.post('/v1/login', new AuthController().login);
 
 router.post(
-  '/v1/signUp',
+  '/v1/signup',
   validationField,
   Validator,
   new UserController().create

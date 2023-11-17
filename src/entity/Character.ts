@@ -2,19 +2,19 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 /**
  * Entidade com informações relacionadas a personagens da Marvel
  */
 @Entity('characters')
-export class Character {
+export default class Character {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int', unique: true })
   idMarvel: number;
 
   @Column({ type: 'varchar', length: 128 })
@@ -32,19 +32,9 @@ export class Character {
   @Column({ default: false })
   isTranslated: boolean;
 
-  @Column({ update: false })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   lastUpdate: Date;
-
-  @BeforeInsert()
-  createdAtDate() {
-    this.createdAt = new Date();
-  }
-
-  @BeforeUpdate()
-  updateDates() {
-    this.lastUpdate = new Date();
-  }
 }

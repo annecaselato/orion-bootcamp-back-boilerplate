@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { User } from '../entity/User';
 import { MysqlDataSource } from '../config/database';
-import { Character } from '../entity/Character';
-import { Metrics } from '../entity/Metrics';
-import { Comic } from '../entity/Comic';
-import { Series } from '../entity/Series';
-import { Story } from '../entity/Story';
+import User from '../entity/User';
+import Character from '../entity/Character';
+import Metrics from '../entity/Metrics';
+import Comic from '../entity/Comic';
+import Series from '../entity/Series';
+import Story from '../entity/Story';
 import { UserFavorites } from '../entity/UserFavorites';
 
 enum Category {

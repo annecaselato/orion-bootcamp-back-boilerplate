@@ -1,4 +1,4 @@
-import JwtHandler from '../handlers/JwtHandler';
+import JwtHandler from '../services/JwtService';
 
 /**
  * Middleware de Autenticação que valida o token JWT do usuário.
