@@ -9,6 +9,8 @@ export class MetereologyController {
    * /metereology/soles:
    *   get:
    *     summary: Rota para receber os sóis e suas informações.
+   *     security:
+   *       - BearerAuth: []
    *     tags: [Metereology]
    *     consumes:
    *       - application/json
