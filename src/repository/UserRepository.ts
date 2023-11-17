@@ -19,10 +19,10 @@ export class UserRepository {
       password: hashpassword
     });
 
-    return this._userCopyWithoutPassword(newUser);
+    return this._userCopyWithoutHashPassword(newUser);
   }
 
-  private _userCopyWithoutPassword(newUser: User){
+  private _userCopyWithoutHashPassword(newUser: User){
     const userCopy = { ...newUser };
     delete userCopy.password;
     return userCopy;
