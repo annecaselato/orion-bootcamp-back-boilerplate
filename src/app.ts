@@ -9,7 +9,7 @@ import cron from 'node-cron';
 import MarvelAPIService from './services/MarvelAPIService';
 import DataFormatter from './utils/DataFormatter';
 import CategoryRepository from './repository/CategoryRepositoy';
-import CategoryModel from './library/CategoryInterface';
+import CategoryModel from './models/CategoryInterface';
 import { EmailSender } from './library/mail';
 import User from './entity/User';
 import { categoriesArray } from './library/categoiesArray';
