@@ -3,6 +3,7 @@ import { HomeController } from './controllers/HomeController';
 import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
+import { MetereologyController } from './controllers/MetereologyController';
 
 const router = Router();
 
@@ -41,7 +42,7 @@ router.patch(
 router.post(
   '/users/soles',
   new UsersValidator().signatureValidate(),
-  new UsersController().getSolesInWeatherApi
+  new MetereologyController().getSolesInWeatherApi
 );
 
 export default router;
