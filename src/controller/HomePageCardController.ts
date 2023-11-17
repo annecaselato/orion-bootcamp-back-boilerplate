@@ -29,11 +29,6 @@ import { HomePageCardRepository } from '../repositories/homePageCardRepository';
  *           format: date-time
  */
 export class HomePageCardController {
-  private homePageCardRepository: HomePageCardRepository;
-
-  constructor(homePageCardRepository: HomePageCardRepository) {
-    this.homePageCardRepository = homePageCardRepository;
-  }
   /**
    * @swagger
    *   /v1/get-home-page-cards:
@@ -60,9 +55,9 @@ export class HomePageCardController {
    *                   message:
    *                     type: string
    */
-  public async findAllHomePageCards(_req: Request, res: Response): Promise<void> {
+  public static async findAllHomePageCards(_req: Request, res: Response): Promise<void> {
     try {
-      const homePageCards = await this.homePageCardRepository.findAllHomePageCards();
+      const homePageCards = await HomePageCardRepository.findAllHomePageCards();
       res.status(200).send(homePageCards);
     } catch (error) {
       res.status(400).send({ message: 'An error occurred while retrieving the home page cards.' });
@@ -112,10 +107,10 @@ export class HomePageCardController {
    *                 message:
    *                   type: string
    */
-  public async createHomePageCard(req: Request, res: Response): Promise<void> {
+  public static async createHomePageCard(req: Request, res: Response): Promise<void> {
     try {
-      const newCard = await this.homePageCardRepository.createHomePageCard(req.body);
-      res.status(201).send(newCard);
+      const homePageCard = await HomePageCardRepository.createHomePageCard(req.body);
+      res.status(201).send(homePageCard);
     } catch (error) {
       res.status(400).send({ message: 'An error occurred while creating the home page card.' });
     }
