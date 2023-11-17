@@ -1,5 +1,4 @@
 import axios from 'axios';
-import MarvelAPIParams from '../models/marvelApiParamsInterface';
 import MarvelParamsDefinition from '../utils/MarvelParamsDefinition';
 
 export default class MarvelAPIService {
@@ -9,11 +8,10 @@ export default class MarvelAPIService {
       const categoryData: Array<unknown> = [];
       const paramsDefiner = new MarvelParamsDefinition();
       const timeStamp = paramsDefiner.getTimestamp();
-      const daysInterval = 7;
-      const dateString = paramsDefiner.modifiedsSince(daysInterval);
       const offset = paramsDefiner.offsetter();
+      const daysInterval = 7;
       do {
-        const response = await axios.get<MarvelAPIParams>(
+        const response = await axios.get(
           `${paramsDefiner.baseURL()}/${categoryAlias}`,
           {
             params: {
@@ -21,7 +19,7 @@ export default class MarvelAPIService {
               limit: paramsDefiner.maxMarvelAPILimit(),
               ts: timeStamp,
               apikey: paramsDefiner.apikey(),
-              modifiedSince: dateString,
+              modifiedSince: paramsDefiner.modifiedsSince(daysInterval),
               hash: paramsDefiner.hashGenarator(timeStamp)
             }
           }
