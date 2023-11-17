@@ -1,4 +1,4 @@
-export default interface TokenPayload {
+export default interface ITokenPayload {
   id: number;
   iat: number;
   exp: number;
