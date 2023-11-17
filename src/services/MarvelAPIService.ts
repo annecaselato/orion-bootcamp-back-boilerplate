@@ -1,5 +1,5 @@
 import axios from 'axios';
-import MarvelAPIParams from '../library/marvelAPIParamsInterface';
+import MarvelAPIParams from '../models/marvelApiParamsInterface';
 import MarvelParamsDefinition from '../utils/MarvelParamsDefinition';
 
 export default class MarvelAPIService {
@@ -29,9 +29,6 @@ export default class MarvelAPIService {
         dataArray = await response.data.data.results;
         categoryData.push(...dataArray);
       } while (dataArray.length);
-      console.log(
-        `${categoryData.length} dados modificados em '${categoryAlias}' desde ${dateString}`
-      );
       return categoryData;
     } catch (error) {
       console.error(error);

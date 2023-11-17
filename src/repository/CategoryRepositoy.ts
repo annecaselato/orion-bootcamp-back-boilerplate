@@ -1,5 +1,5 @@
 import { MysqlDataSource } from '../config/database';
-import CategoryModel from 'library/CategoryInterface';
+import CategoryModel from 'models/CategoryInterface';
 
 export default class CategoryRepository {
   async updateOrSave(objectsArray: CategoryModel[], Category): Promise<void> {

@@ -1,4 +1,4 @@
-import CategoryModel from '../library/CategoryInterface';
+import CategoryModel from '../models/CategoryInterface';
 import TranslationAPIService from '../services/TranslationAPIService';
 
 export default class DataFormatter {
