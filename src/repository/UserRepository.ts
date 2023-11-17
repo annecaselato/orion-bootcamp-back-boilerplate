@@ -4,11 +4,10 @@ import User from '../entity/User';
 
 export class UserRepository {
   private repository = MysqlDataSource.getRepository(User);
-  private salt = (): number => 10;
+  private _saltRounds = (): number => 10;
 
   async createAndSave(userData): Promise<User> {
-    const salt = this.salt();
-    const hashpassword = await bcrypt.hash(userData.password, salt);
+    const hashpassword = await bcrypt.hash(userData.password, this._saltRounds());
 
     const newUser: User = await this.repository.manager.save(User, {
       firstName: userData.firstName,
