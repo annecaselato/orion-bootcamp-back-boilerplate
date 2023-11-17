@@ -19,11 +19,16 @@ export class UserRepository {
       password: hashpassword
     });
 
-    // retorna por busca para que não retorne hash
-    return this.findOneByEmail(newUser.email);
+    return this._userCopyWithoutPassword(newUser);
   }
 
-  async findOneByEmail(userEmail: string) {
+  private _userCopyWithoutPassword(newUser: User){
+    const userCopy = { ...newUser };
+    delete userCopy.password;
+    return userCopy;
+  }
+
+  async findOneByEmail(userEmail: string): Promise<User> {
     const user = await this.repository.findOne({
       where: { email: userEmail }
     });
