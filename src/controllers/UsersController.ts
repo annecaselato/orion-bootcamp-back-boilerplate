@@ -3,6 +3,7 @@ import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { MetricsService } from '../services/MetricsService';
 
 type JwtPayload = {
   id: number;
@@ -205,13 +206,14 @@ export class UsersController {
     }
     const newPassword = await bcrypt.hash(password, 10);
     try {
-      await new UserService().emailWelcome(email, firstName);
+      //await new UserService().emailWelcome(email, firstName);
       const { id, createdAt } = await new UserService().newUser(
         firstName,
         lastName,
         email,
         newPassword
       );
+      await new MetricsService().registers();
       return res
         .status(httpCodes.CREATED)
         .json({ user: { createdAt, id, firstName, lastName, email } });
