@@ -13,6 +13,8 @@ export class SolController {
    *   get:
    *     summary: Exposes soles data for frontend data consumption, after saving this data in the database.
    *     tags: [Soles]
+   *     security:
+   *       - bearerAuth: []
    *     description: Days and climate data from mars. Maximum and minimum temperatures each mars day.
    *     consumes:
    *       - application/json
@@ -50,13 +52,9 @@ export class SolController {
   public static async getSoles(req: Request, res: Response): Promise<void> {
     try {
       const latestSols: NasaService = new NasaService();
-
       const solesData = await latestSols.getFirstFourteenSoles();
-
       await SolRepository.save14MarsDays(solesData);
-
       const listedSoles: Sol[] = await SolRepository.listSoles();
-
       res.status(200).json(listedSoles);
     } catch {
       res.status(500).json({ error: 'Erro ao buscar dados dos soles' });
