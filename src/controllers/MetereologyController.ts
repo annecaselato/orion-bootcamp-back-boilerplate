@@ -22,16 +22,18 @@ export class MetereologyController {
    *           content:
    *             application/json:
    *               schema:
-   *                 type: object
-   *                 properties:
-   *                   sol:
-   *                     type: string
-   *                   max_temp:
-   *                     type: string
-   *                   min_temp:
-   *                     type: string
-   *                   terrestrial_date:
-   *                     type: string
+   *                 type: array
+   *                 items:
+   *                   type: object
+   *                   properties:
+   *                     sol:
+   *                       type: string
+   *                     max_temp:
+   *                       type: string
+   *                     min_temp:
+   *                       type: string
+   *                     terrestrial_date:
+   *                       type: string
    *       '400':
    *           description: 'Solicitação inválida.'
    */
