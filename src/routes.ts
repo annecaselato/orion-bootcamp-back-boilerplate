@@ -27,7 +27,7 @@ router.post(
 );
 router.post(
   '/users/token-validation',
-  new UsersValidator().tokenValidation(),
+  new UsersValidator().tokenValidate(),
   new UsersController().tokenValidation
 );
 
@@ -37,5 +37,7 @@ router.patch(
   new UsersValidator().passwordValidate(),
   new UsersController().updatePassword
 );
+
+router.post('/users/soles', new UsersController().getSolesInWeatherApi);
 
 export default router;
