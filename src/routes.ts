@@ -3,6 +3,7 @@ import { HomeController } from './controllers/HomeController';
 import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
+import { UsersMetricsController } from './controllers/UsersMetricsController';
 
 const router = Router();
 
@@ -36,6 +37,16 @@ router.patch(
   new UsersValidator().tokenValidate(),
   new UsersValidator().passwordValidate(),
   new UsersController().updatePassword
+);
+
+router.patch(
+  '/metrics/registration-started',
+  new UsersMetricsController().updateMetricOpen
+);
+
+router.patch(
+  '/metrics/incomplete-registrations',
+  new UsersMetricsController().updateMetricInc
 );
 
 export default router;

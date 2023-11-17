@@ -5,7 +5,7 @@ export class Metrics extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'text' })
   metric: string;
 
   @Column()
