@@ -4,6 +4,7 @@ import loginRoute from './api/v1/loginRoute';
 import recoveryRoute from './api/v1/recoveryRoute';
 import solesRoute from './api/v1/solesRoute';
 import logoutRoute from './api/v1/logoutRoute';
+import quotesRoute from './api/v1/quotesRoute';
 import planCardsRoute from './api/v1/planCardsRoute';
 
 const router = Router();
@@ -49,6 +50,14 @@ router.use('/v1', planCardsRoute);
  * @group Logout
  */
 router.use('/v1', logoutRoute);
+
+/**
+ * GET route for quotes
+ *
+ * @route GET /quotes
+ * @group Quotes
+ */
+router.use('/v1', quotesRoute);
 
 router.get('/', new HomeController().hello);
 
