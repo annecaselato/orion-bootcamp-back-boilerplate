@@ -41,9 +41,7 @@ export class MetereologyController {
     const nasaApi = new NasaApi();
     try {
       const solesInput = await nasaApi.getSolesInWeatherApi();
-      const solesOutput = new WeatherApiFilter().filterSolesKeysBySignature(
-        solesInput
-      );
+      const solesOutput = new WeatherApiFilter().modifySolesKeys(solesInput);
       return res.status(httpCodes.OK).json(solesOutput);
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
