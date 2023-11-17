@@ -6,10 +6,10 @@ import { httpCodes } from '../utils/httpCodes';
 export class MetereologyController {
   /**
    * @swagger
-   * /users/soles:
+   * /metereology/soles:
    *   post:
    *     summary: Rota para receber os sóis e suas informações.
-   *     tags: [Users]
+   *     tags: [Metereology]
    *     consumes:
    *       - application/json
    *     produces:
@@ -40,7 +40,7 @@ export class MetereologyController {
    *                   min_temp:
    *                     type: string
    *                   terrestrial_date:
-   *                     type: Date
+   *                     type: string
    *                   pressure:
    *                     type: string
    *                   local_uv_irradiance_index:
