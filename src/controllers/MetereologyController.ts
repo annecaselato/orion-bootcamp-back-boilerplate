@@ -7,27 +7,16 @@ export class MetereologyController {
   /**
    * @swagger
    * /metereology/soles:
-   *   post:
+   *   get:
    *     summary: Rota para receber os sóis e suas informações.
    *     tags: [Metereology]
    *     consumes:
    *       - application/json
    *     produces:
    *       - application/json
-   *     requestBody:
-   *         required: true
-   *         content:
-   *           application/json:
-   *             schema:
-   *               example:
-   *                 signature: premium
-   *               type: object
-   *               properties:
-   *                 signature:
-   *                   type: string
    *     responses:
    *       '200':
-   *           description: 'Requisição dos sóis baseado na assinatura'
+   *           description: 'Requisição dos sóis'
    *           content:
    *             application/json:
    *               schema:
@@ -41,24 +30,14 @@ export class MetereologyController {
    *                     type: string
    *                   terrestrial_date:
    *                     type: string
-   *                   pressure:
-   *                     type: string
-   *                   local_uv_irradiance_index:
-   *                     type: string
-   *                   sunrise:
-   *                     type: string
-   *                   sunset:
-   *                     type: string
    *       '400':
    *           description: 'Solicitação inválida.'
    */
-  async getSolesInWeatherApi(req: Request, res: Response) {
-    const { signature } = req.body;
+  async getSolesInWeatherApi(_req: Request, res: Response) {
     const nasaApi = new NasaApi();
     try {
       const solesInput = await nasaApi.getSolesInWeatherApi();
       const solesOutput = new WeatherApiFilter().filterSolesKeysBySignature(
-        signature,
         solesInput
       );
       return res.status(httpCodes.OK).json(solesOutput);
