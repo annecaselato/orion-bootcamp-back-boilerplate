@@ -61,4 +61,15 @@ export class UsersValidator extends ErrorsValidator {
       this.errorValidate
     ];
   }
+
+  public signatureValidate() {
+    return [
+      body('signature')
+        .trim()
+        .notEmpty()
+        .isIn(['premium', 'basic'])
+        .withMessage('The parameter value must be "premium" or "basic".'),
+      this.errorValidate
+    ];
+  }
 }

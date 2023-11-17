@@ -38,6 +38,10 @@ router.patch(
   new UsersController().updatePassword
 );
 
-router.post('/users/soles', new UsersController().getSolesInWeatherApi);
+router.post(
+  '/users/soles',
+  new UsersValidator().signatureValidate(),
+  new UsersController().getSolesInWeatherApi
+);
 
 export default router;
