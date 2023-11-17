@@ -2,12 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
-
-interface TokenPayload {
-  id: number;
-  iat: number;
-  exp: number;
-}
+import TokenPayload from '../interfaces/ITokenPayload';
 
 export default async function authMiddleware(
   req: Request,
