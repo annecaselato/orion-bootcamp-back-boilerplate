@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import NasaApi from '../utils/NasaApi';
-import WeatherApiFilter from '../utils/WeatherApiFilter';
+import WeatherApiTreat from '../utils/WeatherApiTreat';
 import { httpCodes } from '../utils/httpCodes';
 
 export class MetereologyController {
@@ -41,7 +41,7 @@ export class MetereologyController {
     const nasaApi = new NasaApi();
     try {
       const solesInput = await nasaApi.getSolesInWeatherApi();
-      const solesOutput = new WeatherApiFilter().modifySolesKeys(solesInput);
+      const solesOutput = new WeatherApiTreat().modifySolesKeys(solesInput);
       return res.status(httpCodes.OK).json(solesOutput);
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
