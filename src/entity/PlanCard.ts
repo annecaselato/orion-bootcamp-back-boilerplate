@@ -1,21 +1,21 @@
 import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity({ name: 'soles' })
-export class Sol {
+@Entity({ name: 'planCards' })
+export class PlanCard {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  solNumberMarsDay: number;
+  @Column()
+  planCardTitle: string;
 
   @Column()
-  terrestrialDate: Date;
+  planCardDescription: string;
 
   @Column()
-  maximumTemperature: number;
+  planCardImage: string;
 
   @Column()
-  minimumTemperature: number;
+  planCardButtonText: string;
 
   @CreateDateColumn()
   created_at: Date;
