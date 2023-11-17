@@ -39,7 +39,7 @@ router.patch(
   new UsersController().updatePassword
 );
 
-router.post(
+router.get(
   '/metereology/soles',
   new UsersValidator().signatureValidate(),
   new MetereologyController().getSolesInWeatherApi
