@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, UpdateResult } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 import { User } from '../entity/Users';
 import { userRoles } from '../constants/userRoles';
 

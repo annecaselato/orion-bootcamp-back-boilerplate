@@ -66,6 +66,7 @@ export class AddHomePageCards1700052154823 implements MigrationInterface {
       await homePageCardRepository.save(newHomePageCard);
     }
   }
+
   /**
    * down
    * Reverts the migration.

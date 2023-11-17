@@ -1,6 +1,5 @@
 import { MysqlDataSource } from '../config/database';
 import { ApplicationError } from '../entity/Logs';
-import { DeepPartial } from 'typeorm';
 
 /**
  * Repository for ApplicationError entity. Saves errors to database and lists errors for the errors endpoint.
