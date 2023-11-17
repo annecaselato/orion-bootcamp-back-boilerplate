@@ -17,6 +17,7 @@ services:
       HOST_SMTP: ${HOST_SMTP}
       MARTE_EMAIL: ${MARTE_EMAIL}
       MARTE_PASS: ${MARTE_PASS}
+      MARTE_API: ${MARTE_API}
       JWT_PASS: f58SZ3XvGvkvea2CQRLwKHNJHx4CLFNvLLqtXXyKAmBIYWMVcYUK27TAndRb4nsu
       NODE_ENV: development
       SERVER_PORT: 4444
