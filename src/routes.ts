@@ -40,7 +40,7 @@ router.patch(
 );
 
 router.post(
-  '/users/soles',
+  '/metereology/soles',
   new UsersValidator().signatureValidate(),
   new MetereologyController().getSolesInWeatherApi
 );
