@@ -12,7 +12,6 @@ export class MetricsService {
 
   async registers(): Promise<number> {
     const userCount = await new UserService().registersCompleted();
-    console.log(userCount);
     this.metricsRepository.update(1, { quantity: userCount });
     return userCount;
   }

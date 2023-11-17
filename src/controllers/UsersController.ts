@@ -206,7 +206,7 @@ export class UsersController {
     }
     const newPassword = await bcrypt.hash(password, 10);
     try {
-      //await new UserService().emailWelcome(email, firstName);
+      await new UserService().emailWelcome(email, firstName);
       const { id, createdAt } = await new UserService().newUser(
         firstName,
         lastName,
