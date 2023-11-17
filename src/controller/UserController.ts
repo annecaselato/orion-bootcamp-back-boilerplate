@@ -167,14 +167,13 @@ export class UserController {
   create = async (req: Request, res: Response) => {
     try {
       const repository: UserRepository = new UserRepository();
+
       const userData = req.body;
-      const user: Promise<User> = repository.createAndSave(userData);
-      const savedUser: User = await repository.findOneByEmail(
-        (await user).email
-      );
-      res.status(201).json({ date: new Date(), status: true, data: savedUser });
+      const user: User = await repository.createAndSave(userData);
+      res.status(201).json({ date: new Date(), status: true, data: user });
+
       const sendEmail = new EmailSender();
-      sendEmail.sendConfirmationEmail(await user);
+      sendEmail.sendConfirmationEmail(user);
     } catch (error) {
       res.status(500).json({
         date: new Date(),
