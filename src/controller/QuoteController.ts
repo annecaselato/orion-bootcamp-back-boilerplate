@@ -25,9 +25,9 @@ export class QuoteController {
    *                 $ref: '#/components/schemas/Quote'
    */
   public static async getAllQuotes(_req: Request, res: Response): Promise<Response> {
-    const quotes = await QuoteRepository.getAllQuotes();
+    const quotes = await QuoteRepository.getQuotes();
 
-    return res.json(quotes);
+    return res.status(200).json(quotes);
   }
 
   /**
@@ -133,7 +133,7 @@ export class QuoteController {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 2;
 
-    const quotes = await QuoteRepository.getPaginatedQuotes(page, limit);
+    const quotes = await QuoteRepository.getQuotes(page, limit);
 
     return res.status(200).json(quotes);
   }
