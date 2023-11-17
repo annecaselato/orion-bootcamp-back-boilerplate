@@ -41,7 +41,6 @@ router.patch(
 
 router.get(
   '/metereology/soles',
-  new UsersValidator().signatureValidate(),
   new MetereologyController().getSolesInWeatherApi
 );
 
