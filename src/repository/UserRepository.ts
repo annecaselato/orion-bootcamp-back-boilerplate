@@ -7,7 +7,10 @@ export class UserRepository {
   private _saltRounds = (): number => 10;
 
   async createAndSave(userData): Promise<User> {
-    const hashpassword = await bcrypt.hash(userData.password, this._saltRounds());
+    const hashpassword = await bcrypt.hash(
+      userData.password,
+      this._saltRounds()
+    );
 
     const newUser: User = await this.repository.manager.save(User, {
       firstName: userData.firstName,
@@ -21,7 +24,7 @@ export class UserRepository {
     return this._userCopyWithoutHashPassword(newUser);
   }
 
-  private _userCopyWithoutHashPassword(newUser: User){
+  private _userCopyWithoutHashPassword(newUser: User) {
     const userCopy = { ...newUser };
     delete userCopy.password;
     return userCopy;
