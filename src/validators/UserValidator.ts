@@ -55,13 +55,6 @@ export class UsersValidator extends ErrorsValidator {
     ];
   }
 
-  public tokenValidation() {
-    return [
-      body('token').trim().notEmpty().withMessage('Invalid Token'),
-      this.errorValidate
-    ];
-  }
-
   public tokenValidate() {
     return [
       body('token').notEmpty().isJWT().withMessage('Invalid token'),
