@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import { User } from '../entity/user';
+import User from 'entity/User';
 import 'dotenv/config';
 
 export class EmailSender {
@@ -8,7 +8,7 @@ export class EmailSender {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp-mail.outlook.com',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
@@ -51,7 +51,7 @@ export class EmailSender {
 
   public async sendPasswordRecoveryEmail(user: User): Promise<void> {
     const token: string = jwt.sign(
-      { email: user.email },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET_KEY,
       {
         algorithm: 'HS256',
@@ -65,7 +65,7 @@ export class EmailSender {
         subject: 'MarvelPedia - Recuperação de senha',
         html: `<h2>Olá ${user.firstName}</h2>
         <p>Recebemos sua solicitação de recuperação de senha. Para criar uma nova senha, clique no link abaixo:</p><br>
-        <h3><p><a href="http://localhost:4200/recovery?token=${token}">Recuperar senha</a></p></h3><br>
+        <h3><p><a href="http://localhost:4444/v1/changepassword?token=${token}">Recuperar senha</a></p></h3><br>
         <p>Se você não solicitou a recuperação de senha, por favor, ignore este e-mail, por motivos de segurança.</p>
         <p>Em caso de dúvidas ou problemas, nossa equipe de suporte está à disposição para ajudar.</p>
         <p>Tenha um ótimo dia!</p><br>

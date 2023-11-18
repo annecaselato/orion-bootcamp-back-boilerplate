@@ -4,19 +4,14 @@ import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
 import { CharacterController } from './controller/CharacterController';
+import { RecoveryController } from './controller/RecoveryController';
 
 const router = Router();
 
 //garantir apenas acesso autenticado à dashboard
-router.all('/v1/dashboard', authenticateToken, (req, res) => {
+router.all('/v1/dashboard', (req, res) => {
   res.sendStatus(200);
 });
-
-router.get(
-  '/v1/:category',
-  authenticateToken,
-  new CharacterController().getPage
-);
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
@@ -41,4 +36,13 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
+router.post('/v1/recovery', new RecoveryController().validateUserEmail);
+router.post('/v1/changepassword', new RecoveryController().changePassword);
+
+router.get(
+  '/v1/:category',
+  authenticateToken,
+  new CharacterController().getPage
+);
+
 export default router;
