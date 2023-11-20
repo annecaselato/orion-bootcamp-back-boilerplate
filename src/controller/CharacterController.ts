@@ -116,17 +116,17 @@ export class CharacterController {
 
       const userRepository = MysqlDataSource.getRepository(User);
       const characterRepository = MysqlDataSource.getRepository(Character);
-      const userFavoritesRepository = MysqlDataSource.getRepository(Metrics);
+      const userMetricsRepository = MysqlDataSource.getRepository(Metrics);
 
       //procura para ver se a métrica já existe
-      const metric = await userFavoritesRepository.findOne({
+      const metric = await userMetricsRepository.findOne({
         where: { user: { id: user_id }, character: { id: character_id } }
       });
 
       if (metric) {
         metric.clicks += 1;
 
-        await userFavoritesRepository.save(metric);
+        await userMetricsRepository.save(metric);
       } else {
         //find no usuario
         const user: User = await userRepository.findOne({
@@ -159,12 +159,12 @@ export class CharacterController {
         }
 
         //cria nova métrica na tabela
-        const favoriteEntry = new Metrics();
-        favoriteEntry.user = user;
-        favoriteEntry.character = character;
-        favoriteEntry.clicks = 1;
+        const metricEntry = new Metrics();
+        metricEntry.user = user;
+        metricEntry.character = character;
+        metricEntry.clicks = 1;
 
-        await MysqlDataSource.manager.save(favoriteEntry);
+        await MysqlDataSource.manager.save(metricEntry);
       }
 
       return res.status(200).send({
