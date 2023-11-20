@@ -6,8 +6,11 @@ import {
   BeforeUpdate
 } from 'typeorm';
 
+/**
+ * Entidade com informações relacionadas a usuários da aplicação
+ */
 @Entity('users')
-export class User {
+export default class User {
   @PrimaryGeneratedColumn()
   id: number;
 

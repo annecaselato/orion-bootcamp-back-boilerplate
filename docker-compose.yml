@@ -26,6 +26,8 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       EMAIL_USER: ${EMAIL_USER}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+      TESTONE_USER_PASSWORD: ${TESTONE_USER_PASSWORD} # usuário teste definido na migration
+      TESTTWO_USER_PASSWORD: ${TESTTWO_USER_PASSWORD} # usuário teste definido na migration
     networks:
       - orion-connect
 

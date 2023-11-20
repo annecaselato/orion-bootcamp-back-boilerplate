@@ -1,5 +1,12 @@
-import JwtHandler from '../handlers/JwtHandler';
+import JwtHandler from '../services/JwtService';
 
+/**
+ * Middleware de Autenticação que valida o token JWT do usuário.
+ *
+ * @param {Object} req - Objeto de requisição express.
+ * @param {Object} res - Objeto de resposta express.
+ * @param {function} next - Função para chamar o próximo middleware/controller na cadeia.
+ */
 export function authenticateToken(req, res, next) {
   try {
     const authorizationHeader = req.headers['authorization'];

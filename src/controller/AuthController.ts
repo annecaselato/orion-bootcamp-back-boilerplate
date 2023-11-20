@@ -1,12 +1,16 @@
 import { MysqlDataSource } from '../config/database';
-import { User } from '../entity/User';
 import { Request, Response } from 'express';
-import JwtHandler from '../handlers/JwtHandler';
+import User from '../entity/User';
+import JwtHandler from '../services/JwtService';
 import bcrypt from 'bcrypt';
 
+/**
+ * Classe com operações relacionadas à autenticação do usuário na aplicação
+ */
 export class AuthController {
   /**
    * @swagger
+   *
    * /v1/login:
    *   post:
    *
@@ -24,9 +28,12 @@ export class AuthController {
    *                 type: string
    *               password:
    *                 type: string
+   *               rememberMe:
+   *                 type: boolean
    *             example:
    *               email: teste@teste.com
    *               password: teste123
+   *               rememberMe: true
    *     consumes:
    *       - application/json
    *     produces:
@@ -90,10 +97,11 @@ export class AuthController {
    */
 
   async login(req: Request, res: Response) {
-    const userRepository = MysqlDataSource.getRepository(User);
-
     try {
       //encontra usuario no banco de dados pelo email
+      const userRepository = MysqlDataSource.getRepository(User);
+      const rememberMe: boolean = (req.body.rememberMe as boolean) || false;
+
       const user = await userRepository
         .createQueryBuilder('user')
         .addSelect(['user.password'])
@@ -130,12 +138,22 @@ export class AuthController {
       }
 
       //atribuir token jwt
+      let signOptions: object;
+      if (rememberMe) {
+        signOptions = {
+          algorithm: 'HS256',
+          expiresIn: '24h'
+        };
+      } else {
+        signOptions = {
+          algorithm: 'HS256',
+          expiresIn: '2h'
+        };
+      }
+
       const token = await JwtHandler.signToken(
         { id: user.id, name: user.firstName, email: user.email },
-        {
-          algorithm: 'HS256',
-          expiresIn: 7200 //2 horas
-        }
+        signOptions
       );
 
       return res

@@ -15,7 +15,7 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 router.post('/v1/login', new AuthController().login);
 
 router.post(
-  '/v1/signUp',
+  '/v1/signup',
   validationField,
   Validator,
   new UserController().create

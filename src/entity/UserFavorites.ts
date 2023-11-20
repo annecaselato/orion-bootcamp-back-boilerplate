@@ -1,16 +1,13 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  JoinColumn,
-  ManyToOne
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 
 import Character from './Character';
 import User from './User';
 
-@Entity('user_character_clicks')
-export class UserCharacterClicks {
+/**
+ * Entidade que relaciona usuários aos seus personagens marcados como favoritos
+ */
+@Entity('user_favorites')
+export class UserFavorites {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,7 +18,4 @@ export class UserCharacterClicks {
   @ManyToOne(() => Character)
   @JoinColumn({ name: 'character_id' })
   character: Character;
-
-  @Column({ type: 'int' })
-  clicks: number;
 }

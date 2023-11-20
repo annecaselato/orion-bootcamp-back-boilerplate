@@ -1,6 +1,6 @@
 import { MysqlDataSource } from '../config/database';
-import { Character } from '../entity/Character';
-import { User } from '../entity/User';
+import Character from '../entity/Character';
+import User from '../entity/User';
 
 export enum Category {
   Characters = 'characters',

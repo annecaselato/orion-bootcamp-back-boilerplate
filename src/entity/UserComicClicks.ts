@@ -6,8 +6,8 @@ import {
   ManyToOne
 } from 'typeorm';
 
-import { Comic } from './Comic';
-import { User } from './User';
+import Comic from './Comic';
+import User from './User';
 
 /**
  * Entidade com informações de cliques por usuário por card de quadrinho.

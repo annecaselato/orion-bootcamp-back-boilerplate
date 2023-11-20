@@ -6,8 +6,8 @@ import {
   ManyToOne
 } from 'typeorm';
 
-import { Event } from './Event';
-import { User } from './User';
+import Event from './Event';
+import User from './User';
 
 /**
  * Entidade com informações de cliques por usuário por card de evento.

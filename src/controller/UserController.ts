@@ -1,13 +1,17 @@
 import { Request, Response } from 'express';
 import { UserRepository } from '../repository/UserRepository';
-import { User } from '../entity/User';
+import User from '../entity/User';
 import { EmailSender } from '../library/mail';
 
+/**
+ * Classe com operações relacionadas a manipulação e criação de usuários
+ */
 export class UserController {
   /**
    * @swagger
    * /v1/signup:
    *   post:
+   *
    *     summary: Adiciona novo usuário ao banco de dados
    *     tags: [signUp]
    *     requestBody:
@@ -36,8 +40,8 @@ export class UserController {
    *                 type: string
    *                 description: Senha do usuário
    *             example:
-   *               firstName: User
-   *               lastName: tester
+   *               firstName: User name
+   *               lastName: tester da silva
    *               gender: Prefiro não dizer
    *               birthDate: 1990-12-06
    *               email: email@email.com
@@ -91,8 +95,8 @@ export class UserController {
    *                 status: true
    *                 data:
    *                   id: 10
-   *                   firstName: User
-   *                   lastName: tester
+   *                   firstName: USER NAME
+   *                   lastName: TESTER DA SILVA
    *                   gender: Prefiro não dizer
    *                   birthDate: 2020-02-13
    *                   email: email@email.com
