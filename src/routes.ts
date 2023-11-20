@@ -12,6 +12,17 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
+router.post('/v1/login', new AuthController().login);
+
+router.post(
+  '/v1/signUp',
+  validationField,
+  Validator,
+  new UserController().create
+);
+
+router.get('/v1/check', new AuthController().confirmRegistration);
+
 router.get(
   '/v1/:category',
   authenticateToken,
@@ -25,14 +36,4 @@ router.get(
   new CharacterController().countClick
 );
 
-router.post('/v1/login', new AuthController().login);
-
-router.post(
-  '/v1/signUp',
-  validationField,
-  Validator,
-  new UserController().create
-);
-
-router.get('/v1/check', new AuthController().confirmRegistration);
 export default router;
