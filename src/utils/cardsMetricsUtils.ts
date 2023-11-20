@@ -1,7 +1,11 @@
+import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import Character from '../entity/Character';
 import User from '../entity/User';
 
+/**
+ * Define as categorias de cards
+ */
 export enum Category {
   Characters = 'characters',
   Comics = 'comics',
@@ -10,6 +14,16 @@ export enum Category {
   Events = 'events'
 }
 
+/**
+ * 
+ * @param {Category} category - Categoria do card clicado
+ * @param {Instance} metricEntry - Instância da entidade que vai guardar a métrica, para salvar a nova entrada
+ * @param {Repository} userRepository - Repositório da entidade usuário
+ * @param {Repository} metricsRepository - Repositório da entidade da métrica em questão
+ * @param {number} user_id - ID do usuário
+ * @param {number} category_id - ID do recurso acessado
+ * @returns {Object} - Retorna um objeto json contendo um código de status de resposta e um objeto de resposta
+ */
 export async function insertNewClickMetric(
   category: Category,
   metricEntry,
