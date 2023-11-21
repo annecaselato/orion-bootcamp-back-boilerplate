@@ -15,7 +15,7 @@ export enum Category {
 }
 
 /**
- * 
+ *
  * @param {Category} category - Categoria do card clicado
  * @param {Instance} metricEntry - Instância da entidade que vai guardar a métrica, para salvar a nova entrada
  * @param {Repository} userRepository - Repositório da entidade usuário
