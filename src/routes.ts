@@ -53,7 +53,6 @@ router.use('/v1', planCardsRoute);
 router.use('/v1', logoutRoute);
 
 /**
-<<<<<<< HEAD
  * GET route for home page cards
  *
  * @route GET /get-home-page-cards
@@ -63,12 +62,6 @@ router.use('/v1', logoutRoute);
 router.use('/v1', homePageCardsRoute);
 
 /**
- * GET route for home
- *
- * @route GET /
- * @group Default
- */
-=======
  * GET route for quotes
  *
  * @route GET /quotes
@@ -76,7 +69,12 @@ router.use('/v1', homePageCardsRoute);
  */
 router.use('/v1', quotesRoute);
 
->>>>>>> 1ce7b7ef54c01ef8c06341ee02f58dc2fc495d28
+/**
+ * GET route for home
+ *
+ * @route GET /
+ * @group Default
+ */
 router.get('/', new HomeController().hello);
 
 export default router;

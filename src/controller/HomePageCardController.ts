@@ -34,6 +34,8 @@ export class HomePageCardController {
    *   /v1/get-home-page-cards:
    *     get:
    *       summary: Retrieve all home page cards
+   *       security:
+   *       - bearerAuth: []
    *       tags: [HomePageCards]
    *       description: Retrieve all home page cards from the database and return them.
    *       responses:
@@ -68,6 +70,8 @@ export class HomePageCardController {
    *  /v1/create-home-page-card:
    *   post:
    *     summary: Create a new HomePageCard
+   *     security:
+   *     - bearerAuth: []
    *     tags: [HomePageCards]
    *     description: Create a new Home Page Card
    *     requestBody:
@@ -109,7 +113,13 @@ export class HomePageCardController {
    */
   public static async createHomePageCard(req: Request, res: Response): Promise<void> {
     try {
-      const homePageCard = await HomePageCardRepository.createHomePageCard(req.body);
+      const card = {
+        title: req.body.title,
+        image: req.body.image,
+        description: req.body.description,
+        access: req.body.access
+      };
+      const homePageCard = await HomePageCardRepository.createHomePageCard(card);
       res.status(201).send(homePageCard);
     } catch (error) {
       res.status(400).send({ message: 'An error occurred while creating the home page card.' });
