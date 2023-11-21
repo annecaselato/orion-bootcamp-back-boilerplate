@@ -25,16 +25,16 @@ export class UsersMetricsController {
    *               metric:
    *                 type: string
    *     responses:
-   *       '200':
+   *       '204':
    *           description: 'Cadastro iniciado.'
    */
   updateMetricOpen(req: Request, res: Response) {
     const metricService = new UserMetricsService();
     const { metric } = req.body;
     if (metric === 'Registrations Started') {
-      metricService.updateRegSta(metric);
+      metricService.updateRegistrationStarted(metric);
       return res
-        .status(httpCodes.OK)
+        .status(httpCodes.NO_CONTENT)
         .json({ mensagem: 'Registrations Started.' });
     } else {
       return res.status(httpCodes.UNAUTHORIZED);
@@ -68,18 +68,16 @@ export class UsersMetricsController {
    *       '400':
    *           description: 'Cadastro concluido.'
    */
-  updateMetricInc(req: Request, res: Response) {
+  updateMetricIncomplete(req: Request, res: Response) {
     const metricService = new UserMetricsService();
     const { metric } = req.body;
     if (metric === 'Registrations Incompleted') {
-      metricService.updateRegInc(metric);
+      metricService.updateRegistrationIncompleted(metric);
       return res
         .status(httpCodes.OK)
         .json({ mensagem: 'Registration incompleted.' });
     } else {
-      return res
-        .status(httpCodes.UNAUTHORIZED)
-        .json({ mensagem: 'Registration completed.' });
+      return res.status(httpCodes.UNAUTHORIZED);
     }
   }
 }

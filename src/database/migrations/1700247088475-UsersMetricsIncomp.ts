@@ -11,8 +11,8 @@ export class UsersMetricsIncomp1700247088475 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.delete(Metrics, {
-      metric: null,
-      quantity: null
+      metric: 'Registrations Incompleted',
+      quantity: 0
     });
   }
 }

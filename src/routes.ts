@@ -46,7 +46,7 @@ router.patch(
 
 router.patch(
   '/metrics/incomplete-registrations',
-  new UsersMetricsController().updateMetricInc
+  new UsersMetricsController().updateMetricIncomplete
 );
 
 export default router;

@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { Metrics } from '../database/entity/UserMetric';
+import { Metric } from '../utils/enumMetrics';
 
 export class UserMetricsService {
   private metricRepository: Repository<Metrics>;
@@ -9,43 +10,25 @@ export class UserMetricsService {
     this.metricRepository = MysqlDataSource.getRepository(Metrics);
   }
 
-  async findByMetric(
-    metric: 'Registrations Incompleted' | 'Registrations Started'
-  ): Promise<Metrics | undefined> {
-    return await this.metricRepository.findOne({ where: { metric } });
-  }
-
-  async updateRegSta(
-    metric: 'Registrations Started'
-  ): Promise<void | undefined> {
-    const regSta = await this.metricRepository.findOne({ where: { metric } });
-    if (regSta) {
-      regSta.quantity = regSta.quantity + 1;
-      this.metricRepository.save(regSta);
+  public async updateRegistrationStarted(metric): Promise<void | undefined> {
+    if (metric === Metric.RegistrationStarted) {
+      await this.metricRepository.increment(
+        { metric: Metric.RegistrationStarted },
+        'quantity',
+        1
+      );
     }
   }
 
-  async updateRegInc(
-    metric: 'Registrations Incompleted'
+  public async updateRegistrationIncompleted(
+    metric
   ): Promise<void | undefined> {
-    const regSta = await this.metricRepository.findOne({
-      where: {
-        metric: 'Registrations Started'
-      }
-    });
-    const regCom = await this.metricRepository.findOne({
-      where: {
-        metric: 'Registrations Completed'
-      }
-    });
-    const regInc = await this.metricRepository.findOne({ where: { metric } });
-
-    if (!regInc) {
-      return undefined;
-    }
-    if (regInc) {
-      regInc.quantity = regSta.quantity - regCom.quantity;
-      this.metricRepository.save(regInc);
+    if (metric === Metric.RegistrationIncompleted) {
+      await this.metricRepository.increment(
+        { metric: Metric.RegistrationIncompleted },
+        'quantity',
+        1
+      );
     }
   }
 }
