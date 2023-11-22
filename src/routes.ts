@@ -24,6 +24,12 @@ router.post(
 router.get('/v1/check', new AuthController().confirmRegistration);
 
 router.get(
+  '/v1/favorites',
+  authenticateToken,
+  new CharacterController().getFavoritesPage
+);
+
+router.get(
   '/v1/favorite/:character_id',
   authenticateToken,
   new CharacterController().favoriteCharacter

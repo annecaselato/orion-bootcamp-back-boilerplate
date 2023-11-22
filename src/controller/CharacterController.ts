@@ -470,6 +470,64 @@ export class CharacterController {
     }
   }
 
+  async getFavoritesPage(req: Request, res: Response) {
+    try {
+      const pageNumber: number = Number(req.query.page) || 1;
+      const searchText: string = (req.query.search as string) || '';
+
+      const offset = (pageNumber - 1) * 9;
+      const limit = 9;
+
+      const charactersRepository = MysqlDataSource.getRepository(Character);
+
+      const user_id: number = req.body.user.id;
+
+      const found = MysqlDataSource.getRepository(UserFavorites)
+        .createQueryBuilder('userFavorites')
+        .innerJoinAndSelect('userFavorites.character', 'character')
+        .innerJoinAndSelect('userFavorites.user', 'user')
+        .where(
+          '(character.enName LIKE :character_name OR character.ptName LIKE :character_name) AND user.id = :user_id',
+          {
+            character_name: `%${searchText}%`,
+            user_id: user_id
+          }
+        )
+        .select([
+          'character.id AS id',
+          'character.idMarvel AS idMarvel',
+          'character.enName AS enName',
+          'character.ptName AS ptName',
+          'character.description AS description',
+          'character.thumb AS thumb',
+          'character.isTranslated AS isTranslated',
+          'character.createdAt AS createdAt',
+          'character.lastUpdate AS lastUpdate'
+        ]);
+
+      const cards = await found.skip(offset).take(limit).getRawMany();
+
+      if (cards.length === 0) {
+        return res.status(404).send({
+          date: new Date(),
+          status: false,
+          data: 'Página não encontrada.'
+        });
+      }
+
+      return res
+        .status(200)
+        .json({ date: new Date(), status: true, data: cards });
+    } catch (error) {
+      console.log('Erro: ', error);
+      return res.status(500).send({
+        date: new Date(),
+        status: false,
+        data: 'Um erro interno ocorreu.'
+      });
+    }
+  }
+
   /**
    * @swagger
    *
