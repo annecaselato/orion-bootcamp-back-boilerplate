@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { UserService } from '../services/UserService';
-import { httpCodes } from '../utils/httpCodes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { UserService } from '../services/UserService';
+import { httpCodes } from '../utils/httpCodes';
 import { MetricsService } from '../services/MetricsService';
 
 type JwtPayload = {
@@ -206,7 +206,7 @@ export class UsersController {
     }
     const newPassword = await bcrypt.hash(password, 10);
     try {
-      //await new UserService().emailWelcome(email, firstName);
+      await new UserService().emailWelcome(email, firstName);
       const { id, createdAt } = await new UserService().newUser(
         firstName,
         lastName,
