@@ -614,22 +614,30 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/favorite/{character_id}:
-   *   get:
+   * /v1/favorite:
+   *   post:
    *     summary: Favorita ou desfavorita um personagem especificado para o usuário corrente
    *     description: Se o personagem não tiver sido favoritado pelo usuário antes, uma entrada de favorito dele é criada.
    *                   Caso contrário, se o personagem já tiver sido favoritado anteriormente, sua entrada de favorito é removida.
    *     security:
    *       - BearerAuth: []
    *     tags: [Characters]
-   *     parameters:
-   *       - in: path
-   *         name: character_id
-   *         required: true
-   *         schema:
-   *           type: integer
-   *           minimum: 1
-   *         description: o ID do personagem
+   *     requestBody:
+   *       description: Envio do ID do personagem a ser favoritado/desfavoritado
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               character_id:
+   *                 type: number
+   *             example:
+   *               character_id: 1
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
    *     responses:
    *       '200':
    *           description: 'Requisição bem sucedida.'
@@ -689,7 +697,7 @@ export class CharacterController {
    */
   async favoriteCharacter(req: Request, res: Response) {
     try {
-      const character_id: number = Number(req.params.character_id);
+      const character_id: number = Number(req.body.character_id);
       const user_id: number = req.body.user.id;
 
       const userRepository = MysqlDataSource.getRepository(User);

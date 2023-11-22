@@ -29,8 +29,8 @@ router.get(
   new CharacterController().getFavoritesPage
 );
 
-router.get(
-  '/v1/favorite/:character_id',
+router.post(
+  '/v1/favorite',
   authenticateToken,
   new CharacterController().favoriteCharacter
 );
