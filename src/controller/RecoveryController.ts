@@ -37,16 +37,11 @@ export class RecoveryController {
   async validateUserEmail(req: Request, res: Response) {
     try {
       const userEmail = req.body.email;
-      console.log('E-mail recebido:', userEmail);
-      console.log(
-        `Recebida solicitação de recuperação de senha para o email: ${userEmail}`
-      );
       const userRepository = MysqlDataSource.getRepository(User);
       const findUser = await userRepository.findOneBy({
         email: userEmail
       });
       if (!findUser) {
-        console.log(`Usuário não encontrado para o email: ${userEmail}`);
         return res.status(401).send({
           date: new Date(),
           status: false,
@@ -54,17 +49,12 @@ export class RecoveryController {
         });
       }
       if (!findUser.isActivated) {
-        console.log(`Usuário não ativado para o email: ${userEmail}`);
         return res.status(401).send({
           date: new Date(),
           status: false,
           data: 'Necessária a confirmação do cadastro pelo e-mail.'
         });
       }
-
-      console.log(
-        `Enviando e-mail de recuperação de senha para o email: ${userEmail}`
-      );
       const sendMail = new EmailSender();
       sendMail.sendPasswordRecoveryEmail(findUser);
       return res.status(200).send({
@@ -149,7 +139,6 @@ export class RecoveryController {
             data: 'Este link de alteração de senha já foi utilizado ou não é mais válido. Por favor, gere um novo link.'
           });
         }
-        console.log(tokenEntity);
         const isPasswordValid = validatePassword(newpassword);
 
         if (!isPasswordValid) {
