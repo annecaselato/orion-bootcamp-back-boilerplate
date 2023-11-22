@@ -24,6 +24,7 @@ router.post(
 
 router.get('/v1/check', new AuthController().confirmRegistration);
 
+//POST?
 router.get(
   '/v1/favorite/:character_id',
   authenticateToken,
