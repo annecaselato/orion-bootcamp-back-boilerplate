@@ -37,6 +37,7 @@ router.get(
   new CharacterController().getPage
 );
 
+// endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
   '/v1/survey/eligibility/:user_id',
   authenticateToken,
