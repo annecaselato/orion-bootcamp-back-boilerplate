@@ -9,12 +9,8 @@ import {
 import Character from './Character';
 import User from './User';
 
-/**
- * Entidade com informações relacionadas a métricas que relacionam o usuário a personagens
- */
-//TODO alterar nome dessa entidade para um mais adequado
-@Entity('metrics')
-export default class Metrics {
+@Entity('user_character_clicks')
+export class UserCharacterClicks {
   @PrimaryGeneratedColumn()
   id: number;
 

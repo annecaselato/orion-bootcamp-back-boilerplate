@@ -12,25 +12,6 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
-router.get(
-  '/v1/:category',
-  authenticateToken,
-  new CharacterController().getPage
-);
-
-//TODO: retornar informações detalhadas sobre o personagem selecionado
-router.get(
-  '/v1/:category/:character_id',
-  authenticateToken,
-  new CharacterController().countClick
-);
-
-router.get(
-  '/v1/favorite/:character_id',
-  authenticateToken,
-  new CharacterController().favoriteCharacter
-);
-
 router.post('/v1/login', new AuthController().login);
 
 router.post(
@@ -41,4 +22,24 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
+
+router.get(
+  '/v1/favorite/:character_id',
+  authenticateToken,
+  new CharacterController().favoriteCharacter
+);
+
+router.get(
+  '/v1/:category',
+  authenticateToken,
+  new CharacterController().getPage
+);
+
+//TODO: retornar informações detalhadas sobre o personagem selecionado
+router.get(
+  '/v1/:category/:category_id',
+  authenticateToken,
+  new CharacterController().countClick
+);
+
 export default router;
