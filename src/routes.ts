@@ -4,6 +4,8 @@ import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
 import { CharacterController } from './controller/CharacterController';
+import SurveyController from './controller/SurveyController';
+import SurveyValidator from './validator/SurveyValidator';
 
 const router = Router();
 
@@ -33,6 +35,13 @@ router.get(
   '/v1/:category',
   authenticateToken,
   new CharacterController().getPage
+);
+
+router.get(
+  '/v1/survey/eligibility/:user_id',
+  authenticateToken,
+  new SurveyValidator().verifyEligibility,
+  new SurveyController().eligible
 );
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
