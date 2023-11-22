@@ -12,6 +12,24 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
   res.sendStatus(200);
 });
 
+router.post('/v1/login', new AuthController().login);
+
+router.post(
+  '/v1/signup',
+  validationField,
+  Validator,
+  new UserController().create
+);
+
+router.get('/v1/check', new AuthController().confirmRegistration);
+export default router;
+
+router.get(
+  '/v1/favorite/:character_id',
+  authenticateToken,
+  new CharacterController().favoriteCharacter
+);
+
 router.get(
   '/v1/:category',
   authenticateToken,
@@ -24,21 +42,3 @@ router.get(
   authenticateToken,
   new CharacterController().countClick
 );
-
-router.get(
-  '/v1/favorite/:character_id',
-  authenticateToken,
-  new CharacterController().favoriteCharacter
-);
-
-router.post('/v1/login', new AuthController().login);
-
-router.post(
-  '/v1/signup',
-  validationField,
-  Validator,
-  new UserController().create
-);
-
-router.get('/v1/check', new AuthController().confirmRegistration);
-export default router;
