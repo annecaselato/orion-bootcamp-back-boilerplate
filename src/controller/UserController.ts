@@ -181,11 +181,14 @@ export class UserController {
       // Cria e salva usuário no banco de dados.
       const user: User = await repository.createAndSave(userData);
 
+      // Buca usuário salvo no banco de dados para envio na resposta da requisição
+      const savedUser: User = await repository.findOneByEmail(user.email);
+
       /**
-       * Responde à requisição com status 201, data da resposta, status de criação (true) e dados do usuário criado.
-       * Dados retornados não inclui hash da senha.
+       * Responde à requisição com status 201, data da resposta, status de criação (true) e dados do usuário cadastrado.
+       * Dados retornados não incluem hash da senha.
        */
-      res.status(201).json({ date: new Date(), status: true, data: user });
+      res.status(201).json({ date: new Date(), status: true, data: savedUser });
 
       // Envia e-mail de confirmação de cadastro
       const sendEmail = new EmailSender();
