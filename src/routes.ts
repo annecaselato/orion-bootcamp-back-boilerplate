@@ -22,7 +22,6 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
-export default router;
 
 router.get(
   '/v1/favorite/:character_id',
@@ -38,7 +37,9 @@ router.get(
 
 //TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
-  '/v1/:category/:character_id',
+  '/v1/:category/:category_id',
   authenticateToken,
   new CharacterController().countClick
 );
+
+export default router;
