@@ -470,6 +470,88 @@ export class CharacterController {
     }
   }
 
+  /**
+   * @swagger
+   *
+   * /v1/favorites:
+   *   get:
+   *
+   *     summary: Requisita página de favoritos do usuário
+   *     description: Retorna uma quantidade de 9 cards por página
+   *     security:
+   *       - BearerAuth: []
+   *     tags: [Characters]
+   *     parameters:
+   *       - in: query
+   *         name: page
+   *         required: false
+   *         schema:
+   *           type: integer
+   *           minimum: 1
+   *         description: Página desejada
+   *       - in: query
+   *         name: search
+   *         required: false
+   *         schema:
+   *           type: string
+   *         description: Texto de busca especificado
+   *     responses:
+   *       '200':
+   *           description: 'Requisição bem sucedida.'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   date:
+   *                     type: object
+   *                   status:
+   *                     type: boolean
+   *                   data:
+   *                     type: string
+   *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: true
+   *                 data: <ARRAY DE OBJETOS JSON>
+   *       '404':
+   *           description: 'Requisição falhou.'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   date:
+   *                     type: object
+   *                   status:
+   *                     type: boolean
+   *                   data:
+   *                     type: string
+   *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Página não encontrada."
+   *       '500':
+   *           description: 'Erro interno.'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   date:
+   *                     type: object
+   *                   status:
+   *                     type: boolean
+   *                   data:
+   *                     type: string
+   *                     description: 'objeto json de retorno'
+   *               example:
+   *                 date: {}
+   *                 status: false
+   *                 data: "Um erro interno ocorreu."
+   *
+   */
   async getFavoritesPage(req: Request, res: Response) {
     try {
       const pageNumber: number = Number(req.query.page) || 1;
