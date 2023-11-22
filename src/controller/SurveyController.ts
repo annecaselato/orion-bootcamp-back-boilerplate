@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 
 /**
- * Classe com operações relacionadas à manipulação e pesquisas de usuários
+ * Classe com operações relacionadas à criação e manipulação de pesquisas de usuários
  */
 export default class SurveyController {
 
     /**
      * Função para envio de response à requisação de verificação de elegibilidade do usuário para realização da pesquisa.
      * 
-     * Casos não em que não há elegibilidade tratados no middleware
+     * Casos em que não há elegibilidade tratados no middleware
      * 
      * @param req - Objeto de requisição do Express
      * @param res - Objeto de resposta do Express
