@@ -4,6 +4,7 @@ import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
 import { CharacterController } from './controller/CharacterController';
+import { countCardClick } from './middleware/countCardClickMiddleware';
 
 const router = Router();
 
@@ -35,11 +36,11 @@ router.get(
   new CharacterController().getPage
 );
 
-//TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
   '/v1/:category/:category_id',
   authenticateToken,
-  new CharacterController().countClick
+  countCardClick,
+  new CharacterController().getCardDetails
 );
 
 export default router;
