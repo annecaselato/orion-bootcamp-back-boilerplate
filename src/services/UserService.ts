@@ -105,8 +105,7 @@ export class UserService {
     return newUser;
   }
 
-  async registersCompleted(): Promise<number> {
-    const quantiadeUsuariosAtual = await this.userRepository.count();
-    return quantiadeUsuariosAtual;
+  async count(): Promise<number> {
+    return await this.userRepository.count();
   }
 }

@@ -30,13 +30,13 @@ export class UsersController {
    *             required:
    *               - email
    *               - password
-   *               - rebemberMe
+   *               - rememberMe
    *             properties:
    *               email:
    *                 type: string
    *               password:
    *                 type: string
-   *               rebemberMe:
+   *               rememberMe:
    *                 type: boolean
    *     responses:
    *       '200':
@@ -206,7 +206,7 @@ export class UsersController {
     }
     const newPassword = await bcrypt.hash(password, 10);
     try {
-      await new UserService().emailWelcome(email, firstName);
+      //await new UserService().emailWelcome(email, firstName);
       const { id, createdAt } = await new UserService().newUser(
         firstName,
         lastName,
