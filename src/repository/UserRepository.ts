@@ -21,13 +21,7 @@ export class UserRepository {
       password: hashpassword
     });
 
-    return this._userCopyWithoutHashPassword(newUser);
-  }
-
-  private _userCopyWithoutHashPassword(newUser: User) {
-    const userCopy = { ...newUser };
-    delete userCopy.password;
-    return userCopy;
+    return newUser;
   }
 
   async findOneByEmail(userEmail: string): Promise<User> {
