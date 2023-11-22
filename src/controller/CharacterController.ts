@@ -1,20 +1,19 @@
 import { Request, Response } from 'express';
-import { MysqlDataSource } from '../config/database';
 import User from '../entity/User';
+import { MysqlDataSource } from '../config/database';
 import Character from '../entity/Character';
-import Metrics from '../entity/Metrics';
+import { UserCharacterClicks } from '../entity/UserCharacterClicks';
 import Comic from '../entity/Comic';
 import Series from '../entity/Series';
 import Story from '../entity/Story';
+import Event from '../entity/Event';
+import { Repository } from 'typeorm';
+import { UserComicClicks } from '../entity/UserComicClicks';
+import { UserSeriesClicks } from '../entity/UserSeriesClicks';
+import { UserStoryClicks } from '../entity/UserStoryClicks';
+import { UserEventClicks } from '../entity/UserEventClicks';
+import { Category, insertNewClickMetric } from '../utils/cardsMetricsUtils';
 import { UserFavorites } from '../entity/UserFavorites';
-
-enum Category {
-  Characters = 'characters',
-  Comics = 'comics',
-  Series = 'series',
-  Stories = 'stories',
-  Events = 'events'
-}
 
 /**
  * Classe com operações relacionadas à operações relacionadas a cards exibidos na aplicação
@@ -24,7 +23,7 @@ export class CharacterController {
   /**
    * @swagger
    *
-   * /v1/{category}/{character_id}:
+   * /v1/{category}/{category_id}:
    *   get:
    *
    *     summary: Requisita informações sobre um card
@@ -45,12 +44,12 @@ export class CharacterController {
    *             - stories
    *             - events
    *       - in: path
-   *         name: character_id
+   *         name: category_id
    *         required: true
    *         schema:
    *           type: integer
    *           minimum: 1
-   *         description: o ID do card
+   *         description: o ID do recurso
    *     responses:
    *       '200':
    *           description: 'Requisição bem sucedida.'
@@ -69,7 +68,7 @@ export class CharacterController {
    *               example:
    *                 date: {}
    *                 status: true
-   *                 data: 'O usuário 4 selecionou o recurso 1'
+   *                 data: 'O usuário 4 selecionou o recurso 1 da categoria characters'
    *       '404':
    *           description: 'Requisição falhou.'
    *           content:
@@ -111,71 +110,158 @@ export class CharacterController {
   async countClick(req: Request, res: Response) {
     try {
       const cardCategory: Category = req.params.category as Category;
-      const character_id: number = Number(req.params.character_id);
+      const category_id: number = Number(req.params.category_id);
       const user_id: number = req.body.user.id;
 
       const userRepository = MysqlDataSource.getRepository(User);
-      const characterRepository = MysqlDataSource.getRepository(Character);
-      const userFavoritesRepository = MysqlDataSource.getRepository(Metrics);
 
-      //procura para ver se a métrica já existe
-      const metric = await userFavoritesRepository.findOne({
-        where: { user: { id: user_id }, character: { id: character_id } }
-      });
+      let statusCode, resp;
 
-      if (metric) {
-        metric.clicks += 1;
-
-        await userFavoritesRepository.save(metric);
-      } else {
-        //find no usuario
-        const user: User = await userRepository.findOne({
-          where: {
-            id: user_id
-          }
-        });
-
-        if (!user) {
-          return res.status(404).send({
-            date: new Date(),
-            status: false,
-            data: 'Usuário não encontrado.'
-          });
-        }
-
-        //find no personagem
-        const character: Character = await characterRepository.findOne({
-          where: {
-            id: character_id
-          }
-        });
-
-        if (!character) {
-          return res.status(404).send({
-            date: new Date(),
-            status: false,
-            data: 'Recurso não encontrado.'
-          });
-        }
-
-        //cria nova métrica na tabela
-        const favoriteEntry = new Metrics();
-        favoriteEntry.user = user;
-        favoriteEntry.character = character;
-        favoriteEntry.clicks = 1;
-
-        await MysqlDataSource.manager.save(favoriteEntry);
-      }
-
-      return res.status(200).send({
+      //resposta padrão
+      statusCode = 200;
+      resp = {
         date: new Date(),
         status: true,
         data:
           'O usuário ' +
-          req.body.user.id +
+          user_id +
           ' selecionou o recurso ' +
-          character_id
-      });
+          category_id +
+          " da categoria '" +
+          cardCategory +
+          "'."
+      };
+
+      let metricsRepository, categoryRepository;
+      let metricEntry;
+
+      switch (cardCategory) {
+        case Category.Characters:
+          categoryRepository = MysqlDataSource.getRepository(Character);
+          metricsRepository =
+            MysqlDataSource.getRepository(UserCharacterClicks);
+
+          //procura para ver se a métrica já existe
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, character: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            //metrica já existe
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            //métrica é criada
+            ({ statusCode, resp } = await insertNewClickMetric(
+              cardCategory,
+              new UserCharacterClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Comics:
+          categoryRepository = MysqlDataSource.getRepository(Comic);
+          metricsRepository = MysqlDataSource.getRepository(UserComicClicks);
+
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, comic: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            ({ statusCode, resp } = await insertNewClickMetric(
+              cardCategory,
+              new UserComicClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Series:
+          categoryRepository = MysqlDataSource.getRepository(Series);
+          metricsRepository = MysqlDataSource.getRepository(UserSeriesClicks);
+
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, series: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            ({ statusCode, resp } = await insertNewClickMetric(
+              cardCategory,
+              new UserSeriesClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Stories:
+          categoryRepository = MysqlDataSource.getRepository(Story);
+          metricsRepository = MysqlDataSource.getRepository(UserStoryClicks);
+
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, story: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            ({ statusCode, resp } = await insertNewClickMetric(
+              cardCategory,
+              new UserStoryClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+
+        case Category.Events:
+          categoryRepository = MysqlDataSource.getRepository(Event);
+          metricsRepository = MysqlDataSource.getRepository(UserEventClicks);
+
+          metricEntry = await metricsRepository.findOne({
+            where: { user: { id: user_id }, event: { id: category_id } }
+          });
+
+          if (metricEntry) {
+            metricEntry.clicks += 1;
+            await metricsRepository.save(metricEntry);
+          } else {
+            ({ statusCode, resp } = await insertNewClickMetric(
+              cardCategory,
+              new UserEventClicks(),
+              userRepository,
+              categoryRepository,
+              user_id,
+              category_id
+            ));
+          }
+
+          break;
+      }
+
+      return res.status(statusCode).send(resp);
     } catch (error) {
       return res.status(500).send({
         date: new Date(),

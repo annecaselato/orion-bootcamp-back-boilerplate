@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import User from '../entity/User';
 import JwtHandler from '../services/JwtService';
 import bcrypt from 'bcrypt';
+import UserAccessLogService from '../services/UserAccessLogService';
 
 /**
  * Classe com operações relacionadas à autenticação do usuário na aplicação
@@ -155,6 +156,9 @@ export class AuthController {
         { id: user.id, name: user.firstName, email: user.email },
         signOptions
       );
+
+      //logar acesso ao banco
+      await UserAccessLogService.logUserAccess(user);
 
       return res
         .status(201)
