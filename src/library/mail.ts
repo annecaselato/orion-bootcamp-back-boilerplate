@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
-import User from 'entity/User';
+import User from '../entity/User';
 import 'dotenv/config';
 
 export class EmailSender {
