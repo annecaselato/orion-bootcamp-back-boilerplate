@@ -6,7 +6,6 @@ import User from '../entity/User';
  * Classe que possui métodos úteis para o registro de logins de usuários no banco.
  */
 export default class UserAccessLogService {
-
   /**
    * @param {User} user - Usuário que realizou o login
    */
