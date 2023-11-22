@@ -564,6 +564,7 @@ export class CharacterController {
 
       const user_id: number = req.body.user.id;
 
+      //faz join de user_favorites e characters e pega apenas os personagens do usuário atual
       const found = MysqlDataSource.getRepository(UserFavorites)
         .createQueryBuilder('userFavorites')
         .innerJoinAndSelect('userFavorites.character', 'character')
