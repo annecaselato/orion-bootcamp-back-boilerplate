@@ -103,7 +103,9 @@ export class CharacterController {
    *
    */
   async getCardDetails(req: Request, res: Response) {
-    return res.status(200).send('teste');
+    //obter parametros  
+    //switch case na category
+    //se for characters retornar json da maneira que o rafael sugeriu
   }
 
   /**
