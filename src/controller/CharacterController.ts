@@ -103,9 +103,19 @@ export class CharacterController {
    *
    */
   async getCardDetails(req: Request, res: Response) {
-    //obter parametros  
-    //switch case na category
-    //se for characters retornar json da maneira que o rafael sugeriu
+    const cardCategory: Category = req.params.category as Category;
+    const category_id: number = Number(req.params.category_id);
+
+    switch(cardCategory){
+      //se for characters retornar json da maneira que o rafael sugeriu
+      case Category.Characters:
+        //encontrar o character
+
+        //obter character name e description
+
+        break;
+    }
+
   }
 
   /**
