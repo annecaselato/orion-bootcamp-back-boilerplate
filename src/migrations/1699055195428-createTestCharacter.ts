@@ -27,6 +27,19 @@ export class CreateTestCharacter1699055195428 implements MigrationInterface {
           isTranslated: true,
           createdAt: new Date(),
           lastUpdate: new Date()
+        },
+        {
+          id: 9999,
+          idMarvel: 1009664,
+          enName: 'Thor',
+          ptName: 'Thor',
+          description:
+            'Como o Deus nórdico do trovão e dos relâmpagos, Thor empunha uma das armas mais poderosas já feitas, o martelo encantado Mjolnir. Embora outros tenham descrito Thor como um imbecil musculoso e desajeitado, ele é bastante inteligente e compassivo. Ele é autoconfiante e nunca, de forma alguma, deixaria de lutar por uma causa que valha a pena.',
+          thumb:
+            'http://i.annihil.us/u/prod/marvel/i/mg/d/d0/5269657a74350.jpg',
+          isTranslated: true,
+          createdAt: new Date(),
+          lastUpdate: new Date()
         }
       ])
       .execute();

@@ -13,25 +13,25 @@ export class CreateTestCharacterComic1700692062737
 
     const character1: Character = await characterRepository.findOne({
       where: {
-        id: 1
+        idMarvel: 1009664
       }
     });
 
     const comic1: Comic = await comicRepository.findOne({
       where: {
-        id: 1
+        idMarvel: 110723
       }
     });
 
     const comic2: Comic = await comicRepository.findOne({
       where: {
-        id: 1
+        id: 2
       }
     });
 
     const comic3: Comic = await comicRepository.findOne({
       where: {
-        id: 1
+        id: 3
       }
     });
 
