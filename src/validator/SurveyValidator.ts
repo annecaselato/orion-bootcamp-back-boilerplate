@@ -7,13 +7,12 @@ import moment from 'moment';
  * Classe que implementa operações de verificação e validação para endpoints relacionados à entidade Survey
  */
 export default class SurveyValidator {
-
-    /**
-     * @param req - Objeto de requisição do Express
-     * @param res - Objeto de resposta do Express
-     * @param next - Função do Express para chamada do próximo middleware definido na rota
-     * @returns Retorna promise de response do Express
-     */
+  /**
+   * @param req - Objeto de requisição do Express
+   * @param res - Objeto de resposta do Express
+   * @param next - Função do Express para chamada do próximo middleware definido na rota
+   * @returns Retorna promise de response do Express
+   */
   async verifyEligibility(req?: Request, res?: Response, next?: NextFunction) {
     const userId: number = req.params.user_id
       ? Number(req.params.user_id)
