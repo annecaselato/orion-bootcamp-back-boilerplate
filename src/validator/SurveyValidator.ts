@@ -20,6 +20,15 @@ export default class SurveyValidator {
       ? Number(req.params.user_id)
       : req.body.userId;
 
+    // verificação de ID
+    if (isNaN(userId) || userId < 0) {
+      return res.status(400).json({
+        date: new Date(),
+        status: false,
+        data: 'Número de ID inválido'
+      });
+    }
+
     const userRepository = MysqlDataSource.getRepository(User);
 
     try {
@@ -44,9 +53,11 @@ export default class SurveyValidator {
         userLastSurveyDates.userCreationDate > usageStartRangeTime ||
         userLastSurveyDates.latestSurvey > usageStartRangeTime
       ) {
-        return res
-          .status(200)
-          .json({ date: new Date(), status: true, data: { eligible: false } });
+        return res.status(422).json({
+          date: new Date(),
+          status: false,
+          data: { eligible: false }
+        });
       }
 
       next();
@@ -92,6 +103,7 @@ export default class SurveyValidator {
         .isString()
         .withMessage('Tipo de dado inválido para comentário')
         .bail()
+        .toLowerCase()
         .custom(async (userComment: string) => {
           const userCommentWords = userComment.split(/[\s,.!:?;'"]+/);
 
@@ -100,29 +112,20 @@ export default class SurveyValidator {
           const bannedWordsArray = bannedWords.split('\n');
 
           for (const word of userCommentWords) {
-            if (bannedWordsArray.includes(word.toLowerCase())) {
+            if (bannedWordsArray.includes(word)) {
               return Promise.reject(
                 'Comentário contém palavra(s) imprópria(s) ou ofensiva(s)'
               );
             }
           }
           return Promise.resolve();
-        }),
-
-      // Validação do ID se foi fornecido e se é inteiro. Usuário já é pré-validado na autenticação
-      body('userId')
-        .notEmpty()
-        .withMessage('ID do usuário não fornecido')
-        .bail()
-        .isInt()
-        .withMessage('Número de ID inválido')
+        })
     ];
 
     await Promise.all(validationChain.map((validation) => validation.run(req)));
 
     const errors = validationResult(req);
 
-    // caso haja erros
     if (!errors.isEmpty()) {
       return res
         .status(400)
