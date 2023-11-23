@@ -9,6 +9,13 @@ import Event from '../entity/Event';
 import { Repository } from 'typeorm';
 import { Category, insertNewClickMetric } from '../utils/cardsMetricsUtils';
 import { UserFavorites } from '../entity/UserFavorites';
+import { CharacterComics } from '../entity/CharacterComics';
+import {
+  getComicsByCharacter,
+  getEventsByCharacter,
+  getSeriesByCharacter,
+  getStoriesByCharacter
+} from '../utils/cardsDetailsUtils';
 
 /**
  * Classe com operações relacionadas à operações relacionadas a cards exibidos na aplicação
@@ -106,7 +113,7 @@ export class CharacterController {
     const cardCategory: Category = req.params.category as Category;
     const category_id: number = Number(req.params.category_id);
 
-    switch(cardCategory){
+    switch (cardCategory) {
       case Category.Characters:
         //encontrar o character
         const characterRepository = MysqlDataSource.getRepository(Character);
@@ -116,12 +123,26 @@ export class CharacterController {
             id: category_id
           }
         });
-        
-        //pegar todos os quadrinhos do character selecionado na entidade CharacterComics
+
+        //pegar todos as series, eventos, stories e comics do character selecionado
+        const series = await getSeriesByCharacter(character);
+        const events = await getEventsByCharacter(character);
+        const stories = await getStoriesByCharacter(character);
+        const comics = await getComicsByCharacter(character);
+
+        const objResp = {
+          characterName: character.enName,
+          characterDescription: character.description,
+          comicsList: comics,
+          seriesList: series,
+          storiesList: stories,
+          eventsList: events
+        };
+
+        return res.status(200).send(objResp);
 
         break;
     }
-
   }
 
   /**
