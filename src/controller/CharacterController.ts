@@ -16,6 +16,7 @@ import {
   getSeriesByCharacter,
   getStoriesByCharacter
 } from '../utils/cardsDetailsUtils';
+import { CharacterSeries } from '../entity/CharacterSeries';
 
 /**
  * Classe com operações relacionadas à operações relacionadas a cards exibidos na aplicação
@@ -123,6 +124,58 @@ export class CharacterController {
             id: category_id
           }
         });
+
+        //test
+        const seriesRepository = MysqlDataSource.getRepository(Series);
+
+        await MysqlDataSource.manager
+          .createQueryBuilder()
+          .insert()
+          .into(Series)
+          .values([
+            {
+              idMarvel: 2474,
+              enTitle: 'Thor (2007 - 2011)',
+              ptTitle: 'Thor (2007 - 2011)',
+              description:
+                'Ameaças a Asgard e Midgard, cuidado: O Poderoso Thor terá contigo! Acompanhe as jornadas épicas e batalhas brutais do Odinson enquanto enfrenta Gigantes de Gelo, demônios de fogo, super vilões e qualquer outra coisa que ele possa alcançar com seu martelo!',
+              thumb:
+                'http://i.annihil.us/u/prod/marvel/i/mg/8/f0/511c0ce715de6.jpg',
+              isTranslated: true,
+              createdAt: new Date(),
+              lastUpdate: new Date()
+            }
+          ])
+          .execute();
+
+        const character1: Character = await characterRepository.findOne({
+          where: {
+            idMarvel: 1009664
+          }
+        });
+
+        const series1: Series = await seriesRepository.findOne({
+          where: {
+            idMarvel: 2474
+          }
+        });
+
+        console.log(character1, series1);
+
+        if (character1 && series1) {
+          await MysqlDataSource.manager
+            .createQueryBuilder()
+            .insert()
+            .into(CharacterSeries)
+            .values([
+              {
+                character: character1,
+                series: series1
+              }
+            ])
+            .execute();
+        }
+        //test
 
         //pegar todos as series, eventos, stories e comics do character selecionado
         const series = await getSeriesByCharacter(character);

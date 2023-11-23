@@ -43,17 +43,22 @@ export class CreateTestCharacterComic1700692062737
       }
     });
 
-    await queryRunner.manager
-      .createQueryBuilder()
-      .insert()
-      .into(CharacterComics)
-      .values([
-        {
-          character: character1,
-          comic: comic1
-        }
-      ])
-      .execute();
+    console.log('CHARACTER:', character1);
+    console.log('COMIC:', comic1);
+
+    if (character1 && comic1) {
+      await queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into(CharacterComics)
+        .values([
+          {
+            character: character1,
+            comic: comic1
+          }
+        ])
+        .execute();
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {}
