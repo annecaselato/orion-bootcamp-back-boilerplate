@@ -4,6 +4,7 @@ import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
 import { CharacterController } from './controller/CharacterController';
+import { RecoveryController } from './controller/RecoveryController';
 
 const router = Router();
 
@@ -22,6 +23,8 @@ router.post(
 );
 
 router.get('/v1/check', new AuthController().confirmRegistration);
+router.post('/v1/recovery', new RecoveryController().validateUserEmail);
+router.post('/v1/changepassword', new RecoveryController().changePassword);
 
 router.get(
   '/v1/favorite/:character_id',
