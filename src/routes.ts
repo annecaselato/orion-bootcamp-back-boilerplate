@@ -27,7 +27,13 @@ router.post('/v1/recovery', new RecoveryController().validateUserEmail);
 router.post('/v1/changepassword', new RecoveryController().changePassword);
 
 router.get(
-  '/v1/favorite/:character_id',
+  '/v1/favorites',
+  authenticateToken,
+  new CharacterController().getFavoritesPage
+);
+
+router.post(
+  '/v1/favorite',
   authenticateToken,
   new CharacterController().favoriteCharacter
 );
