@@ -107,11 +107,17 @@ export class CharacterController {
     const category_id: number = Number(req.params.category_id);
 
     switch(cardCategory){
-      //se for characters retornar json da maneira que o rafael sugeriu
       case Category.Characters:
         //encontrar o character
+        const characterRepository = MysqlDataSource.getRepository(Character);
 
-        //obter character name e description
+        const character: Character = await characterRepository.findOne({
+          where: {
+            id: category_id
+          }
+        });
+        
+        //pegar todos os quadrinhos do character selecionado na entidade CharacterComics
 
         break;
     }
