@@ -24,9 +24,9 @@ export function authenticateToken(req, res, next) {
     JwtHandler.verifyToken(token, (err, decodedUser) => {
       console.log(err);
 
-      //forbidden
+      //unauthorized
       if (err) {
-        return res.status(403).send({
+        return res.status(401).send({
           date: new Date(),
           status: false,
           data: 'Sem permissão. Token inválido.'
