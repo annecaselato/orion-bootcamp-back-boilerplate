@@ -2,8 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate
+  CreateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 /**
@@ -32,21 +32,11 @@ export default class User {
   @Column({ type: 'varchar', length: 100, select: false })
   password: string;
 
-  @Column({ update: false })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @BeforeInsert()
-  createdAtDate() {
-    this.createdAt = new Date();
-  }
-
-  @Column()
+  @UpdateDateColumn()
   lastUpdate: Date;
-
-  @BeforeUpdate()
-  updateDates() {
-    this.lastUpdate = new Date();
-  }
 
   @Column({ default: false })
   isActivated: boolean;
