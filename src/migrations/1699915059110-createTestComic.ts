@@ -31,30 +31,6 @@ export class CreateTestComic1699915059110 implements MigrationInterface {
           isTranslated: true,
           createdAt: new Date(),
           lastUpdate: new Date()
-        },
-        {
-          idMarvel: 428,
-          enTitle: 'Ant-Man (2003) #4',
-          ptTitle: 'Homem-Formiga (2003) #4',
-          description:
-            'O Homem-Formiga se aprofunda para descobrir quem está vazando aqueles segredinhos sujos que ameaçam nossa segurança nacional. E quem é melhor em descobrir SEGREDOS sujos do que ele?',
-          thumb:
-            'http://i.annihil.us/u/prod/marvel/i/mg/4/20/4bc697c680890.jpg',
-          isTranslated: true,
-          createdAt: new Date(),
-          lastUpdate: new Date()
-        },
-        {
-          idMarvel: 110723,
-          enTitle: 'Avengers United Infinity Comic (2023) #7',
-          ptTitle: 'Ataque dos Vingadores: Infinito Unido (2023) #7',
-          description:
-            'Os Vingadores foram derrotados pelo implacável Professor do Medo. No entanto, enquanto o Capitão América se recupera de seus ferimentos na nave estelar do Embaixador Sof, ele obtém uma compreensão mais profunda sobre a natureza do conflito.',
-          thumb:
-            'http://i.annihil.us/u/prod/marvel/i/mg/5/d0/651c3e3b55c03.jpg',
-          isTranslated: true,
-          createdAt: new Date(),
-          lastUpdate: new Date()
         }
       ])
       .execute();

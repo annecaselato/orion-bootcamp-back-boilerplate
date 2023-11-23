@@ -29,7 +29,6 @@ export class CreateTestCharacter1699055195428 implements MigrationInterface {
           lastUpdate: new Date()
         },
         {
-          id: 9999,
           idMarvel: 1009664,
           enName: 'Thor',
           ptName: 'Thor',

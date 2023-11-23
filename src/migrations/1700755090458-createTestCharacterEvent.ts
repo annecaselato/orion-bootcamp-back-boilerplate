@@ -1,29 +1,29 @@
 import { MysqlDataSource } from '../config/database';
 import Character from '../entity/Character';
-import { CharacterComics } from '../entity/CharacterComics';
-import Comic from '../entity/Comic';
+import { CharacterEvents } from '../entity/CharacterEvents';
+import Event from '../entity/Event';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateTestCharacterComic1700692062737
+export class CreateTestCharacterEvent1700755090458
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const characterRepository = MysqlDataSource.getRepository(Character);
-    const comicRepository = MysqlDataSource.getRepository(Comic);
+    const eventRepository = MysqlDataSource.getRepository(Event);
 
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into(Comic)
+      .into(Event)
       .values([
         {
-          idMarvel: 102285,
-          enTitle: 'Thor (2020) #34',
-          ptTitle: 'Thor (2020) #34',
+          idMarvel: 235,
+          enTitle: 'Blood and Thunder',
+          ptTitle: 'Sangue e Trovão',
           description:
-            'THOR, DOUTOR DESTINO e... THANOS?! Enquanto Thor disputa uma corrida temporal com o Doutor Destino antes que Destino possa despedaçar a própria realidade em sua mais recente busca por poder, eles descobrem Thanos no centro de tudo, finalmente revelando a luta de poder que levou o avô de Thor, Bor, e Thanos a uma guerra total - a arma derradeira, escondida por milênios. Mas Destino não poupará esforços para controlá-la!',
+            'Enlouquecido pelas maquinações da malévola Valquíria, Thor parte para destruir os Nove Mundos, mas encontra oposição do Surfista Prateado, Warlock e a Guarda do Infinito.',
           thumb:
-            'http://i.annihil.us/u/prod/marvel/i/mg/8/e0/646b6a2ec150d.jpg',
+            'http://i.annihil.us/u/prod/marvel/i/mg/3/d0/51c9e9945b152.jpg',
           isTranslated: true,
           createdAt: new Date(),
           lastUpdate: new Date()
@@ -37,20 +37,20 @@ export class CreateTestCharacterComic1700692062737
       }
     });
 
-    const comic1: Comic = await comicRepository.findOne({
+    const event1: Event = await eventRepository.findOne({
       where: {
-        idMarvel: 102285
+        idMarvel: 235
       }
     });
 
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into(CharacterComics)
+      .into(CharacterEvents)
       .values([
         {
           character: character1,
-          comic: comic1
+          event: event1
         }
       ])
       .execute();

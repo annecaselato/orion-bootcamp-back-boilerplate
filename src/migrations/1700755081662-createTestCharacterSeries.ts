@@ -1,29 +1,29 @@
 import { MysqlDataSource } from '../config/database';
 import Character from '../entity/Character';
-import { CharacterComics } from '../entity/CharacterComics';
-import Comic from '../entity/Comic';
+import { CharacterSeries } from '../entity/CharacterSeries';
+import Series from '../entity/Series';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateTestCharacterComic1700692062737
+export class CreateTestCharacterSeries1700755081662
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const characterRepository = MysqlDataSource.getRepository(Character);
-    const comicRepository = MysqlDataSource.getRepository(Comic);
+    const seriesRepository = MysqlDataSource.getRepository(Series);
 
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into(Comic)
+      .into(Series)
       .values([
         {
-          idMarvel: 102285,
-          enTitle: 'Thor (2020) #34',
-          ptTitle: 'Thor (2020) #34',
+          idMarvel: 2473,
+          enTitle: 'Thor (2007 - 2011)',
+          ptTitle: 'Thor (2007 - 2011)',
           description:
-            'THOR, DOUTOR DESTINO e... THANOS?! Enquanto Thor disputa uma corrida temporal com o Doutor Destino antes que Destino possa despedaçar a própria realidade em sua mais recente busca por poder, eles descobrem Thanos no centro de tudo, finalmente revelando a luta de poder que levou o avô de Thor, Bor, e Thanos a uma guerra total - a arma derradeira, escondida por milênios. Mas Destino não poupará esforços para controlá-la!',
+            'Ameaças a Asgard e Midgard, cuidado: O Poderoso Thor terá contigo! Acompanhe as jornadas épicas e batalhas brutais do Odinson enquanto enfrenta Gigantes de Gelo, demônios de fogo, super vilões e qualquer outra coisa que ele possa alcançar com seu martelo!',
           thumb:
-            'http://i.annihil.us/u/prod/marvel/i/mg/8/e0/646b6a2ec150d.jpg',
+            'http://i.annihil.us/u/prod/marvel/i/mg/8/f0/511c0ce715de6.jpg',
           isTranslated: true,
           createdAt: new Date(),
           lastUpdate: new Date()
@@ -37,20 +37,20 @@ export class CreateTestCharacterComic1700692062737
       }
     });
 
-    const comic1: Comic = await comicRepository.findOne({
+    const series1: Series = await seriesRepository.findOne({
       where: {
-        idMarvel: 102285
+        idMarvel: 2473
       }
     });
 
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
-      .into(CharacterComics)
+      .into(CharacterSeries)
       .values([
         {
           character: character1,
-          comic: comic1
+          series: series1
         }
       ])
       .execute();
