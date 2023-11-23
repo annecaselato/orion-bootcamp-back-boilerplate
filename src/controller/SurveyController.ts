@@ -69,14 +69,6 @@ export default class SurveyController {
    *                 status: false
    *                 data: Erro interno do servidor
    */
-  /**
-   * Função para envio de response à requisação de verificação de elegibilidade do usuário para realização da pesquisa.
-   * Casos em que não há elegibilidade tratados no middleware
-   *
-   * @param req - Objeto de requisição do Express
-   * @param res - Objeto de resposta do Express
-   * @returns {Promise<void>} - Retorna promise a ser resolvida quando do envio da resposta à requisição
-   */
   async eligible(req?: Request, res?: Response): Promise<void> {
     res
       .status(200)
