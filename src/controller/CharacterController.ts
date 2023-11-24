@@ -457,6 +457,35 @@ export class CharacterController {
         });
       }
 
+      //adicionar parametro boolen favorited nos cards de personagens
+      if (pageCategory == Category.Characters) {
+        const userFavoritesRepository =
+          MysqlDataSource.getRepository(UserFavorites);
+
+        //obtem os IDs dos personagens favoritados pelo usuário
+        const userFavoriteCharacterIds = (
+          await userFavoritesRepository
+            .createQueryBuilder('userFavorites')
+            .select('userFavorites.character')
+            .where('userFavorites.user.id = :user_id', {
+              user_id: req.body.user.id
+            })
+            .getRawMany()
+        ).map((item) => item.character_id);
+
+        //verifica se o id do card está no array de IDs favoritos dele
+        const cardsWithFavorited = cards.map((card) => ({
+          ...card,
+          favorited: userFavoriteCharacterIds.includes(card.id)
+        }));
+
+        return res.status(200).json({
+          date: new Date(),
+          status: true,
+          data: cardsWithFavorited
+        });
+      }
+
       return res
         .status(200)
         .json({ date: new Date(), status: true, data: cards });
@@ -598,9 +627,15 @@ export class CharacterController {
         });
       }
 
+      //adicionar parametro boolen favorited nos cards já favoritados
+      const cardsWithFavorited = cards.map((card) => ({
+        ...card,
+        favorited: true
+      }));
+
       return res
         .status(200)
-        .json({ date: new Date(), status: true, data: cards });
+        .json({ date: new Date(), status: true, data: cardsWithFavorited });
     } catch (error) {
       console.log('Erro: ', error);
       return res.status(500).send({
