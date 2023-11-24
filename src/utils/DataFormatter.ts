@@ -9,8 +9,13 @@ export default class DataFormatter {
         let isTranslated: boolean = true;
 
         for (const key in objectCopy) {
-          if (objectCopy[key] === null || this._toBeIgnored().includes(key))
+          if (
+            objectCopy[key] === '' ||
+            null ||
+            this._toBeIgnored().includes(key)
+          ) {
             continue;
+          }
 
           const translator = new TranslationAPIService();
           const translatedValue = await translator.getTranslation(
