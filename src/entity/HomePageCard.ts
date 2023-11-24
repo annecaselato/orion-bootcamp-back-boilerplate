@@ -11,6 +11,12 @@ export class HomePageCard {
   @Column()
   image: string;
 
+  @Column({ nullable: true })
+  imageDescription: string;
+
+  @Column({ nullable: true })
+  buttonText: string;
+
   @Column()
   description: string;
 

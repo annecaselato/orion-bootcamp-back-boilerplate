@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { HomePageCardRepository } from '../repositories/homePageCardRepository';
+import { create } from 'domain';
 /**
  * @swagger
  * tags:
@@ -16,6 +17,10 @@ import { HomePageCardRepository } from '../repositories/homePageCardRepository';
  *         title:
  *           type: string
  *         image:
+ *           type: string
+ *         imageDescription:
+ *           type: string
+ *         buttonText:
  *           type: string
  *         description:
  *           type: string
@@ -60,7 +65,18 @@ export class HomePageCardController {
   public static async findAllHomePageCards(_req: Request, res: Response): Promise<void> {
     try {
       const homePageCards = await HomePageCardRepository.findAllHomePageCards();
-      res.status(200).send(homePageCards);
+      const renamedHomePageCards = homePageCards.map((card) => ({
+        cardId: card.id,
+        cardTitle: card.title,
+        cardDescription: card.description,
+        cardImage: card.image,
+        cardImageDescription: card.imageDescription,
+        cardButtonText: card.buttonText,
+        cardAccess: card.access,
+        created_at: card.created_at,
+        updated_at: card.updated_at
+      }));
+      res.status(200).send(renamedHomePageCards);
     } catch (error) {
       res.status(400).send({ message: 'An error occurred while retrieving the home page cards.' });
     }
