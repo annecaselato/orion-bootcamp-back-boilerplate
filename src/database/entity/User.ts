@@ -12,10 +12,10 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   firstName: string;
 
-  @Column()
+  @Column({ nullable: true, default: null })
   lastName: string;
 
   @Column()

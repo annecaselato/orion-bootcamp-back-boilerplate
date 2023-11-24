@@ -7,7 +7,8 @@ import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 
 MysqlDataSource.initialize()
-  .then(() => {
+  .then((database) => {
+    database.runMigrations();
     console.log('Database initialized!');
   })
   .catch((err) => {
