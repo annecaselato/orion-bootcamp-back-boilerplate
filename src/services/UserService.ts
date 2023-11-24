@@ -104,8 +104,4 @@ export class UserService {
     });
     return newUser;
   }
-
-  async count(): Promise<number> {
-    return await this.userRepository.count();
-  }
 }
