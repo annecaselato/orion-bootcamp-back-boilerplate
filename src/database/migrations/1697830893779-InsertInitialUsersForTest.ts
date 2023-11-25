@@ -7,9 +7,7 @@ export class InsertInitialUsersForTest1697830893779
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.insert(User, {
       email: 'gustavogonçalves@gmail.com',
-      password: 'Gu@12345',
-      firstName: 'Gustavo',
-      lastName: 'Gonçalves da Silva'
+      password: 'Gu@12345'
     });
   }
 
