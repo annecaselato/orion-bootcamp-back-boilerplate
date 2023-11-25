@@ -305,7 +305,7 @@ export class UsersController {
         const user = userService.findById(id);
         if (user) {
           userService.updatePassword(id, password);
-          return res.status(httpCodes.NO_CONTENT);
+          return res.status(httpCodes.NO_CONTENT).send();
         } else {
           return res
             .status(httpCodes.UNAUTHORIZED)
