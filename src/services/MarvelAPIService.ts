@@ -19,14 +19,14 @@ export default class MarvelAPIService {
               limit: paramsDefiner.maxMarvelAPILimit(),
               ts: timeStamp,
               apikey: paramsDefiner.apikey(),
-              modifiedSince: paramsDefiner.modifiedsSince(daysInterval),
+              //modifiedSince: paramsDefiner.modifiedsSince(daysInterval),
               hash: paramsDefiner.hashGenarator(timeStamp)
             }
           }
         );
         dataArray = await response.data.data.results;
         categoryData.push(...dataArray);
-      } while (dataArray.length);
+      } while (dataArray.length > 100);
       return categoryData;
     } catch (error) {
       console.error(error);
