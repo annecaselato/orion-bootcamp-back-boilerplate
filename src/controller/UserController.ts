@@ -4,7 +4,7 @@ import User from '../entity/User';
 import { EmailSender } from '../library/mail';
 
 /**
- * Classe com operações relacionadas a manipulação e criação de usuários
+ * Classe com operações relacionadas à manipulação e criação de usuários
  */
 export class UserController {
   /**
@@ -13,7 +13,7 @@ export class UserController {
    *   post:
    *
    *     summary: Adiciona novo usuário ao banco de dados
-   *     tags: [signUp]
+   *     tags: [SignUp]
    *     requestBody:
    *       content:
    *         application/json:
@@ -56,7 +56,7 @@ export class UserController {
    *               properties:
    *                 date:
    *                   type: date
-   *                   description: Date de envio da resposta à requisição
+   *                   description: Data de envio da resposta à requisição
    *                 status:
    *                   type: boolean
    *                   description: Status da criação do usuário
@@ -164,17 +164,23 @@ export class UserController {
    *                 status: false
    *                 data: Erro interno do servidor
    */
-  create = async (req: Request, res: Response) => {
+  create = async (req: Request, res: Response): Promise<void> => {
     try {
       const repository: UserRepository = new UserRepository();
+
       const userData = req.body;
-      const user: Promise<User> = repository.createAndSave(userData);
-      const savedUser: User = await repository.findOneByEmail(
-        (await user).email
+      const user: User = await repository.createAndSave(userData);
+
+      const savedUser: User = await repository.findUserByEmailOrID(
+        user.email,
+        'email'
       );
+
       res.status(201).json({ date: new Date(), status: true, data: savedUser });
+
+      // Envia e-mail de confirmação de cadastro
       const sendEmail = new EmailSender();
-      sendEmail.sendConfirmationEmail(await user);
+      sendEmail.sendConfirmationEmail(user);
     } catch (error) {
       res.status(500).json({
         date: new Date(),

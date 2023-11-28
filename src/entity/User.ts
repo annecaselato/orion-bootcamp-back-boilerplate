@@ -2,9 +2,11 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  BeforeInsert,
-  BeforeUpdate
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany
 } from 'typeorm';
+import Survey from './Survey';
 
 /**
  * Entidade com informações relacionadas a usuários da aplicação
@@ -32,21 +34,14 @@ export default class User {
   @Column({ type: 'varchar', length: 100, select: false })
   password: string;
 
-  @Column({ update: false })
+  @OneToMany(() => Survey, (survey) => survey.user)
+  surveys: Array<Survey>;
+
+  @CreateDateColumn()
   createdAt: Date;
 
-  @BeforeInsert()
-  createdAtDate() {
-    this.createdAt = new Date();
-  }
-
-  @Column()
+  @UpdateDateColumn()
   lastUpdate: Date;
-
-  @BeforeUpdate()
-  updateDates() {
-    this.lastUpdate = new Date();
-  }
 
   @Column({ default: false })
   isActivated: boolean;

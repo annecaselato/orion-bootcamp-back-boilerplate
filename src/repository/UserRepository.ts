@@ -3,29 +3,38 @@ import * as bcrypt from 'bcrypt';
 import User from '../entity/User';
 
 export class UserRepository {
-  private repository = MysqlDataSource.getRepository(User);
-  private salt = (): number => 10;
+  private userRepository = MysqlDataSource.getRepository(User);
+
+  constructor() {
+    this.userRepository = MysqlDataSource.getRepository(User);
+  }
+
+  private _saltRounds = (): number => 10;
 
   async createAndSave(userData): Promise<User> {
-    const salt = this.salt();
-    const hashpassword = await bcrypt.hash(userData.password, salt);
+    const hashpassword = await bcrypt.hash(
+      userData.password,
+      this._saltRounds()
+    );
 
-    const newUser = new User();
-    newUser.firstName = userData.firstName;
-    newUser.lastName = userData.lastName;
-    newUser.gender = userData.gender;
-    newUser.birthDate = userData.birthDate;
-    newUser.email = userData.email;
-    newUser.password = hashpassword;
-    newUser.lastUpdate = new Date();
+    const newUser: User = await this.userRepository.manager.save(User, {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      gender: userData.gender,
+      birthDate: userData.birthDate,
+      email: userData.email,
+      password: hashpassword
+    });
 
-    await this.repository.manager.save(newUser);
     return newUser;
   }
 
-  async findOneByEmail(userEmail: string) {
-    const user = await this.repository.findOne({
-      where: { email: userEmail }
+  async findUserByEmailOrID(
+    value: string | number,
+    property: string
+  ): Promise<User> {
+    const user = await this.userRepository.findOne({
+      where: { [property]: value }
     });
     return user;
   }

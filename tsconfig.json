@@ -18,5 +18,10 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
+  },
+  "typedocOptions": {
+    "entryPoints": ["./src"],
+    "out": "docs",
+    "entryPointStrategy": "expand"
   }
 }

@@ -57,7 +57,7 @@ export const validationField = [
     .withMessage('Informe um e-mail válido')
     .custom(async (email: string) => {
       const repository = new UserRepository();
-      const existingUser = await repository.findOneByEmail(email);
+      const existingUser = await repository.findUserByEmailOrID(email, 'email');
       if (existingUser) {
         return Promise.reject('E-mail já cadastrado');
       }
@@ -76,12 +76,12 @@ export const validationField = [
       minSymbols: 1
     })
     .withMessage(
-      'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
+      'A senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 caracter especial'
     )
     .custom((value) => {
       if (!/[a-zA-Z]/.test(value)) {
         return Promise.reject(
-          'Senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 carcter especial'
+          'A senha deve conter no mínimo 8 caracteres, sendo ao menos 1 letra, 1 número e 1 caracter especial'
         );
       }
       return Promise.resolve();
