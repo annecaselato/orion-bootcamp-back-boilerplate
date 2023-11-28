@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { Metrics } from '../database/entity/UserMetric';
-import { Metric } from '../utils/enumMetrics';
+import { Metric } from '../models/enumMetrics';
 
 export class UserMetricsService {
   private metricRepository: Repository<Metrics>;
@@ -10,22 +10,20 @@ export class UserMetricsService {
     this.metricRepository = MysqlDataSource.getRepository(Metrics);
   }
 
-  public async updateRegistrationStarted(metric): Promise<void | undefined> {
-    if (metric === Metric.RegistrationStarted) {
+  public async updateRegistrationStarted(): Promise<void> {
+    if (Metric.STARTED) {
       await this.metricRepository.increment(
-        { metric: Metric.RegistrationStarted },
+        { metric: Metric.STARTED },
         'quantity',
         1
       );
     }
   }
 
-  public async updateRegistrationIncompleted(
-    metric
-  ): Promise<void | undefined> {
-    if (metric === Metric.RegistrationIncompleted) {
+  public async updateRegistrationIncompleted(): Promise<void> {
+    if (Metric.INCOMPLETED) {
       await this.metricRepository.increment(
-        { metric: Metric.RegistrationIncompleted },
+        { metric: Metric.INCOMPLETED },
         'quantity',
         1
       );

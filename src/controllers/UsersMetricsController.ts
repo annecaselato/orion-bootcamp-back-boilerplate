@@ -32,7 +32,7 @@ export class UsersMetricsController {
     const metricService = new UserMetricsService();
     const { metric } = req.body;
     if (metric === 'Registrations Started') {
-      metricService.updateRegistrationStarted(metric);
+      metricService.updateRegistrationStarted();
       return res
         .status(httpCodes.NO_CONTENT)
         .json({ mensagem: 'Registrations Started.' });
@@ -72,7 +72,7 @@ export class UsersMetricsController {
     const metricService = new UserMetricsService();
     const { metric } = req.body;
     if (metric === 'Registrations Incompleted') {
-      metricService.updateRegistrationIncompleted(metric);
+      metricService.updateRegistrationIncompleted();
       return res
         .status(httpCodes.OK)
         .json({ mensagem: 'Registration incompleted.' });

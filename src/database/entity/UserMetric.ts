@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
-import { Metric } from '../../utils/enumMetrics';
+import { Metric } from '../../models/enumMetrics';
 
 @Entity()
 export class Metrics extends BaseEntity {
