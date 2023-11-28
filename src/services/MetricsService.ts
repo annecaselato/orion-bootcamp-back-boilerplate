@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm';
 import { MysqlDataSource } from '../config/database';
 import { Metrics } from '../database/entity/Metrics';
+import { Metric } from '../models/enumMetrics';
 
 export class MetricsService {
   private metricsRepository: Repository<Metrics>;
@@ -11,12 +12,12 @@ export class MetricsService {
 
   registers(): Promise<Metrics> {
     this.metricsRepository.increment(
-      { metric: 'Registrations Completed ' },
+      { metric: Metric.COMPLETED },
       'quantity',
       1
     );
     const usersCount = this.metricsRepository.findOne({
-      where: { metric: 'Registrations Completed ' }
+      where: { metric: Metric.COMPLETED }
     });
     return usersCount;
   }
