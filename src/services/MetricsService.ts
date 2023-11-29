@@ -10,15 +10,11 @@ export class MetricsService {
     this.metricsRepository = MysqlDataSource.getRepository(Metrics);
   }
 
-  registers(): Promise<Metrics> {
+  public async registers(): Promise<void> {
     this.metricsRepository.increment(
       { metric: Metric.COMPLETED },
       'quantity',
       1
     );
-    const usersCount = this.metricsRepository.findOne({
-      where: { metric: Metric.COMPLETED }
-    });
-    return usersCount;
   }
 }
