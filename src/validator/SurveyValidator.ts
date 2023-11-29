@@ -2,14 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 import { MysqlDataSource } from '../config/database';
 import User from '../entity/User';
-import moment from 'moment';
+import { endOfDay, subDays } from 'date-fns';
 import * as fs from 'fs';
 
 /**
- * Classe que implementa operações de verificação e validação para endpoints relacionados à entidade Survey
+ * Classe que implementa operações de verificação de dados relacionados à pesquisa, enviados na requisição
  */
 export default class SurveyValidator {
   /**
+   * Função para verificação de status de elegibilidade de usuário para realização da pesquisa
+   *
    * @param req - Objeto de requisição do Express
    * @param res - Objeto de resposta do Express
    * @param next - Função do Express para chamada do próximo middleware definido na rota
@@ -32,20 +34,17 @@ export default class SurveyValidator {
     const userRepository = MysqlDataSource.getRepository(User);
 
     try {
-      // aptidão para pesquisa:
-      // usuário cadastrado há pelo menos 15 dias, sem pesquisas registradas
-      // usuário cuja última pesquisa registrada tenha pelo menos 15 dias
+      // aptidão para a pesquisa:
+      // 15 dias após a data de criação (para 1º pesquisa) OU 15 dias após a data de realização da última pesquisa
 
-      const usageStartRangeTime = moment()
-        .subtract(15, 'days')
-        .endOf('day')
-        .toDate();
+      // Data que representa o final do dia, 15 dias atrás em relação à data atual
+      const usageStartRangeTime = endOfDay(subDays(new Date(), 15));
 
       const userLastSurveyDates = await userRepository
-        .createQueryBuilder('user')
-        .leftJoinAndSelect('user.surveys', 'surveys')
+        .createQueryBuilder('users')
+        .leftJoinAndSelect('users.surveys', 'surveys')
         .select('MAX(surveys.createdAt)', 'latestSurvey')
-        .addSelect('user.createdAt', 'userCreationDate')
+        .addSelect('users.createdAt', 'userCreationDate')
         .where('user.id = :id', { id: userId })
         .getRawOne();
 
@@ -72,7 +71,7 @@ export default class SurveyValidator {
   }
 
   /**
-   * Função de validação de dados relacionados à pesquisa, enviados na requisição
+   * Função de verificação dos dados da pesquisa, se atendem aos pré-requisitos definidos
    *
    * @param req - Objeto de requisição do Express
    * @param res - Objeto de resposta do Express

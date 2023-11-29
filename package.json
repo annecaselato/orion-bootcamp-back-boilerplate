@@ -30,6 +30,7 @@
     "eslint": "8.51.0",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-prettier": "5.0.1",
+    "date-fns": "2.30.0",
     "nodemon": "3.0.1",
     "ts-node": "10.9.1",
     "typedoc": "0.25.3",
