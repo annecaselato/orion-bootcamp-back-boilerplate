@@ -14,7 +14,7 @@ import { EmailSender } from './library/mail';
 import User from './entity/User';
 import Survey from './entity/Survey';
 import { categoriesArray } from './library/categoriesArray';
-import moment from 'moment';
+import { subDays, endOfDay } from 'date-fns';
 import { DeepPartial } from 'typeorm';
 
 MysqlDataSource.initialize()
@@ -42,11 +42,8 @@ cron.schedule('0 6 * * *', async function updateSurveyDatabase() {
    */
 
   try {
-    
-    const usageStartRangeTime = moment()
-      .subtract(15, 'days')
-      .endOf('day')
-      .toDate()
+    // data correspondente a 15 dias antes da data atual
+    const usageStartRangeTime = endOfDay(subDays(new Date(), 15));
 
     const dataForSurveyCreation = await userRepository
       .createQueryBuilder('users')
