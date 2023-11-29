@@ -13,7 +13,7 @@ export class NodemailerProvider {
     }
   });
 
-  async sendEmail(
+  public async sendEmail(
     to: string,
     subject: string,
     variables: object,
