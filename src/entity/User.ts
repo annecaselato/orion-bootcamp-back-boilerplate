@@ -7,6 +7,7 @@ import {
   OneToMany
 } from 'typeorm';
 import Survey from './Survey';
+import UserAccessLog from './UserAccessLog';
 
 /**
  * Entidade com informações relacionadas a usuários da aplicação
@@ -36,6 +37,9 @@ export default class User {
 
   @OneToMany(() => Survey, (survey) => survey.user)
   surveys: Array<Survey>;
+
+  @OneToMany(() => UserAccessLog, (user_access_log) => user_access_log.user)
+  logins: Array<UserAccessLog>;
 
   @CreateDateColumn()
   createdAt: Date;
