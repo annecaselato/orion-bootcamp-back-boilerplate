@@ -11,7 +11,7 @@ export class MetricsService {
   }
 
   public async registers(): Promise<void> {
-    this.metricsRepository.increment(
+    await this.metricsRepository.increment(
       { metric: Metric.COMPLETED },
       'quantity',
       1
