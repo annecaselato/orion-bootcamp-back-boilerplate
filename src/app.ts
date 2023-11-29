@@ -12,7 +12,10 @@ import CategoryRepository from './repository/CategoryRepository';
 import CategoryModel from './models/CategoryInterface';
 import { EmailSender } from './library/mail';
 import User from './entity/User';
+import Survey from './entity/Survey';
 import { categoriesArray } from './library/categoriesArray';
+import moment from 'moment';
+import { DeepPartial } from 'typeorm';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -23,6 +26,71 @@ MysqlDataSource.initialize()
   });
 
 const app = express();
+
+cron.schedule('0 6 * * *', async function updateSurveyDatabase() {
+  console.log('atualizando banco de dados de pesquisas 1 vez por dia');
+
+  const surveyRepository = MysqlDataSource.getRepository(Survey);
+  const userRepository = MysqlDataSource.getRepository(User);
+
+  /**
+   * Pesquisas não respondidas são lançadas para usuários:
+   * - criados há pelo menos 15 dias, sem pesquisas respondias, cujo último login tem data igual ou superior ao dia em que estava apto
+   * a responder: 15 dias após a data de criação (para 1º pesquisa);
+   * - cuja última pesquisa foi respondida há pelo menos 15 dias e último login tem data igual ou superior ao dia em que estava apto
+   * a responder: 15 dias após a data de realização da última pesquisa;
+   */
+
+  try {
+    
+    const usageStartRangeTime = moment()
+      .subtract(15, 'days')
+      .endOf('day')
+      .toDate()
+
+    const dataForSurveyCreation = await userRepository
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.surveys', 'surveys')
+      .innerJoinAndSelect('users.logins', 'logins')
+      .select('MAX(surveys.createdAt)', 'latestSurveyDate')
+      .addSelect('MAX(logins.accessDate)', 'latestLoginDate')
+      .addSelect('users.createdAt', 'userCreationDate')
+      .addSelect('users.id', 'userId')
+      .groupBy('users.id')
+      .having(
+        '(userCreationDate <= :date AND latestSurveyDate IS NULL AND latestLoginDate >= DATE_ADD(userCreationDate, INTERVAL 15 DAY))',
+        { date: usageStartRangeTime }
+      )
+      .orHaving(
+        '(userCreationDate <= :date AND latestSurveyDate <= :date AND latestLoginDate >= DATE_ADD(latestSurveyDate, INTERVAL 15 DAY))',
+        { date: usageStartRangeTime }
+      )
+      .getRawMany();
+
+    if (dataForSurveyCreation.length) {
+      // calcula média das notas para não alterá-la ao lançar pesquisas não respondidas
+      // adota a mediana dos valores possíveis caso não haja pesquisas registradas
+      const medianPossibleGrade: number = 3;
+      const gradeAverage = (await surveyRepository.average('grade'))
+        ? await surveyRepository.average('grade')
+        : medianPossibleGrade;
+
+      const newUnansweredSurveys = dataForSurveyCreation.map((data) => {
+        const newSurvey: DeepPartial<Survey> = {
+          grade: gradeAverage,
+          user: data.userId
+        };
+        return newSurvey;
+      });
+      await surveyRepository.insert(newUnansweredSurveys);
+    }
+  } catch (error) {
+    console.log(
+      `falha na execução da atualização do banco de dados de executando tarefa novamente em 1 hora`,
+      error
+    );
+  }
+});
 
 cron.schedule('0 7 * * *', async () => {
   const emailSender = new EmailSender();
