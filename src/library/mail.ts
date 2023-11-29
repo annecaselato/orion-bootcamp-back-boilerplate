@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../entity/User';
 import 'dotenv/config';
 
+const URL_FRONT = process.env.URL_FRONT
 export class EmailSender {
   private transporter: nodemailer.Transporter;
 
@@ -34,7 +35,7 @@ export class EmailSender {
         subject: 'MarvelPedia - Confirme seu cadastro!',
         html: `<h2>Olá ${user.firstName}!</h2>
         <p>Agradecemos por se juntar à comunidade Marvel! Para confirmar seu cadastro, clique no link abaixo:</p><br>
-        <h3><p><a href="https://marvelpedia-orionis-front.vercel.app/redirect?token=${token}">Confirmar cadastro</a></p></h3><br>
+        <h3><p><a href="${URL_FRONT}/redirect?token=${token}" target="_blank">Confirmar cadastro</a></p></h3><br>
         <p>Se você não solicitou este e-mail, por favor, ignore-o. Caso contrário, esperamos que aproveite a exploração do vasto universo da Marvel em nosso site.</p>
         <p>Em caso de dúvidas ou problemas, nossa equipe de suporte está à disposição para ajudar.</p>
         <p>Divirta-se!</p><br>
@@ -65,7 +66,7 @@ export class EmailSender {
         subject: 'MarvelPedia - Recuperação de senha',
         html: `<h2>Olá ${user.firstName}</h2>
         <p>Recebemos sua solicitação de recuperação de senha. Para criar uma nova senha, clique no link abaixo:</p><br>
-        <h3><p><a href="https://marvelpedia-orionis-front.vercel.app/change-password?token=${token}">Recuperar senha</a></p></h3><br>
+        <h3><p><a href="${URL_FRONT}/change-password?token=${token}" target="_blank">Recuperar senha</a></p></h3><br>
         <p>Se você não solicitou a recuperação de senha, por favor, ignore este e-mail, por motivos de segurança.</p>
         <p>Em caso de dúvidas ou problemas, nossa equipe de suporte está à disposição para ajudar.</p>
         <p>Tenha um ótimo dia!</p><br>
