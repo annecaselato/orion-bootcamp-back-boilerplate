@@ -22,7 +22,9 @@ export async function getComicsByCharacter(
 
   const comics = characterComics.map((characterComic) => characterComic.comic);
 
-  return comics;
+  const formattedComics = selectFewValues(comics);
+
+  return formattedComics;
 }
 
 export async function getSeriesByCharacter(
@@ -40,7 +42,9 @@ export async function getSeriesByCharacter(
     (characterSeries) => characterSeries.series
   );
 
-  return series;
+  const formattedSeries = selectFewValues(series);
+
+  return formattedSeries;
 }
 
 export async function getEventsByCharacter(
@@ -58,7 +62,9 @@ export async function getEventsByCharacter(
     (characterEvents) => characterEvents.event
   );
 
-  return events;
+  const formattedEvents = selectFewValues(events);
+
+  return formattedEvents;
 }
 
 export async function getStoriesByCharacter(
@@ -76,5 +82,17 @@ export async function getStoriesByCharacter(
     (characterStories) => characterStories.story
   );
 
-  return stories;
+  const formattedStories = selectFewValues(stories);
+
+  return formattedStories;
+}
+
+function selectFewValues(cards) {
+  const formattedCards = cards.map(({ id, description, thumb }) => ({
+    id,
+    description,
+    thumb
+  }));
+
+  return formattedCards;
 }
