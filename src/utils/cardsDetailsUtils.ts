@@ -9,6 +9,11 @@ import { CharacterEvents } from '../entity/CharacterEvents';
 import Story from '../entity/Story';
 import { CharacterStories } from '../entity/CharacterStories';
 
+/**
+ * 
+ * @param {Character} character - Personagem sobre o qual se quer obter os quadrinhos relacionados
+ * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ */
 export async function getComicsByCharacter(
   character: Character
 ): Promise<Comic[]> {
@@ -27,6 +32,11 @@ export async function getComicsByCharacter(
   return formattedComics;
 }
 
+/**
+ * 
+ * @param {Character} character - Personagem sobre o qual se quer obter as series relacionadas
+ * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ */
 export async function getSeriesByCharacter(
   character: Character
 ): Promise<Series[]> {
@@ -47,6 +57,11 @@ export async function getSeriesByCharacter(
   return formattedSeries;
 }
 
+/**
+ * 
+ * @param {Character} character - Personagem sobre o qual se quer obter os eventos relacionados
+ * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ */
 export async function getEventsByCharacter(
   character: Character
 ): Promise<Event[]> {
@@ -67,6 +82,11 @@ export async function getEventsByCharacter(
   return formattedEvents;
 }
 
+/**
+ * 
+ * @param {Character} character - Personagem sobre o qual se quer obter as histórias relacionadas
+ * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ */
 export async function getStoriesByCharacter(
   character: Character
 ): Promise<Story[]> {
@@ -87,6 +107,11 @@ export async function getStoriesByCharacter(
   return formattedStories;
 }
 
+/**
+ * 
+ * @param {Array<Object>} cards - Um array de cards com todos os seus valores
+ * @returns {Array<Object>} - Um array de cards com os valores {id, description, thumb} somente
+ */
 function selectFewValues(cards) {
   const formattedCards = cards.map(({ id, description, thumb }) => ({
     id,

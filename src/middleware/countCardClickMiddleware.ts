@@ -11,6 +11,13 @@ import Comic from '../entity/Comic';
 import Series from '../entity/Series';
 import Story from '../entity/Story';
 
+/**
+ * Middleware que realiza a contabilização do clique no card pelo usuário
+ * 
+ * @param {Object} req - Objeto de requisição express.
+ * @param {Object} res - Objeto de resposta express.
+ * @param {function} next - Função para chamar o próximo middleware/controller na cadeia.
+ */
 export async function countCardClick(req, res, next) {
   try {
     const cardCategory: Category = req.params.category as Category;
