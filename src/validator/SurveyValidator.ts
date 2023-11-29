@@ -45,7 +45,7 @@ export default class SurveyValidator {
         .leftJoinAndSelect('users.surveys', 'surveys')
         .select('MAX(surveys.createdAt)', 'latestSurvey')
         .addSelect('users.createdAt', 'userCreationDate')
-        .where('user.id = :id', { id: userId })
+        .where('users.id = :id', { id: userId })
         .getRawOne();
 
       if (
