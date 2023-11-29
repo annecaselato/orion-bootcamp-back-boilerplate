@@ -8,16 +8,13 @@ export class CreateTestCharacterComic1700692062737
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const characterRepository = MysqlDataSource.getRepository(Character);
-    const comicRepository = MysqlDataSource.getRepository(Comic);
-
     await queryRunner.manager
       .createQueryBuilder()
       .insert()
       .into(Comic)
       .values([
         {
-          idMarvel: 102285,
+          idMarvel: 999999,
           enTitle: 'Thor (2020) #34',
           ptTitle: 'Thor (2020) #34',
           description:
@@ -31,20 +28,17 @@ export class CreateTestCharacterComic1700692062737
       ])
       .execute();
 
-    const character1: Character = await characterRepository.findOne({
+    const character1: Character = await queryRunner.manager.findOne(Character, {
       where: {
         idMarvel: 1009664
       }
     });
 
-    const comic1: Comic = await comicRepository.findOne({
+    const comic1: Comic = await queryRunner.manager.findOne(Comic, {
       where: {
-        idMarvel: 102285
+        idMarvel: 999999
       }
     });
-
-    console.log('CHARACTER:', character1);
-    console.log('COMIC:', comic1);
 
     if (character1 && comic1) {
       await queryRunner.manager
