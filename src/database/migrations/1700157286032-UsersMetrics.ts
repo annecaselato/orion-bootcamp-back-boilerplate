@@ -12,7 +12,7 @@ export class UsersMetrics1700157286032 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.delete(Metrics, {
-      metric: 'Registrations Completed '
+      metric: Metric.COMPLETED
     });
   }
 }
