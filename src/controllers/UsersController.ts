@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
+import { MetricsService } from '../services/MetricsService';
 
 type JwtPayload = {
   id: number;
@@ -29,13 +30,13 @@ export class UsersController {
    *             required:
    *               - email
    *               - password
-   *               - rebemberMe
+   *               - rememberMe
    *             properties:
    *               email:
    *                 type: string
    *               password:
    *                 type: string
-   *               rebemberMe:
+   *               rememberMe:
    *                 type: boolean
    *     responses:
    *       '200':
@@ -212,6 +213,7 @@ export class UsersController {
         email,
         newPassword
       );
+      await new MetricsService().registers();
       return res
         .status(httpCodes.CREATED)
         .json({ user: { createdAt, id, firstName, lastName, email } });

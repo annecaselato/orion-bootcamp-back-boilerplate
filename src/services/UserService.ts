@@ -13,7 +13,7 @@ export class UserService {
     this.userRepository = MysqlDataSource.getRepository(User);
   }
 
-  async authenticate(
+  public async authenticate(
     email: string,
     password: string,
     rebemberMe: boolean
@@ -37,11 +37,11 @@ export class UserService {
     return token;
   }
 
-  async findById(id: number): Promise<User | undefined> {
+  public async findById(id: number): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { id } });
   }
 
-  async updatePassword(
+  public async updatePassword(
     id: number,
     password: string
   ): Promise<void | undefined> {
@@ -56,7 +56,7 @@ export class UserService {
     }
   }
 
-  async recoverPassword(email: string): Promise<void> {
+  public async recoverPassword(email: string): Promise<void> {
     const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const token = jwt.sign(
@@ -77,7 +77,7 @@ export class UserService {
     }
   }
 
-  async emailWelcome(email: string, firstName: string): Promise<void> {
+  public async emailWelcome(email: string, firstName: string): Promise<void> {
     const path = resolve(__dirname, '../templates/emailWelcome.hbs');
     const subject = 'Bem-vindo à Marte 101';
     const variables = {
@@ -86,11 +86,11 @@ export class UserService {
     await new NodemailerProvider().sendEmail(email, subject, variables, path);
   }
 
-  async findByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | undefined> {
     return await this.userRepository.findOne({ where: { email } });
   }
 
-  async newUser(
+  public async newUser(
     firstName: string,
     lastName: string,
     email: string,
