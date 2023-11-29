@@ -1,12 +1,12 @@
 import axios from 'axios';
-import MarvelParamsDefinition from '../utils/MarvelParamsDefinition';
+import MarvelParamsDefiner from '../utils/MarvelParamsDefinition';
 
 export default class MarvelAPIService {
   async getElements(categoryAlias): Promise<unknown[]> {
     try {
       let dataArray: Array<unknown> = [];
       const categoryData: Array<unknown> = [];
-      const paramsDefiner = new MarvelParamsDefinition();
+      const paramsDefiner = new MarvelParamsDefiner();
       const timeStamp = paramsDefiner.getTimestamp();
       const offset = paramsDefiner.offsetter();
       const daysInterval = 7;
@@ -20,7 +20,7 @@ export default class MarvelAPIService {
               ts: timeStamp,
               apikey: paramsDefiner.apikey(),
               modifiedSince: paramsDefiner.modifiedsSince(daysInterval),
-              hash: paramsDefiner.hashGenarator(timeStamp)
+              hash: paramsDefiner.hashGenerator(timeStamp)
             }
           }
         );
