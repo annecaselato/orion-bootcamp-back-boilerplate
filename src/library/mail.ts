@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../entity/User';
 import 'dotenv/config';
 
-const URL_FRONT = process.env.URL_FRONT
+const URL_FRONT = process.env.URL_FRONT;
 export class EmailSender {
   private transporter: nodemailer.Transporter;
 
