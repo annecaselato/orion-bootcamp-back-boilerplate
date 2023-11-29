@@ -4,6 +4,7 @@ import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
 import { UsersMetricsController } from './controllers/UsersMetricsController';
+import { MetereologyController } from './controllers/MetereologyController';
 
 const router = Router();
 
@@ -28,7 +29,7 @@ router.post(
 );
 router.post(
   '/users/token-validation',
-  new UsersValidator().tokenValidation(),
+  new UsersValidator().tokenValidate(),
   new UsersController().tokenValidation
 );
 
@@ -47,6 +48,11 @@ router.patch(
 router.patch(
   '/metrics/incomplete-registrations',
   new UsersMetricsController().updateMetricIncomplete
+);
+router.get(
+  '/metereology/soles',
+  authMiddleware,
+  new MetereologyController().getSolesInWeatherApi
 );
 
 export default router;
