@@ -29,7 +29,7 @@ export default class UserValidator {
         .withMessage('Nome inválido')
         .bail()
         .toUpperCase(),
-        
+
       body('lastName')
         .notEmpty()
         .withMessage('Sobrenome não fornecido')
