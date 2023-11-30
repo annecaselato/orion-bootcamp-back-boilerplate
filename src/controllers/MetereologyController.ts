@@ -34,6 +34,14 @@ export class MetereologyController {
    *                       type: string
    *                     terrestrial_date:
    *                       type: string
+   *                     mars_uv:
+   *                       type: string
+   *                     pressure:
+   *                       type: string
+   *                     sunset:
+   *                       type: string
+   *                     sunrise:
+   *                       type: string
    *       '400':
    *           description: 'Solicitação inválida.'
    */
