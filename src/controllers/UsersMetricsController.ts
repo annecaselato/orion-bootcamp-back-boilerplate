@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserMetricsService } from '../services/UserMetricsService';
+import { MetricsService } from '../services/MetricsService';
 import { httpCodes } from '../utils/httpCodes';
 
 export class UsersMetricsController {
@@ -28,17 +28,10 @@ export class UsersMetricsController {
    *       '204':
    *           description: 'Cadastro iniciado.'
    */
-  updateMetricOpen(req: Request, res: Response) {
-    const metricService = new UserMetricsService();
-    const { metric } = req.body;
-    if (metric === 'Registrations Started') {
-      metricService.updateRegistrationStarted();
-      return res
-        .status(httpCodes.NO_CONTENT)
-        .json({ mensagem: 'Registrations Started.' });
-    } else {
-      return res.status(httpCodes.UNAUTHORIZED);
-    }
+  updateMetricOpen(req_: Request, res: Response) {
+    const metricService = new MetricsService();
+    metricService.updateRegistrationStarted();
+    return res.status(httpCodes.NO_CONTENT);
   }
 
   /**
@@ -63,21 +56,12 @@ export class UsersMetricsController {
    *               metric:
    *                 type: string
    *     responses:
-   *       '200':
+   *       '204':
    *           description: 'Cadastro não finalizado.'
-   *       '400':
-   *           description: 'Cadastro concluido.'
    */
-  updateMetricIncomplete(req: Request, res: Response) {
-    const metricService = new UserMetricsService();
-    const { metric } = req.body;
-    if (metric === 'Registrations Incompleted') {
-      metricService.updateRegistrationIncompleted();
-      return res
-        .status(httpCodes.OK)
-        .json({ mensagem: 'Registration incompleted.' });
-    } else {
-      return res.status(httpCodes.UNAUTHORIZED);
-    }
+  updateMetricIncomplete(req_: Request, res: Response) {
+    const metricService = new MetricsService();
+    metricService.updateRegistrationIncompleted();
+    return res.status(httpCodes.NO_CONTENT);
   }
 }

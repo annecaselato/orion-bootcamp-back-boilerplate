@@ -1,5 +1,5 @@
 import { Metric } from '../../models/enumMetrics';
-import { Metrics } from '../entity/UserMetric';
+import { Metrics } from '../entity/Metrics';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class UsersMetricsOpen1700256617075 implements MigrationInterface {
