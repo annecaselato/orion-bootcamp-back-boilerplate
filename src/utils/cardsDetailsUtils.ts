@@ -8,11 +8,12 @@ import { CharacterSeries } from '../entity/CharacterSeries';
 import { CharacterEvents } from '../entity/CharacterEvents';
 import Story from '../entity/Story';
 import { CharacterStories } from '../entity/CharacterStories';
+import { Category } from './cardsMetricsUtils';
 
 /**
- * 
+ *
  * @param {Character} character - Personagem sobre o qual se quer obter os quadrinhos relacionados
- * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ * @returns {Promise<Comic[]>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
  */
 export async function getComicsByCharacter(
   character: Character
@@ -33,9 +34,9 @@ export async function getComicsByCharacter(
 }
 
 /**
- * 
+ *
  * @param {Character} character - Personagem sobre o qual se quer obter as series relacionadas
- * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ * @returns {Promise<Series[]>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
  */
 export async function getSeriesByCharacter(
   character: Character
@@ -58,9 +59,9 @@ export async function getSeriesByCharacter(
 }
 
 /**
- * 
+ *
  * @param {Character} character - Personagem sobre o qual se quer obter os eventos relacionados
- * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ * @returns {Promise<Event[]>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
  */
 export async function getEventsByCharacter(
   character: Character
@@ -83,9 +84,9 @@ export async function getEventsByCharacter(
 }
 
 /**
- * 
+ *
  * @param {Character} character - Personagem sobre o qual se quer obter as histórias relacionadas
- * @returns {Array<Object>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
+ * @returns {Promise<Story[]>} - Retorna um array de objetos JSON, no formato {id, description, thumb}
  */
 export async function getStoriesByCharacter(
   character: Character
@@ -108,9 +109,9 @@ export async function getStoriesByCharacter(
 }
 
 /**
- * 
+ *
  * @param {Array<Object>} cards - Um array de cards com todos os seus valores
- * @returns {Array<Object>} - Um array de cards com os valores {id, description, thumb} somente
+ * @returns {Promise<[]>} - Um array de cards com os valores {id, description, thumb} somente
  */
 function selectFewValues(cards) {
   const formattedCards = cards.map(({ id, description, thumb }) => ({

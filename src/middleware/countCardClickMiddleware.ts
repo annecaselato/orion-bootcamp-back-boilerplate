@@ -13,7 +13,7 @@ import Story from '../entity/Story';
 
 /**
  * Middleware que realiza a contabilização do clique no card pelo usuário
- * 
+ *
  * @param {Object} req - Objeto de requisição express.
  * @param {Object} res - Objeto de resposta express.
  * @param {function} next - Função para chamar o próximo middleware/controller na cadeia.
