@@ -17,4 +17,20 @@ export class MetricsService {
       1
     );
   }
+
+  public async updateRegistrationStarted(): Promise<void> {
+    await this.metricsRepository.increment(
+      { metric: Metric.STARTED },
+      'quantity',
+      1
+    );
+  }
+
+  public async updateRegistrationIncompleted(): Promise<void> {
+    await this.metricsRepository.increment(
+      { metric: Metric.INCOMPLETED },
+      'quantity',
+      1
+    );
+  }
 }

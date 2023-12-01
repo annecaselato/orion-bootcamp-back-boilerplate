@@ -3,6 +3,7 @@ import { HomeController } from './controllers/HomeController';
 import { UsersController } from './controllers/UsersController';
 import { UsersValidator } from './validators/UserValidator';
 import authMiddleware from './middlewares/authMiddleware';
+import { UsersMetricsController } from './controllers/UsersMetricsController';
 import { MetereologyController } from './controllers/MetereologyController';
 
 const router = Router();
@@ -16,16 +17,19 @@ router.post(
 );
 
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
+
 router.post(
   '/users/recover-password',
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
+
 router.post(
   '/users/new-user',
   new UsersValidator().createNewUser(),
   new UsersController().newUser
 );
+
 router.post(
   '/users/token-validation',
   new UsersValidator().tokenValidate(),
@@ -37,6 +41,16 @@ router.patch(
   new UsersValidator().tokenValidate(),
   new UsersValidator().passwordValidate(),
   new UsersController().updatePassword
+);
+
+router.patch(
+  '/metrics/registration-started',
+  new UsersMetricsController().updateMetricOpen
+);
+
+router.patch(
+  '/metrics/incomplete-registrations',
+  new UsersMetricsController().updateMetricIncomplete
 );
 
 router.get(
