@@ -50,7 +50,7 @@ router.get(
 
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
-  '/v1/survey/eligibility/:user_id',
+  '/v1/survey/user_eligibility',
   authenticateToken,
   new SurveyValidator().verifyEligibility,
   new SurveyController().eligible
