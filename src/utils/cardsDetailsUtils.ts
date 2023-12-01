@@ -10,6 +10,12 @@ import Story from '../entity/Story';
 import { CharacterStories } from '../entity/CharacterStories';
 import { Category } from './cardsMetricsUtils';
 
+interface formattedCard {
+  id: number;
+  description: string;
+  thumb: string;
+}
+
 /**
  *
  * @param {Character} character - Personagem sobre o qual se quer obter os quadrinhos relacionados
@@ -111,7 +117,7 @@ export async function getStoriesByCharacter(
 /**
  *
  * @param {Array<Object>} cards - Um array de cards com todos os seus valores
- * @returns {Promise<[]>} - Um array de cards com os valores {id, description, thumb} somente
+ * @returns {formattedCard[]} - Um array de cards com os valores {id, description, thumb} somente
  */
 function selectFewValues(cards) {
   const formattedCards = cards.map(({ id, description, thumb }) => ({
