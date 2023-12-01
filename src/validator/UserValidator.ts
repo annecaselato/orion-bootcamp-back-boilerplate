@@ -24,7 +24,8 @@ export default class UserValidator {
         .notEmpty()
         .withMessage('Nome não fornecido')
         .bail()
-        .matches(/^[^\s]+[\s]{0,1}[a-zA-Z]+$/)
+        .trim()
+        .matches(/^[^\s]+[\s]{0,1}[a-zA-ZÀ-ú]+$/)
         .withMessage('Nome inválido')
         .bail()
         .toUpperCase(),
@@ -33,7 +34,8 @@ export default class UserValidator {
         .notEmpty()
         .withMessage('Sobrenome não fornecido')
         .bail()
-        .matches(/^[a-zA-Z\s]+$/)
+        .trim()
+        .matches(/^[a-zA-ZÀ-ú\s]+$/)
         .withMessage('Sobrenome inválido')
         .bail()
         .toUpperCase(),
