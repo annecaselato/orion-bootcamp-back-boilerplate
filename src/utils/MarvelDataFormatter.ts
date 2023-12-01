@@ -1,8 +1,15 @@
 import CategoryModel from '../models/CategoryInterface';
 import TranslationAPIService from '../services/TranslationAPIService';
 
-export default class DataFormatter {
+export default class MarvelDataFormatter {
   async formatData(objectsArray) {
+    const toBeIgnored = [
+      'idMarvel',
+      'enName',
+      'enTitle',
+      'thumb',
+      'isTranslated'
+    ];
     const formattedObjects: CategoryModel[] = await Promise.all(
       objectsArray.map(async (object) => {
         const objectCopy: CategoryModel = this._addProperties(object);
@@ -10,27 +17,24 @@ export default class DataFormatter {
 
         for (const key in objectCopy) {
           if (
-            objectCopy[key] === '' ||
-            null ||
-            this._toBeIgnored().includes(key)
+            objectCopy[key] !== '' &&
+            objectCopy[key] !== null &&
+            !toBeIgnored.includes(key)
           ) {
-            continue;
-          }
+            const translator = new TranslationAPIService();
+            const translatedValue = await translator.getTranslation(
+              key,
+              objectCopy[key]
+            );
 
-          const translator = new TranslationAPIService();
-          const translatedValue = await translator.getTranslation(
-            key,
-            objectCopy[key]
-          );
-
-          if (!translatedValue) {
-            isTranslated = false;
-            objectCopy[key] = '';
-          } else {
-            objectCopy[key] = translatedValue;
+            if (!translatedValue) {
+              isTranslated = false;
+              objectCopy[key] = '';
+            } else {
+              objectCopy[key] = translatedValue;
+            }
           }
         }
-
         objectCopy.isTranslated = isTranslated;
         return objectCopy;
       })
@@ -38,16 +42,11 @@ export default class DataFormatter {
     return formattedObjects;
   }
 
-  private _toBeIgnored(): string[] {
-    return ['idMarvel', 'enName', 'enTitle', 'thumb', 'isTranslated'];
-  }
-
   private _thumbFormatter(object): string {
     // stories não possui path
     const path = object.resourceURI.includes('stories')
       ? object.thumbnail
       : object.thumbnail.path;
-
     return path && !path.includes('not_available')
       ? `${path}.${object.thumbnail.extension}`
       : '';
@@ -57,7 +56,6 @@ export default class DataFormatter {
     const specifcProperties = object.name
       ? { enName: object.name, ptName: object.name }
       : { enTitle: object.title, ptTitle: object.title };
-
     return {
       ...specifcProperties,
       idMarvel: object.id,
@@ -65,15 +63,5 @@ export default class DataFormatter {
       thumb: this._thumbFormatter(object),
       isTranslated: true
     };
-  }
-
-  // criterios de filtro a serem definidos
-  private _filterValidElements(formattedObjectsArray): Array<CategoryModel> {
-    const filteredArray = formattedObjectsArray.filter((object) => {
-      return (
-        (object.enTitle || object.enName) && object.description && object.thumb
-      );
-    });
-    return filteredArray;
   }
 }
