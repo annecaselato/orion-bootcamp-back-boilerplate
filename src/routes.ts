@@ -17,16 +17,19 @@ router.post(
 );
 
 router.get('/users/logged', authMiddleware, new UsersController().loggedUser);
+
 router.post(
   '/users/recover-password',
   new UsersValidator().recoverPasswordValidate(),
   new UsersController().recoverPassword
 );
+
 router.post(
   '/users/new-user',
   new UsersValidator().createNewUser(),
   new UsersController().newUser
 );
+
 router.post(
   '/users/token-validation',
   new UsersValidator().tokenValidate(),
@@ -49,6 +52,7 @@ router.patch(
   '/metrics/incomplete-registrations',
   new UsersMetricsController().updateMetricIncomplete
 );
+
 router.get(
   '/metereology/soles',
   authMiddleware,

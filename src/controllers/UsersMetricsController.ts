@@ -13,17 +13,6 @@ export class UsersMetricsController {
    *       - application/json
    *     produces:
    *       - application/json
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             example:
-   *               metric: 'Registrations Started'
-   *             type: object
-   *             properties:
-   *               metric:
-   *                 type: string
    *     responses:
    *       '204':
    *           description: 'Cadastro iniciado.'
@@ -44,17 +33,6 @@ export class UsersMetricsController {
    *       - application/json
    *     produces:
    *       - application/json
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             example:
-   *               metric: 'Registrations Incompleted'
-   *             type: object
-   *             properties:
-   *               metric:
-   *                 type: string
    *     responses:
    *       '204':
    *           description: 'Cadastro não finalizado.'
