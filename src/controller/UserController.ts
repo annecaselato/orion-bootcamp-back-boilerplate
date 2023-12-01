@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UserRepository } from '../repository/UserRepository';
 import User from '../entity/User';
 import { EmailSender } from '../library/mail';
+import { TotalRegisterService } from '../services/TotalUserRegisterService';
 
 /**
  * Classe com operações relacionadas à manipulação e criação de usuários
@@ -181,6 +182,7 @@ export class UserController {
       // Envia e-mail de confirmação de cadastro
       const sendEmail = new EmailSender();
       sendEmail.sendConfirmationEmail(user);
+      TotalRegisterService.totalRegisterService();
     } catch (error) {
       res.status(500).json({
         date: new Date(),
