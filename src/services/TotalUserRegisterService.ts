@@ -1,12 +1,26 @@
 import User from '../entity/User';
 import { MysqlDataSource } from '../config/database';
 import TotalRegistrations from '../entity/TotalUserRegister';
-
+/**
+ * Classe que contabiliza e atualiza o número total de usuários cadastrados na plataforma, incluindo usuários
+ * ativos e inativos.
+ */
 export class TotalRegisterService {
+  /**
+   * @type  {Repository<TotalRegistrations>} Busca o repositório das métricas de registro.
+   */
   private static totalRegistrationsRepository =
     MysqlDataSource.getRepository(TotalRegistrations);
+
+  /**
+   * @type {Repository<User>} Busca o repositório de usuarios.
+   */
   private static userRepository = MysqlDataSource.getRepository(User);
 
+  /**
+   * Contabiliza registros de usuários ativos, inativos e e o total.
+   * @returns {Promise<void>} Uma Promise que resolve quando o método é concluído.
+   */
   static async totalRegisterService(): Promise<void> {
     const repository = this.totalRegistrationsRepository;
     const existingRecord = await repository.findOne({
@@ -26,7 +40,8 @@ export class TotalRegisterService {
       existingRecord.totalRegistrations = totalUsers;
       await repository.save(existingRecord);
     }
-    // Verificar e atualizar o banco com o número total de usuários ativos
+
+    //Verificar e atualizar o número total de usuários ativos.
     const activateUsers = await this.totalUsersActiveDatabase();
     if (
       existingRecord &&
@@ -46,13 +61,17 @@ export class TotalRegisterService {
       await repository.save(existingRecord);
     }
   }
-
+  /**
+   * @returns {Promise<number>} Retorna o número total de usuários cadastrados.
+   */
   private static async totalUsersDatabase(): Promise<number> {
     const usersRepository = this.userRepository;
     const totalUsers = await usersRepository.count();
     return totalUsers;
   }
-
+  /**
+   * @returns {Promise<number>} Retorna o número de usuários ativos na plataforma.
+   */
   private static totalUsersActiveDatabase(): Promise<number> {
     const usersRepository = this.userRepository;
     const activateUsers = usersRepository.count({
@@ -60,7 +79,9 @@ export class TotalRegisterService {
     });
     return activateUsers;
   }
-
+  /**
+   * @returns {Promise<number>} Retorna o número de usuários inativos na plataforma.
+   */
   private static totalUsersInactiveDatabase(): Promise<number> {
     const usersRepository = this.userRepository;
     const inactivateUsers = usersRepository.count({
@@ -68,13 +89,19 @@ export class TotalRegisterService {
     });
     return inactivateUsers;
   }
-
+  /**
+   * Atualiza o número total de usuários cadastrados e soma um usuário inativo.
+   * @param record Registro existente de TotalRegistrations a ser atualizado.
+   */
   private static updateExistingRecord(record: TotalRegistrations) {
     record.totalRegistrations += 1;
     record.inactiveRegistrations += 1;
     this.totalRegistrationsRepository.save(record);
   }
 
+  /**
+   * @returns {TotalRegistrations} Retorna um novo registro de TotalRegistrations caso ainda não tenha.
+   */
   private static createRecord(): TotalRegistrations {
     const newRecord = new TotalRegistrations();
     newRecord.totalRegistrations = 1;
@@ -82,6 +109,10 @@ export class TotalRegisterService {
     return newRecord;
   }
 
+  /**
+   *  @returns {Promise<void>} Soma um novo usuário ativo e subtrai um usuário inativo
+   * da tabela de métricas após o usuário ativar sua conta.
+   */
   static async updateActiveUsers(): Promise<void> {
     const repository = this.totalRegistrationsRepository;
     const existingTotalRegistrations = await repository.findOne({
