@@ -5,7 +5,6 @@ import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import { MetricsService } from '../services/MetricsService';
 import { TokenService } from '../services/TokenService';
-import { Token } from '../database/entity/Token';
 
 type JwtPayload = {
   id: number;
@@ -265,8 +264,7 @@ export class UsersController {
     try {
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
       const user = await new UserService().findById(id);
-      const existingToken: Token = await new TokenService().getToken(token);
-      if (user && existingToken !== null) {
+      if (user) {
         return res.status(httpCodes.OK).send(true);
       }
       return res.status(httpCodes.UNAUTHORIZED).send(false);
