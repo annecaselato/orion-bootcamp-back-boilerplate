@@ -261,7 +261,8 @@ export class UsersController {
     try {
       const { id } = jwt.verify(token, process.env.JWT_PASS) as JwtPayload;
       const user = await new UserService().findById(id);
-      if (user) {
+      const existingToken = await new TokenService().getToken(token);
+      if (user && existingToken !== null) {
         return res.status(httpCodes.OK).send(true);
       }
       return res.status(httpCodes.UNAUTHORIZED).send(false);
