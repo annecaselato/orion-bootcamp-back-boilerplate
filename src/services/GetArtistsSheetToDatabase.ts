@@ -3,6 +3,9 @@ import Artist from '../entity/Artist';
 
 import { google } from 'googleapis';
 
+/**
+ * Função que remove todas as entradas da tabela de artistas, para fins de atualização.
+ */
 async function clearArtistsTable() {
   try {
     const artistsRepository = MysqlDataSource.getRepository(Artist);
@@ -17,7 +20,13 @@ async function clearArtistsTable() {
   }
 }
 
+/**
+ * Classe relacionada a obtenção dos dados de artistas de uma planilha para o banco
+ */
 export default class GetArtistsSheetToDatabase {
+  /**
+   * Método que faz uso da API do Google Sheets e salva no banco as informações de artistas de uma planilha
+   */
   async getSheetToDatabase() {
     try {
       const sheets = google.sheets({ version: 'v4' });
