@@ -63,7 +63,9 @@ export class UsersValidator extends ErrorsValidator {
         .isJWT()
         .custom(async (value) => {
           const token = await new TokenService().getToken(value);
-          return !!token;
+          if (!token) {
+            throw new Error();
+          }
         })
         .withMessage('Invalid token'),
       this.errorValidate
