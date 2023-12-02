@@ -93,7 +93,7 @@ export default class SurveyValidator {
         .withMessage('Tipo de dado inválido para comentário')
         .bail()
         .toLowerCase()
-        .custom(async (userComment: string) => {
+        .custom((userComment: string) => {
           const userCommentWords = userComment.split(/[\s,.!:?;'"]+/);
 
           const bannedWordsFile = '/app/src/validator/bannedWords.txt';
