@@ -63,7 +63,7 @@ export class ArtistsController {
    */
   async getShowcasePosters(req: Request, res: Response) {
     try {
-      const postersAmount: number = Number(req.query.amount) || 0;
+      const postersAmount: number = Number(req.query.amount) || 4;
 
       const artistRepository = MysqlDataSource.getRepository(Artist);
 
