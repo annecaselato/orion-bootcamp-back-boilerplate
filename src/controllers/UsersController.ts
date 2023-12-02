@@ -139,7 +139,10 @@ export class UsersController {
   async recoverPassword(req: Request, res: Response) {
     try {
       const { email } = req.body;
-      await new UserService().recoverPassword(email);
+      const token = await new UserService().recoverPassword(email);
+      if (token) {
+        await new TokenService().saveToken(token);
+      }
       return res.status(httpCodes.NO_CONTENT).send();
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
