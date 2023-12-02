@@ -14,5 +14,5 @@ export class Token {
   token: string;
 
   @CreateDateColumn()
-  generatedDate: Date;
+  createdAt: Date;
 }
