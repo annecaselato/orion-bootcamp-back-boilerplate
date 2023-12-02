@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import UserValidator from './validator/userValidator';
+import UserValidator from './validator/UserValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
@@ -8,6 +8,7 @@ import { countCardClick } from './middleware/countCardClickMiddleware';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
+import { CommentsController } from './controller/CommentController';
 
 const router = Router();
 
@@ -48,6 +49,11 @@ router.get(
   new CharacterController().getPage
 );
 
+router.post(
+  '/v1/comments/:category/:categoryId',
+  authenticateToken,
+  new CommentsController().createComment
+);
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
   '/v1/survey/user_eligibility',
