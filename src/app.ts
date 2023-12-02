@@ -16,6 +16,7 @@ import Survey from './entity/Survey';
 import { categoriesArray } from './library/categoriesArray';
 import { subDays, endOfDay } from 'date-fns';
 import { DeepPartial } from 'typeorm';
+import GetArtistsSheetToDatabase from './services/GetArtistsSheetToDatabase';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -26,6 +27,13 @@ MysqlDataSource.initialize()
   });
 
 const app = express();
+
+const updateArtistsTable = new GetArtistsSheetToDatabase();
+updateArtistsTable.getSheetToDatabase();
+
+cron.schedule('0 0 * * *', () => {
+  updateArtistsTable.getSheetToDatabase();
+});
 
 cron.schedule('0 6 * * *', async function updateSurveyDatabase() {
   console.log('atualizando banco de dados de pesquisas 1 vez por dia');
