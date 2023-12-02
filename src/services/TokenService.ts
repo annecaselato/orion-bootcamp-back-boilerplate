@@ -12,4 +12,8 @@ export class TokenService {
   async saveToken(token: string) {
     await this.tokenRepository.save({ token });
   }
+
+  async removeToken(token: string) {
+    await this.tokenRepository.delete({ token });
+  }
 }
