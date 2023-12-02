@@ -30,7 +30,7 @@ export class CreateTestEvent1699915451810 implements MigrationInterface {
           description:
             'Numa versão distorcida do mundo que conheciam, os X-Men lutam contra o eterno mutante Apocalipse enquanto Bishop procura reparar a linha do tempo. Legion, filho do próprio Xavier, tenta matar todos os inimigos de Xavier; no entanto, quando Legion tenta assassinar Magneto, Xavier sacrifica sua própria vida para salvar Magnus. Como resultado, Magneto abandona seus sentimentos anti-humanos e dá continuidade ao sonho de Xavier de coexistência pacífica, fundando assim os X-Men.',
           thumb:
-            'hhttp://i.annihil.us/u/prod/marvel/i/mg/5/e0/51ca0e08a6546.jpg',
+            'http://i.annihil.us/u/prod/marvel/i/mg/5/e0/51ca0e08a6546.jpg',
           isTranslated: true,
           createdAt: new Date(),
           lastUpdate: new Date()
