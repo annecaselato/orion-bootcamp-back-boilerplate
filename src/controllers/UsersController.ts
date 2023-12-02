@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import { MetricsService } from '../services/MetricsService';
+import { TokenService } from '../services/TokenService';
 
 type JwtPayload = {
   id: number;
@@ -62,6 +63,7 @@ export class UsersController {
         rememberMe
       );
       if (result) {
+        await new TokenService().saveToken(result);
         return res.status(httpCodes.OK).json({
           email: email,
           token: result
