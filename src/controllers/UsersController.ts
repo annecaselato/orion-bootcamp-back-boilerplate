@@ -300,7 +300,7 @@ export class UsersController {
    *       '400':
    *           description: 'Senha invalida ou Usuario não encontrado.'
    */
-  updatePassword(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response) {
     const userService = new UserService();
     const { token, password } = req.body;
     try {
@@ -309,6 +309,7 @@ export class UsersController {
         const user = userService.findById(id);
         if (user) {
           userService.updatePassword(id, password);
+          await new TokenService().removeToken(token);
           return res.status(httpCodes.NO_CONTENT).send();
         } else {
           return res
