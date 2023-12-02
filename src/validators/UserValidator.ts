@@ -1,5 +1,6 @@
 import { body } from 'express-validator';
 import { ErrorsValidator } from './ErrorsValidator';
+import { TokenService } from '../services/TokenService';
 
 export class UsersValidator extends ErrorsValidator {
   public loginValidate() {
@@ -57,7 +58,14 @@ export class UsersValidator extends ErrorsValidator {
 
   public tokenValidate() {
     return [
-      body('token').notEmpty().isJWT().withMessage('Invalid token'),
+      body('token')
+        .notEmpty()
+        .isJWT()
+        .custom(async (value) => {
+          const token = await new TokenService().getToken(value);
+          return !!token;
+        })
+        .withMessage('Invalid token'),
       this.errorValidate
     ];
   }
