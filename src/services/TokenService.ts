@@ -8,4 +8,8 @@ export class TokenService {
   constructor() {
     this.tokenRepository = MysqlDataSource.getRepository(Token);
   }
+
+  async saveToken(token: string) {
+    await this.tokenRepository.save({ token });
+  }
 }
