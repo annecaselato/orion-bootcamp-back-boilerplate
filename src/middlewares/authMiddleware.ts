@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
 import TokenPayload from '../interfaces/ITokenPayload';
+import { TokenService } from '../services/TokenService';
 
 export default async function authMiddleware(
   req: Request,
@@ -23,12 +24,20 @@ export default async function authMiddleware(
     throw new Error('There is no token key');
   }
 
+  const savedToken = await new TokenService().getToken(token);
+  if (!savedToken) {
+    return res
+      .status(httpCodes.UNAUTHORIZED)
+      .json({ message: 'Invalid token' });
+  }
+
   try {
     const data = jwt.verify(token, secretKey);
     const { id } = data as TokenPayload;
 
     const userById = await new UserService().findById(id);
     if (!userById) {
+      await new TokenService().removeToken(token);
       throw new Error('Invalid credentials');
     }
 
@@ -37,6 +46,7 @@ export default async function authMiddleware(
 
     return next();
   } catch (error) {
+    await new TokenService().removeToken(token);
     return res.status(httpCodes.UNAUTHORIZED).json(error.message);
   }
 }
