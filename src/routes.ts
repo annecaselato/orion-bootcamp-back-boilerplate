@@ -7,6 +7,7 @@ import { CharacterController } from './controller/CharacterController';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
+import { CommentsController } from './controller/CommentController';
 
 const router = Router();
 
@@ -46,6 +47,12 @@ router.get(
   new CharacterController().getPage
 );
 
+router.get(
+  '/v1/comments/:category/:categoryId',
+  authenticateToken,
+  new CommentsController().getComments
+);
+
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
   '/v1/survey/eligibility/:user_id',
@@ -63,7 +70,6 @@ router.post(
   new SurveyController().create
 );
 
-//TODO: retornar informações detalhadas sobre o personagem selecionado
 router.get(
   '/v1/:category/:category_id',
   authenticateToken,
