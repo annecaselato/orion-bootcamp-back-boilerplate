@@ -7,7 +7,7 @@ import { CharacterController } from './controller/CharacterController';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
-import { CommentsController } from './controller/CommentController';
+import { CommentController } from './controller/CommentController';
 
 const router = Router();
 
@@ -50,7 +50,7 @@ router.get(
 router.get(
   '/v1/comments/:category/:categoryId',
   authenticateToken,
-  new CommentsController().getComments
+  new CommentController().getComments
 );
 
 // endpoint para verificação de elegibilidade de usuário para pesquisa
