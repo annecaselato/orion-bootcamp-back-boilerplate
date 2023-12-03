@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserService } from '../services/UserService';
 import { httpCodes } from '../utils/httpCodes';
-import { MetricsService } from '../services/MetricsService';
+import { MetricService } from '../services/MetricService';
+import { TokenService } from '../services/TokenService';
 
 type JwtPayload = {
   id: number;
@@ -26,7 +27,7 @@ export class UsersController {
    *             example:
    *               email: user@email.com
    *               password: pass123
-   *               rebemberMe: true
+   *               rememberMe: true
    *             required:
    *               - email
    *               - password
@@ -213,7 +214,7 @@ export class UsersController {
         email,
         newPassword
       );
-      await new MetricsService().registers();
+      await new MetricService().registers();
       return res
         .status(httpCodes.CREATED)
         .json({ user: { createdAt, id, firstName, lastName, email } });
@@ -322,6 +323,43 @@ export class UsersController {
       return res
         .status(httpCodes.UNAUTHORIZED)
         .json({ mensagem: 'User not found.' });
+    }
+  }
+
+  /**
+   * @swagger
+   * /logout:
+   *   get:
+   *     summary: Rota para fazer o logout
+   *     security:
+   *       - BearerAuth: []
+   *     tags: [Users]
+   *     consumes:
+   *       - application/json
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       '200':
+   *           description: 'Logout realizado com sucesso'
+   *           content:
+   *             application/json:
+   *               schema:
+   *                 type: object
+   *                 properties:
+   *                   id:
+   *                     type: number
+   *                   email:
+   *                     type: string
+   *       '401':
+   *           description: 'Logout não realizado'
+   */
+  async userLogout(req: Request, res: Response) {
+    const token = req.body.authToken;
+    try {
+      await new TokenService().deleteLoginToken(token);
+      return res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+      return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
 }

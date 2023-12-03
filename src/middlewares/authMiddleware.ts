@@ -34,6 +34,7 @@ export default async function authMiddleware(
 
     const user = { ...userById, password: undefined };
     req.body.authUser = user;
+    req.body.authToken = token;
 
     return next();
   } catch (error) {

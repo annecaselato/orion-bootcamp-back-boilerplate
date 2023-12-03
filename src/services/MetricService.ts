@@ -3,7 +3,7 @@ import { MysqlDataSource } from '../config/database';
 import { Metrics } from '../database/entity/Metrics';
 import { Metric } from '../models/enumMetrics';
 
-export class MetricsService {
+export class MetricService {
   private metricsRepository: Repository<Metrics>;
 
   constructor() {

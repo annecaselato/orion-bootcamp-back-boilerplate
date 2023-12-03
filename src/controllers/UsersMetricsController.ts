@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { MetricsService } from '../services/MetricsService';
+import { MetricService } from '../services/MetricService';
 import { httpCodes } from '../utils/httpCodes';
 
 export class UsersMetricsController {
@@ -18,7 +18,7 @@ export class UsersMetricsController {
    *           description: 'Cadastro iniciado.'
    */
   updateMetricOpen(req_: Request, res: Response) {
-    const metricService = new MetricsService();
+    const metricService = new MetricService();
     metricService.updateRegistrationStarted();
     return res.status(httpCodes.NO_CONTENT);
   }
@@ -38,7 +38,7 @@ export class UsersMetricsController {
    *           description: 'Cadastro não finalizado.'
    */
   updateMetricIncomplete(req_: Request, res: Response) {
-    const metricService = new MetricsService();
+    const metricService = new MetricService();
     metricService.updateRegistrationIncompleted();
     return res.status(httpCodes.NO_CONTENT);
   }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { User } from '../entity/User';
+import { Users } from '../entity/Users';
 
 export class UpdateEmail1700790684167 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.update(
-      User,
+      Users,
       { email: 'gustavogonçalves@gmail.com' },
       {
         email: 'gustavogoncalves@gmail.com'
@@ -14,7 +14,7 @@ export class UpdateEmail1700790684167 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.manager.update(
-      User,
+      Users,
       { email: 'gustavogoncalves@gmail.com' },
       {
         email: 'gustavogonçalves@gmail.com'
