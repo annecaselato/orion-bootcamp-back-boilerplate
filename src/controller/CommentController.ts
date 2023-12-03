@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Category } from '../utils/cardsMetricsUtils';
 import { Comments } from '../entity/Comments';
 
-export class CommentsController {
+export class CommentController {
   /**
    * @swagger
    *
@@ -14,7 +14,7 @@ export class CommentsController {
    *     description: Retorna uma quantidade de 3 comentários, por página, ordenados por data
    *     security:
    *       - BearerAuth: []
-   *     tags: [Characters]
+   *     tags: [Comments]
    *     parameters:
    *       - in: path
    *         name: category
