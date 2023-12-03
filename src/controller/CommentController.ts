@@ -103,6 +103,7 @@ export class CommentsController {
     try {
       const category = req.params.category as Category;
       const categoryId: number = Number(req.params.categoryId);
+      const userId = req.body.user.id;
 
       const commentPage: number = Number(req.query.page) || 1;
 
@@ -115,9 +116,10 @@ export class CommentsController {
       //find nos 3 comentários mais recentes do card em questão
       const comments = await commentsRepository
         .createQueryBuilder('comments')
+        .leftJoinAndSelect('comments.user', 'user')
         .where(
           'comments.category = :category AND comments.categoryId = :categoryId',
-          { category: category, categoryId }
+          { category, categoryId }
         )
         .orderBy('comments.createdAt', 'DESC')
         .skip(offset)
@@ -132,16 +134,28 @@ export class CommentsController {
         });
       }
 
+      //adicionar parametro userComment nos objetos comments
+      const commentsWithUserComment = comments.map((comment) => ({
+        id: comment.id,
+        comment: comment.comment,
+        createdAt: comment.createdAt,
+        categoryId: comment.categoryId,
+        category: comment.category,
+        userComment: comment.user.id === userId
+      }));
+
       return res.status(200).json({
         date: new Date(),
         status: true,
-        data: comments
+        data: commentsWithUserComment
       });
     } catch (error) {
+      console.log('Erro em getcomments: ', error);
       return res.status(500).send({
         date: new Date(),
         status: false,
-        data: 'Um erro interno ocorreu.'
+        data: 'Um erro interno ocorreu.',
+        error
       });
     }
   }
