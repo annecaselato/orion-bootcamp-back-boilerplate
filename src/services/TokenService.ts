@@ -16,4 +16,8 @@ export class TokenService {
   public async saveToken(token): Promise<void> {
     await this.tokenRepository.save({ token: token });
   }
+
+  async getToken(token: string): Promise<Tokens> {
+    return await this.tokenRepository.findOneBy({ token });
+  }
 }

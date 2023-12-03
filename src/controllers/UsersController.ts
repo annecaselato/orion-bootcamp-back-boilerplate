@@ -328,7 +328,7 @@ export class UsersController {
 
   /**
    * @swagger
-   * /logout:
+   * /users/logout:
    *   get:
    *     summary: Rota para fazer o logout
    *     security:
@@ -346,12 +346,13 @@ export class UsersController {
    *               schema:
    *                 type: object
    *                 properties:
-   *                   id:
-   *                     type: number
-   *                   email:
-   *                     type: string
+   *                   status:
+   *                     type: boolean
+   *                   data:
+   *                     type: object
+   *                     description: 'objeto json de retorno'
    *       '401':
-   *           description: 'Logout não realizado'
+   *           description: 'Token invalido'
    */
   async userLogout(req: Request, res: Response) {
     const token = req.body.authToken;
