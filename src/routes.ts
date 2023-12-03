@@ -8,6 +8,7 @@ import { countCardClick } from './middleware/countCardClickMiddleware';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
+import { ArtistsController } from './controller/ArtistsController';
 
 const router = Router();
 
@@ -40,6 +41,12 @@ router.post(
   '/v1/favorite',
   authenticateToken,
   new CharacterController().favoriteCharacter
+);
+
+router.get(
+  '/v1/posters',
+  authenticateToken,
+  new ArtistsController().getShowcasePosters
 );
 
 router.get(
