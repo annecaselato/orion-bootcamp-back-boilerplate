@@ -4,6 +4,7 @@ import User from '../entity/User';
 import JwtHandler from '../services/JwtService';
 import bcrypt from 'bcrypt';
 import UserAccessLogService from '../services/UserAccessLogService';
+import { TotalRegisterService } from '../services/TotalUserRegisterService';
 
 /**
  * Classe com operações relacionadas à autenticação do usuário na aplicação
@@ -32,8 +33,8 @@ export class AuthController {
    *               rememberMe:
    *                 type: boolean
    *             example:
-   *               email: teste@teste.com
-   *               password: teste123
+   *               email: betaorionisorion@gmail.com
+   *               password: senha@123
    *               rememberMe: true
    *     consumes:
    *       - application/json
@@ -234,6 +235,7 @@ export class AuthController {
         // Ativar o usuário e salvar no banco de dados
         user.isActivated = true;
         await userRepository.save(user);
+        TotalRegisterService.updateActiveUsers();
 
         return res
           .status(200)

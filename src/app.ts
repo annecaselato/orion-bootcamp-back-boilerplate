@@ -7,7 +7,7 @@ import { swaggerConfig } from './config/swagger';
 import routes from './routes';
 import cron from 'node-cron';
 import MarvelAPIService from './services/MarvelAPIService';
-import DataFormatter from './utils/DataFormatter';
+import MarvelDataFormatter from './utils/MarvelDataFormatter';
 import CategoryRepository from './repository/CategoryRepository';
 import CategoryModel from './models/CategoryInterface';
 import { EmailSender } from './library/mail';
@@ -16,6 +16,7 @@ import Survey from './entity/Survey';
 import { categoriesArray } from './library/categoriesArray';
 import { subDays, endOfDay } from 'date-fns';
 import { DeepPartial } from 'typeorm';
+import GetArtistsSheetToDatabase from './services/GetArtistsSheetToDatabase';
 
 MysqlDataSource.initialize()
   .then(async () => {
@@ -26,6 +27,13 @@ MysqlDataSource.initialize()
   });
 
 const app = express();
+
+const updateArtistsTable = new GetArtistsSheetToDatabase();
+updateArtistsTable.getSheetToDatabase();
+
+cron.schedule('0 0 * * *', () => {
+  updateArtistsTable.getSheetToDatabase();
+});
 
 cron.schedule('0 6 * * *', async function updateSurveyDatabase() {
   console.log('atualizando banco de dados de pesquisas 1 vez por dia');
@@ -114,10 +122,8 @@ app.use(express.json());
 app.use(cors({ origin: true }));
 app.use(routes);
 
-cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
-  console.log(
-    'executando tarefa para atualizar bancos de dados de categorias a cada 1 hora'
-  );
+cron.schedule('0 8 * * *', async function updateCategoriesDatabases() {
+  console.log('atualizando bancos de dados de categorias uma vez por dia');
 
   const categories = categoriesArray();
 
@@ -128,16 +134,21 @@ cron.schedule('0 */1 * * *', async function updateCategoriesDatabases() {
       const categoryHandler = new MarvelAPIService();
       const dataArray = await categoryHandler.getElements(classAlias);
 
-      const formatter = new DataFormatter();
+      const formatter = new MarvelDataFormatter();
       const formattedArray: Array<CategoryModel> =
         await formatter.formatData(dataArray);
 
       const categoryRepository = new CategoryRepository();
-      await categoryRepository.updateOrSave(formattedArray, className);
+      await categoryRepository.updateOrSave(
+        formattedArray,
+        className,
+        classAlias
+      );
     } catch (error) {
       console.log(
         `falha na execução da atualização do banco de dados de ${classAlias}
-        executando tarefa novamente em 1 hora`
+        executando tarefa novamente em 1 hora`,
+        error
       );
     }
   }

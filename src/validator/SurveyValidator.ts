@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 import { MysqlDataSource } from '../config/database';
-import User from '../entity/User';
 import { endOfDay, subDays } from 'date-fns';
+import User from '../entity/User';
 import * as fs from 'fs';
 
 /**
@@ -18,35 +18,25 @@ export default class SurveyValidator {
    * @returns Retorna promise de response do Express
    */
   async verifyEligibility(req?: Request, res?: Response, next?: NextFunction) {
-    const userId: number = req.params.user_id
-      ? Number(req.params.user_id)
-      : req.body.userId;
-
-    // verificação de ID
-    if (isNaN(userId) || userId < 0) {
-      return res.status(400).json({
-        date: new Date(),
-        status: false,
-        data: 'Número de ID inválido'
-      });
-    }
-
+    const userId: number = req.body.user.id;
     const userRepository = MysqlDataSource.getRepository(User);
 
+    /**
+     * Aptidão para a pesquisa:
+     * 15 dias após a data de criação (para 1º pesquisa) OU 15 dias após a data de realização da última pesquisa
+     */
+
     try {
-      // aptidão para a pesquisa:
-      // 15 dias após a data de criação (para 1º pesquisa) OU 15 dias após a data de realização da última pesquisa
-
-      // Data que representa o final do dia, 15 dias atrás em relação à data atual
-      const usageStartRangeTime = endOfDay(subDays(new Date(), 15));
-
       const userLastSurveyDates = await userRepository
         .createQueryBuilder('users')
         .leftJoinAndSelect('users.surveys', 'surveys')
         .select('MAX(surveys.createdAt)', 'latestSurvey')
         .addSelect('users.createdAt', 'userCreationDate')
-        .where('user.id = :id', { id: userId })
+        .where('users.id = :id', { id: userId })
         .getRawOne();
+
+      // Data que representa o final do dia, 15 dias atrás em relação à data atual
+      const usageStartRangeTime: Date = endOfDay(subDays(new Date(), 15));
 
       if (
         userLastSurveyDates.userCreationDate > usageStartRangeTime ||

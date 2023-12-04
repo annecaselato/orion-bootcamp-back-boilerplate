@@ -42,10 +42,11 @@ export class RecoveryController {
         email: userEmail
       });
       if (!findUser) {
-        return res.status(401).send({
+        return res.status(200).send({
+          //retorna 200 para e-mails não encontrados, por segurança.
           date: new Date(),
           status: false,
-          data: 'Email inválido ou inexistente.'
+          data: 'Email de recuperação de senha enviado com sucesso!'
         });
       }
       if (!findUser.isActivated) {
@@ -108,8 +109,8 @@ export class RecoveryController {
    */
 
   async changePassword(req, res) {
-    const token = req.query.token as string;
-    const newpassword = req.body.newpassword as string;
+    const token = req.query.token;
+    const newpassword = req.body.newpassword;
 
     try {
       await JwtHandler.verifyToken(token, async (err, decodedUser) => {
