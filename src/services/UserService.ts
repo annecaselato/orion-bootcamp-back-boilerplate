@@ -23,6 +23,18 @@ export class UserService {
     if (!user) {
       return undefined;
     }
+    //verifica se o usuário não tem uma sessão ativa
+    if (user.expirationLogin && user.expirationLogin > new Date(Date.now())) {
+      //sessao não está expirada
+      if ((user.logged = true)) {
+        throw new Error('User already logged in');
+      }
+    } else {
+      if ((user.logged = true)) {
+        user.logged = false;
+        await this.userRepository.save(user);
+      }
+    }
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return undefined;
@@ -31,6 +43,12 @@ export class UserService {
     if (!secretKey) {
       throw new Error('There is no token key');
     }
+    //confirguração da nova sessão
+    const sessionDuration = rebemberMe ? 24 * 60 * 60 * 1000 : 60 * 60 * 1000;
+    user.expirationLogin = new Date(Date.now() + sessionDuration);
+    user.logged = true;
+    await this.userRepository.save(user);
+    //confirguração do token
     const expirationToken = rebemberMe ? '24h' : '1h';
     const token = jwt.sign({ id: user.id }, secretKey, {
       expiresIn: expirationToken
@@ -105,5 +123,12 @@ export class UserService {
       password
     });
     return newUser;
+  }
+
+  public async sessionEnd(email) {
+    const user = await this.userRepository.findOne({ where: { email } });
+    user.expirationLogin = new Date(Date.now());
+    user.logged = false;
+    await this.userRepository.save(user);
   }
 }

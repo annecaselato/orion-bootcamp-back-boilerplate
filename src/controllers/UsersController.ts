@@ -73,7 +73,9 @@ export class UsersController {
           .json({ mensagem: 'Incorrect username or password' });
       }
     } catch (error) {
-      return res.status(httpCodes.BAD_REQUEST).json(error);
+      return res
+        .status(httpCodes.BAD_REQUEST)
+        .json({ error: { message: error.message } });
     }
   }
 
@@ -356,9 +358,12 @@ export class UsersController {
    */
   async userLogout(req: Request, res: Response) {
     const token = req.body.authToken;
+    const user = req.body.authUser;
+    const email = user.email;
     try {
       await new TokenService().deleteLoginToken(token);
-      return res.status(200).json({ message: 'Logout successful' });
+      await new UserService().sessionEnd(email);
+      return res.status(httpCodes.OK).json({ message: 'Logout successful' });
     } catch (error) {
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
