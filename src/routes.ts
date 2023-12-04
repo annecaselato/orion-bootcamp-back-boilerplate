@@ -62,6 +62,12 @@ router.delete(
   new CommentController().deleteComment
 );
 
+router.get(
+  '/v1/comments/:category/:categoryId',
+  authenticateToken,
+  new CommentController().getComments
+);
+
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
   '/v1/survey/user_eligibility',
