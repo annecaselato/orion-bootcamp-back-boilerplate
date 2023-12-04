@@ -1,13 +1,15 @@
 import { Router, Request, Response } from 'express';
-import { validationField, Validator } from './validator/userValidator';
+import UserValidator from './validator/userValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
 import { CharacterController } from './controller/CharacterController';
+import { countCardClick } from './middleware/countCardClickMiddleware';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
 import { CommentController } from './controller/CommentController';
+import { ArtistsController } from './controller/ArtistsController';
 
 const router = Router();
 
@@ -18,10 +20,10 @@ router.all('/v1/dashboard', authenticateToken, (req, res) => {
 
 router.post('/v1/login', new AuthController().login);
 
+// endpoint para cadastro de novos usuários
 router.post(
   '/v1/signup',
-  validationField,
-  Validator,
+  new UserValidator().verify,
   new UserController().create
 );
 
@@ -29,6 +31,7 @@ router.get('/v1/check', new AuthController().confirmRegistration);
 router.post('/v1/recovery', new RecoveryController().validateUserEmail);
 router.post('/v1/changepassword', new RecoveryController().changePassword);
 
+//POST?
 router.get(
   '/v1/favorites',
   authenticateToken,
@@ -42,9 +45,21 @@ router.post(
 );
 
 router.get(
+  '/v1/posters',
+  authenticateToken,
+  new ArtistsController().getShowcasePosters
+);
+
+router.get(
   '/v1/:category',
   authenticateToken,
   new CharacterController().getPage
+);
+
+router.delete(
+  '/v1/comments/:comment_id',
+  authenticateToken,
+  new CommentController().deleteComment
 );
 
 router.get(
@@ -55,7 +70,7 @@ router.get(
 
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
-  '/v1/survey/eligibility/:user_id',
+  '/v1/survey/user_eligibility',
   authenticateToken,
   new SurveyValidator().verifyEligibility,
   new SurveyController().eligible
@@ -73,7 +88,8 @@ router.post(
 router.get(
   '/v1/:category/:category_id',
   authenticateToken,
-  new CharacterController().countClick
+  countCardClick,
+  new CharacterController().getCardDetails
 );
 
 export default router;
