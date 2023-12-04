@@ -125,7 +125,7 @@ export class UserService {
     return newUser;
   }
 
-  public async sessionEnd(email) {
+  public async sessionEnd(email: string) {
     const user = await this.userRepository.findOne({ where: { email } });
     user.expirationLogin = new Date(Date.now());
     user.logged = false;

@@ -9,11 +9,11 @@ export class TokenService {
     this.tokenRepository = MysqlDataSource.getRepository(Tokens);
   }
 
-  public async deleteLoginToken(token: string): Promise<void> {
+  public async deleteToken(token: string): Promise<void> {
     await this.tokenRepository.delete({ token });
   }
 
-  public async saveToken(token): Promise<void> {
+  public async saveToken(token: string): Promise<void> {
     await this.tokenRepository.save({ token: token });
   }
 

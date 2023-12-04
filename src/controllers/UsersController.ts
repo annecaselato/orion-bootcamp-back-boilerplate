@@ -361,7 +361,7 @@ export class UsersController {
     const user = req.body.authUser;
     const email = user.email;
     try {
-      await new TokenService().deleteLoginToken(token);
+      await new TokenService().deleteToken(token);
       await new UserService().sessionEnd(email);
       return res.status(httpCodes.OK).json({ message: 'Logout successful' });
     } catch (error) {
