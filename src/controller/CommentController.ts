@@ -121,7 +121,6 @@ export class CommentController {
       });
     }
   }
-}
 
   /**
    * @swagger
@@ -451,4 +450,3 @@ export class CommentController {
     }
   }
 }
-
