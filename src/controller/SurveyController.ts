@@ -215,8 +215,8 @@ export default class SurveyController {
    *                   msg: Comentário contém palavra(s) imprópria(s) ou ofensiva(s)
    *                   path: comment
    *                   location: body
-   *       '403':
-   *         description: usuário não autorizado à proceder à requisição, inelegível à relaização da pesquisa.
+   *       '422':
+   *         description: servidor compreende a requisição, mas não pode processar dados, usuário inelegível à relaização da pesquisa.
    *         content:
    *           application/json:
    *             schema:
