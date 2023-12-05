@@ -29,7 +29,7 @@ export default class SurveyValidator {
       userLastSurveyDates.latestSurvey > usageStartRangeTime
     ) {
       return res
-        .status(403)
+        .status(422)
         .json({ date: new Date(), status: false, data: { eligible: false } });
     }
 
