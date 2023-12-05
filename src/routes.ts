@@ -56,10 +56,10 @@ router.get(
   new CharacterController().getPage
 );
 
-router.delete(
-  '/v1/comments/:comment_id',
+router.post(
+  '/v1/comments/:category/:categoryId',
   authenticateToken,
-  new CommentController().deleteComment
+  new CommentsController().createComment
 );
 
 router.get(
@@ -67,6 +67,14 @@ router.get(
   authenticateToken,
   new CommentController().getComments
 );
+
+
+router.delete(
+  '/v1/comments/:comment_id',
+  authenticateToken,
+  new CommentController().deleteComment
+);
+
 
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
