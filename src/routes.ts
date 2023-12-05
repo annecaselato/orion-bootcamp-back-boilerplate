@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import UserValidator from './validator/UserValidator';
+import UserValidator from './validator/userValidator';
 import { UserController } from './controller/UserController';
 import { AuthController } from './controller/AuthController';
 import { authenticateToken } from './middleware/AuthMiddleware';
@@ -8,7 +8,8 @@ import { countCardClick } from './middleware/countCardClickMiddleware';
 import SurveyController from './controller/SurveyController';
 import SurveyValidator from './validator/SurveyValidator';
 import { RecoveryController } from './controller/RecoveryController';
-import { CommentsController } from './controller/CommentController';
+import { CommentController } from './controller/CommentController';
+import { ArtistsController } from './controller/ArtistsController';
 
 const router = Router();
 
@@ -44,6 +45,12 @@ router.post(
 );
 
 router.get(
+  '/v1/posters',
+  authenticateToken,
+  new ArtistsController().getShowcasePosters
+);
+
+router.get(
   '/v1/:category',
   authenticateToken,
   new CharacterController().getPage
@@ -54,20 +61,33 @@ router.post(
   authenticateToken,
   new CommentsController().createComment
 );
+
+router.get(
+  '/v1/comments/:category/:categoryId',
+  authenticateToken,
+  new CommentController().getComments
+);
+
+
+router.delete(
+  '/v1/comments/:comment_id',
+  authenticateToken,
+  new CommentController().deleteComment
+);
+
+
 // endpoint para verificação de elegibilidade de usuário para pesquisa
 router.get(
   '/v1/survey/user_eligibility',
   authenticateToken,
-  new SurveyValidator().verifyEligibility,
-  new SurveyController().eligible
+  new SurveyController().verifyEligibility
 );
 
 // endpoint para envio de dados para registro de pesquisa de satisfação do usuário
 router.post(
   '/v1/survey/user_answer',
   authenticateToken,
-  new SurveyValidator().verifyEligibility,
-  new SurveyValidator().verifyAnswer,
+  new SurveyValidator().verify,
   new SurveyController().create
 );
 

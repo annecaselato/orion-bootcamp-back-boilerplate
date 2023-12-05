@@ -22,7 +22,7 @@ export class Comments {
   comment: string;
 
   @CreateDateColumn()
-  created_At: Date;
+  createdAt: Date;
 
   @Column()
   categoryId: number;
