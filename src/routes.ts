@@ -72,16 +72,14 @@ router.get(
 router.get(
   '/v1/survey/user_eligibility',
   authenticateToken,
-  new SurveyValidator().verifyEligibility,
-  new SurveyController().eligible
+  new SurveyController().verifyEligibility
 );
 
 // endpoint para envio de dados para registro de pesquisa de satisfação do usuário
 router.post(
   '/v1/survey/user_answer',
   authenticateToken,
-  new SurveyValidator().verifyEligibility,
-  new SurveyValidator().verifyAnswer,
+  new SurveyValidator().verify,
   new SurveyController().create
 );
 
