@@ -1,4 +1,4 @@
-import { Metric } from 'models/enumMetrics';
+import { Metric } from '../../models/enumMetrics';
 import { Metrics } from '../entity/Metrics';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 

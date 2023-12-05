@@ -56,7 +56,7 @@ export class UserService {
     }
   }
 
-  public async recoverPassword(email: string): Promise<void> {
+  public async recoverPassword(email: string): Promise<string | void> {
     const user: User = await this.userRepository.findOne({ where: { email } });
     if (user) {
       const token = jwt.sign(
@@ -74,6 +74,7 @@ export class UserService {
         token: token
       };
       await new NodemailerProvider().sendEmail(email, subject, variables, path);
+      return token;
     }
   }
 
