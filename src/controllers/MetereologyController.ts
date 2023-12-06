@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import NasaApi from '../utils/NasaApi';
 import WeatherApiTreat from '../utils/WeatherApiTreat';
 import { httpCodes } from '../utils/httpCodes';
+import { ErrorLogService } from '../services/ErrorLogService';
 
 export class MetereologyController {
   /**
@@ -52,6 +53,8 @@ export class MetereologyController {
       const solesOutput = new WeatherApiTreat().modifySolesKeys(solesInput);
       return res.status(httpCodes.OK).json(solesOutput);
     } catch (error) {
+      const err: string = '/metereology/soles: ' + error.message;
+      await new ErrorLogService().insertError(err);
       return res.status(httpCodes.BAD_REQUEST).json(error);
     }
   }
